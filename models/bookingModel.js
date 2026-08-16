@@ -5,21 +5,30 @@ const getAllBookings = () => {
 };
 
 const getBookingById = (id) => {
-    return db.prepare("SELECT * FROM bookings WHERE id = ?").get(id);
+    return db.prepare(
+        "SELECT * FROM bookings WHERE id = ?"
+    ).get(id);
+};
+
+const getBookingsByUserId = (userId) => {
+    return db.prepare(
+        "SELECT * FROM bookings WHERE user_id = ?"
+    ).all(userId);
 };
 
 const createBooking = (booking) => {
     const sql = `
         INSERT INTO bookings
-        (customer_name, customer_email, show_id, seats_booked)
-        VALUES (?, ?, ?, ?)
+        (customer_name, customer_email, show_id, seats_booked, user_id)
+        VALUES (?, ?, ?, ?, ?)
     `;
 
     return db.prepare(sql).run(
         booking.customer_name,
         booking.customer_email,
         booking.show_id,
-        booking.seats_booked
+        booking.seats_booked,
+        booking.user_id
     );
 };
 
@@ -51,6 +60,7 @@ const deleteBooking = (id) => {
 module.exports = {
     getAllBookings,
     getBookingById,
+    getBookingsByUserId,
     createBooking,
     updateBooking,
     deleteBooking

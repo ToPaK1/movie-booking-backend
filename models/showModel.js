@@ -5,7 +5,9 @@ const getAllShows = () => {
 };
 
 const getShowById = (id) => {
-    return db.prepare("SELECT * FROM shows WHERE id = ?").get(id);
+    return db.prepare(
+        "SELECT * FROM shows WHERE id = ?"
+    ).get(id);
 };
 
 const createShow = (show) => {
@@ -46,7 +48,27 @@ const updateShow = (id, show) => {
 };
 
 const deleteShow = (id) => {
-    return db.prepare("DELETE FROM shows WHERE id = ?").run(id);
+    return db.prepare(
+        "DELETE FROM shows WHERE id = ?"
+    ).run(id);
+};
+
+// Decrease seats after booking
+const decreaseAvailableSeats = (showId, seats) => {
+    return db.prepare(`
+        UPDATE shows
+        SET available_seats = available_seats - ?
+        WHERE id = ?
+    `).run(seats, showId);
+};
+
+// Restore seats after cancellation
+const increaseAvailableSeats = (showId, seats) => {
+    return db.prepare(`
+        UPDATE shows
+        SET available_seats = available_seats + ?
+        WHERE id = ?
+    `).run(seats, showId);
 };
 
 module.exports = {
@@ -54,5 +76,7 @@ module.exports = {
     getShowById,
     createShow,
     updateShow,
-    deleteShow
+    deleteShow,
+    decreaseAvailableSeats,
+    increaseAvailableSeats
 };

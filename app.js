@@ -6,7 +6,7 @@ const movieRoutes = require("./routes/movieRoutes");
 const showRoutes = require("./routes/showRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const cinemaRoutes = require("./routes/cinemaRoutes");
-
+const authRoutes = require("./routes/authRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -24,6 +24,7 @@ app.use("/api/movies", movieRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/cinemas", cinemaRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
 
