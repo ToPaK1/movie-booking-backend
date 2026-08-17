@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | My Bookings</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bookings.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="bookings.html" class="active">
+                    My Bookings
+                </a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <button
+                    id="logoutBtn"
+                    class="logout-btn"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- BOOKINGS -->
+
+    <main class="bookings-page">
+
+        <div class="container">
+
+            <div class="bookings-header">
+
+                <div>
+
+                    <span>
+                        CINEBOOK
+                    </span>
+
+                    <h1>
+                        My Bookings
+                    </h1>
+
+                    <p>
+                        Manage your movie reservations.
+                    </p>
+
+                </div>
+
+                <a
+                    href="movies.html"
+                    class="browse-btn"
+                >
+                    🎬 Browse Movies
+                </a>
+
+            </div>
+
+
+            <div
+                id="message"
+                class="booking-message"
+                style="display: none;"
+            ></div>
+
+
+            <div
+                id="loading"
+                class="loading"
+            >
+                Loading your bookings...
+            </div>
+
+
+            <div
+                id="bookingsContainer"
+                class="bookings-grid"
+            >
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/bookings.js"></script>
+
+</body>
+
+</html>

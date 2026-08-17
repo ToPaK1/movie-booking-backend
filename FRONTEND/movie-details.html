@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | Movie Details</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/movie-details.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html" class="active">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="bookings.html">
+                    My Bookings
+                </a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <a href="login.html" class="login-btn">
+                    Login
+                </a>
+
+                <a href="signup.html" class="signup-btn">
+                    Sign Up
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MOVIE DETAILS ================= -->
+
+    <main>
+
+        <section class="movie-details-page">
+
+            <div class="container">
+
+                <div id="loading" class="loading">
+                    Loading movie...
+                </div>
+
+                <div
+                    id="error"
+                    class="error-message"
+                    style="display: none;"
+                >
+                    Movie not found.
+                </div>
+
+
+                <div
+                    id="movieDetails"
+                    style="display: none;"
+                >
+
+                    <!-- Movie Information -->
+
+                    <div class="movie-details">
+
+                        <div class="movie-poster-large">
+                            🎬
+                        </div>
+
+                        <div class="movie-content">
+
+                            <span
+                                id="movieGenre"
+                                class="movie-genre"
+                            >
+                                Genre
+                            </span>
+
+                            <h1 id="movieTitle">
+                                Movie Title
+                            </h1>
+
+                            <p id="movieDescription">
+                                Movie description
+                            </p>
+
+                            <div class="movie-info-row">
+
+                                <span>
+                                    ⏱
+                                    <strong id="movieDuration">
+                                        -
+                                    </strong>
+                                    min
+                                </span>
+
+                                <span>
+                                    ⭐
+                                    <strong id="movieRating">
+                                        -
+                                    </strong>
+                                </span>
+
+                                <span>
+                                    📅
+                                    <strong id="movieReleaseDate">
+                                        -
+                                    </strong>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Shows -->
+
+                    <section class="shows-section">
+
+                        <div class="section-heading left">
+
+                            <span>
+                                AVAILABLE SHOWS
+                            </span>
+
+                            <h2>
+                                Choose Your Showtime
+                            </h2>
+
+                            <p>
+                                Select a show to continue with your booking.
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            id="showsContainer"
+                            class="shows-grid"
+                        >
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+            <div>
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+                    🎬 CineBook
+                </a>
+
+                <p>
+                    Your simple movie booking experience.
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/movie-details.js"></script>
+
+</body>
+
+</html>

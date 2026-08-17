@@ -1,0 +1,137 @@
+.booking-page {
+    min-height: calc(100vh - 150px);
+    padding: 70px 0 100px;
+}
+
+.booking-header {
+    margin-bottom: 45px;
+}
+
+.booking-header > span {
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.booking-header h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.booking-header p {
+    color: var(--muted);
+}
+
+.booking-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.booking-summary,
+.booking-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 30px;
+}
+
+.booking-summary h2,
+.booking-card h2 {
+    margin-bottom: 25px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item span {
+    color: var(--muted);
+}
+
+.summary-item strong {
+    text-align: right;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #101017;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+}
+
+.confirm-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.confirm-btn:hover {
+    background: var(--primary-dark);
+}
+
+.booking-message {
+    padding: 13px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.booking-message.success {
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    color: #7bed9f;
+}
+
+.booking-message.error {
+    background: rgba(229, 9, 20, 0.1);
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    color: #ff6b72;
+}
+
+@media (max-width: 800px) {
+
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-header h1 {
+        font-size: 36px;
+    }
+
+}

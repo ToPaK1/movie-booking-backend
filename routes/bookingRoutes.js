@@ -1,55 +1,60 @@
 const express = require("express");
+
 const router = express.Router();
 
-const bookingController = require("../controllers/bookingController");
+const bookingController =
+    require("../controllers/bookingController");
 
-const authenticateToken =
+const authMiddleware =
     require("../middleware/authMiddleware");
 
-const authorizeRoles =
-    require("../middleware/roleMiddleware");
 
-// Admin only
+// Get all bookings
 router.get(
     "/",
-    authenticateToken,
-    authorizeRoles("admin"),
+    authMiddleware,
     bookingController.getAllBookings
 );
 
-// Customer's own bookings
+
+// Get current user's bookings
 router.get(
-    "/my-bookings",
-    authenticateToken,
+    "/my",
+    authMiddleware,
     bookingController.getMyBookings
 );
 
-// Get one booking
+
+// Get booking by ID
 router.get(
     "/:id",
-    authenticateToken,
+    authMiddleware,
     bookingController.getBookingById
 );
+
 
 // Create booking
 router.post(
     "/",
-    authenticateToken,
+    authMiddleware,
     bookingController.createBooking
 );
+
 
 // Update booking
 router.put(
     "/:id",
-    authenticateToken,
+    authMiddleware,
     bookingController.updateBooking
 );
 
-// Cancel booking
+
+// Delete booking
 router.delete(
     "/:id",
-    authenticateToken,
+    authMiddleware,
     bookingController.deleteBooking
 );
+
 
 module.exports = router;

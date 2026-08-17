@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -8,168 +9,229 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>CineBook - Movie Booking</title>
+    <title>CineBook | Movie Booking</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    <!-- ================= NAVBAR ================= -->
 
-        <div class="logo">
-            <span>🎬</span>
-            CineBook
-        </div>
+    <header class="navbar">
 
-        <nav>
-            <button class="nav-btn active" data-section="dashboard">
-                🏠 Dashboard
-            </button>
+        <div class="container nav-content">
 
-            <button class="nav-btn" data-section="movies">
-                🎬 Movies
-            </button>
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
 
-            <button class="nav-btn" data-section="cinemas">
-                🏢 Cinemas
-            </button>
+            <nav class="nav-links">
 
-            <button class="nav-btn" data-section="shows">
-                🎭 Shows
-            </button>
+                <a href="index.html" class="active">
+                    Home
+                </a>
 
-            <button class="nav-btn" data-section="bookings">
-                🎟️ Bookings
-            </button>
-        </nav>
+                <a href="movies.html">
+                    Movies
+                </a>
 
-        <div class="sidebar-footer">
-            <p>Movie Booking System</p>
-            <small>Powered by Node.js</small>
-        </div>
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
 
-    </aside>
+                <a href="bookings.html">
+                    My Bookings
+                </a>
 
+            </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
+            <div class="nav-actions">
 
-        <!-- Header -->
-        <header class="topbar">
+                <a href="login.html" class="login-btn">
+                    Login
+                </a>
 
-            <div>
-                <h1 id="page-title">Dashboard</h1>
-                <p>Manage your movie booking system</p>
+                <a href="signup.html" class="signup-btn">
+                    Sign Up
+                </a>
+
             </div>
 
-            <div class="status">
-                <span class="status-dot"></span>
-                Backend Connected
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="container hero-content">
+
+                <div class="hero-text">
+
+                    <span class="hero-badge">
+                        🍿 Your movie night starts here
+                    </span>
+
+                    <h1>
+                        Discover Your
+                        <span>Next Favorite Movie</span>
+                    </h1>
+
+                    <p>
+                        Explore the latest movies, find your favorite
+                        cinema, choose your showtime, and book your seats
+                        easily.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="movies.html"
+                            class="primary-btn"
+                        >
+                            Browse Movies
+                        </a>
+
+                        <a
+                            href="cinemas.html"
+                            class="secondary-btn"
+                        >
+                            Explore Cinemas
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="hero-card">
+
+                    <div class="ticket-icon">
+                        🎟️
+                    </div>
+
+                    <h3>
+                        Ready for your next movie?
+                    </h3>
+
+                    <p>
+                        Choose a movie and book your seats in just a
+                        few clicks.
+                    </p>
+
+                    <a
+                        href="movies.html"
+                        class="card-btn"
+                    >
+                        Start Booking
+                    </a>
+
+                </div>
+
             </div>
 
-        </header>
+        </section>
 
 
-        <!-- Dashboard -->
-        <section id="dashboard" class="section active">
+        <!-- ================= FEATURES ================= -->
 
-            <div class="hero">
+        <section class="features">
 
-                <div>
-                    <span class="hero-label">WELCOME TO CINEBOOK</span>
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span>
+                        WHY CINEBOOK?
+                    </span>
 
                     <h2>
-                        Your Movie Booking
-                        <span>Dashboard</span>
+                        Everything You Need
                     </h2>
 
                     <p>
-                        Manage movies, cinemas, shows and customer
-                        bookings from one place.
+                        A simple and convenient movie booking experience.
                     </p>
+
                 </div>
 
-                <div class="hero-icon">
-                    🎬
-                </div>
 
-            </div>
+                <div class="feature-grid">
 
+                    <div class="feature-card">
 
-            <div class="stats-grid">
+                        <div class="feature-icon">
+                            🎬
+                        </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon movie-icon">🎬</div>
-                    <div>
-                        <p>Movies</p>
-                        <h3 id="movie-count">0</h3>
-                    </div>
-                </div>
+                        <h3>
+                            Latest Movies
+                        </h3>
 
-                <div class="stat-card">
-                    <div class="stat-icon cinema-icon">🏢</div>
-                    <div>
-                        <p>Cinemas</p>
-                        <h3 id="cinema-count">0</h3>
-                    </div>
-                </div>
+                        <p>
+                            Discover movies and explore their details,
+                            genres, ratings and release dates.
+                        </p>
 
-                <div class="stat-card">
-                    <div class="stat-icon show-icon">🎭</div>
-                    <div>
-                        <p>Shows</p>
-                        <h3 id="show-count">0</h3>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon booking-icon">🎟️</div>
-                    <div>
-                        <p>Bookings</p>
-                        <h3 id="booking-count">0</h3>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="dashboard-grid">
-
-                <div class="panel">
-                    <div class="panel-header">
-                        <h3>Latest Movies</h3>
-
-                        <button
-                            class="text-btn"
-                            onclick="showSection('movies')"
-                        >
-                            View All →
-                        </button>
                     </div>
 
-                    <div id="dashboard-movies"></div>
-                </div>
 
+                    <div class="feature-card">
 
-                <div class="panel">
+                        <div class="feature-icon">
+                            🏢
+                        </div>
 
-                    <div class="panel-header">
-                        <h3>Recent Bookings</h3>
+                        <h3>
+                            Find Cinemas
+                        </h3>
 
-                        <button
-                            class="text-btn"
-                            onclick="showSection('bookings')"
-                        >
-                            View All →
-                        </button>
+                        <p>
+                            Explore available cinemas and choose the
+                            location that works best for you.
+                        </p>
+
                     </div>
 
-                    <div id="dashboard-bookings"></div>
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🎟️
+                        </div>
+
+                        <h3>
+                            Easy Booking
+                        </h3>
+
+                        <p>
+                            Choose your show, select your seats and
+                            complete your booking quickly.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            🔐
+                        </div>
+
+                        <h3>
+                            Secure Account
+                        </h3>
+
+                        <p>
+                            Your account is protected with secure
+                            authentication and JWT authorization.
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -178,157 +240,115 @@
         </section>
 
 
-        <!-- Movies -->
-        <section id="movies" class="section">
+        <!-- ================= MOVIES PREVIEW ================= -->
 
-            <div class="section-header">
+        <section class="movies-preview">
 
-                <div>
-                    <h2>Movies</h2>
-                    <p>Manage all movies in your system.</p>
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span>
+                        MOVIE BOOKING
+                    </span>
+
+                    <h2>
+                        Ready to Watch?
+                    </h2>
+
+                    <p>
+                        Find your movie and start your cinema experience.
+                    </p>
+
                 </div>
 
-                <button
-                    class="primary-btn"
-                    onclick="openMovieForm()"
-                >
-                    + Add Movie
-                </button>
 
-            </div>
+                <div class="movie-preview-box">
 
-            <div class="search-box">
-                <input
-                    type="text"
-                    id="movie-search"
-                    placeholder="🔍 Search movies..."
-                    oninput="searchMovies()"
-                >
-            </div>
+                    <div>
 
-            <div
-                class="cards-grid"
-                id="movies-container"
-            ></div>
+                        <h3>
+                            Find Your Perfect Movie
+                        </h3>
 
-        </section>
+                        <p>
+                            Browse our movie collection and discover
+                            what's showing now.
+                        </p>
 
+                    </div>
 
-        <!-- Cinemas -->
-        <section id="cinemas" class="section">
+                    <a
+                        href="movies.html"
+                        class="primary-btn"
+                    >
+                        View Movies →
+                    </a>
 
-            <div class="section-header">
-
-                <div>
-                    <h2>Cinemas</h2>
-                    <p>Manage cinema locations and seats.</p>
                 </div>
 
-                <button
-                    class="primary-btn"
-                    onclick="openCinemaForm()"
-                >
-                    + Add Cinema
-                </button>
-
             </div>
-
-            <div
-                class="table-container"
-                id="cinemas-container"
-            ></div>
-
-        </section>
-
-
-        <!-- Shows -->
-        <section id="shows" class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2>Shows</h2>
-                    <p>Manage movie showtimes.</p>
-                </div>
-
-                <button
-                    class="primary-btn"
-                    onclick="openShowForm()"
-                >
-                    + Add Show
-                </button>
-
-            </div>
-
-            <div
-                class="table-container"
-                id="shows-container"
-            ></div>
-
-        </section>
-
-
-        <!-- Bookings -->
-        <section id="bookings" class="section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2>Bookings</h2>
-                    <p>Manage customer movie bookings.</p>
-                </div>
-
-                <button
-                    class="primary-btn"
-                    onclick="openBookingForm()"
-                >
-                    + New Booking
-                </button>
-
-            </div>
-
-            <div
-                class="table-container"
-                id="bookings-container"
-            ></div>
 
         </section>
 
     </main>
 
 
-    <!-- Modal -->
-    <div
-        class="modal-overlay"
-        id="modal"
-    >
+    <!-- ================= FOOTER ================= -->
 
-        <div class="modal">
+    <footer class="footer">
 
-            <button
-                class="close-btn"
-                onclick="closeModal()"
-            >
-                ×
-            </button>
+        <div class="container footer-content">
 
-            <h2 id="modal-title">Add</h2>
+            <div>
 
-            <form id="modal-form"></form>
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+                    🎬 CineBook
+                </a>
+
+                <p>
+                    Your simple movie booking experience.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
 
         </div>
 
-    </div>
 
+        <div class="footer-bottom">
 
-    <!-- Toast -->
-    <div
-        id="toast"
-        class="toast"
-    ></div>
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
 
+        </div>
 
-    <script src="app.js"></script>
+    </footer>
 
 </body>
+
 </html>

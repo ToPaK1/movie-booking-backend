@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | Sign Up</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
+
+            <a href="index.html" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+
+                <div class="auth-icon">
+                    🎟️
+                </div>
+
+                <h1>
+                    Create Account
+                </h1>
+
+                <p>
+                    Join CineBook and start booking your movies.
+                </p>
+
+            </div>
+
+
+            <div
+                id="message"
+                class="auth-message"
+                style="display: none;"
+            ></div>
+
+
+            <form id="signupForm">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter your phone number"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-btn"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                <p>
+                    Already have an account?
+                    <a href="login.html">
+                        Login
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>

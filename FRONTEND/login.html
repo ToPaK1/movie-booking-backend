@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | Login</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
+
+            <a href="index.html" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+
+                <div class="auth-icon">
+                    🎬
+                </div>
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+                <p>
+                    Login to continue your movie experience.
+                </p>
+
+            </div>
+
+
+            <div
+                id="message"
+                class="auth-message"
+                style="display: none;"
+            ></div>
+
+
+            <form id="loginForm">
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-btn"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                <p>
+                    Don't have an account?
+                    <a href="signup.html">
+                        Create one
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>

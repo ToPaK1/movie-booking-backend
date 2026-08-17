@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | Book Ticket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/booking.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="container nav-content">
+
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="bookings.html">
+                    My Bookings
+                </a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <a href="login.html" class="login-btn">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- BOOKING -->
+
+    <main class="booking-page">
+
+        <div class="container">
+
+            <div class="booking-header">
+
+                <span>
+                    CINEBOOK
+                </span>
+
+                <h1>
+                    Complete Your Booking
+                </h1>
+
+                <p>
+                    Enter your information and reserve your seats.
+                </p>
+
+            </div>
+
+
+            <div class="booking-layout">
+
+
+                <!-- SHOW INFORMATION -->
+
+                <div class="booking-summary">
+
+                    <h2>
+                        Show Details
+                    </h2>
+
+                    <div class="summary-item">
+
+                        <span>
+                            Show ID
+                        </span>
+
+                        <strong id="showId">
+                            -
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-item">
+
+                        <span>
+                            Movie
+                        </span>
+
+                        <strong id="movieName">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-item">
+
+                        <span>
+                            Cinema
+                        </span>
+
+                        <strong id="cinemaName">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-item">
+
+                        <span>
+                            Date
+                        </span>
+
+                        <strong id="showDate">
+                            -
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-item">
+
+                        <span>
+                            Time
+                        </span>
+
+                        <strong id="showTime">
+                            -
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-item">
+
+                        <span>
+                            Available Seats
+                        </span>
+
+                        <strong id="availableSeats">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOOKING FORM -->
+
+                <div class="booking-card">
+
+                    <h2>
+                        Your Information
+                    </h2>
+
+                    <div
+                        id="message"
+                        class="booking-message"
+                        style="display: none;"
+                    ></div>
+
+
+                    <form id="bookingForm">
+
+                        <div class="form-group">
+
+                            <label for="customerName">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customerName"
+                                placeholder="Enter your full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="customerEmail">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="customerEmail"
+                                placeholder="Enter your email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="seatsBooked">
+                                Number of Seats
+                            </label>
+
+                            <input
+                                type="number"
+                                id="seatsBooked"
+                                min="1"
+                                value="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="confirm-btn"
+                        >
+                            Confirm Booking
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/booking.js"></script>
+
+</body>
+
+</html>
