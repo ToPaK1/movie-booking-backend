@@ -1,208 +1,1426 @@
-.bookings-page {
-    min-height: calc(100vh - 150px);
-    padding: 70px 0 100px;
+/* =========================================================
+   CINEBOOK BOOKINGS
+   BLACK + RED CINEMATIC THEME
+========================================================= */
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+body {
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(229, 9, 20, 0.10),
+            transparent 38%
+        ),
+        #07080b;
+
+    color: #ffffff;
 }
 
-.bookings-header {
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    background: rgba(7, 8, 11, 0.88);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    position: relative;
+    z-index: 100;
+}
+
+
+.nav-container {
+    max-width: 1200px;
+    margin: auto;
+
+    padding: 18px 30px;
+
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: end;
-    gap: 30px;
-    margin-bottom: 45px;
 }
 
-.bookings-header > div > span {
-    color: var(--primary);
-    font-size: 13px;
+
+.navbar .logo {
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 22px;
     font-weight: 800;
-    letter-spacing: 2px;
+
+    transition: 0.3s ease;
 }
 
-.bookings-header h1 {
-    font-size: 48px;
-    margin: 8px 0;
+
+.navbar .logo:hover {
+    color: #e50914;
+
+    text-shadow:
+        0 0 18px rgba(229, 9, 20, 0.55);
 }
 
-.bookings-header p {
-    color: var(--muted);
+
+.nav-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
 }
 
-.browse-btn {
-    padding: 13px 20px;
-    background: var(--primary);
+
+.nav-links a {
+    color: #a9abb3;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.nav-links a:hover {
+    color: #ffffff;
+
+    transform:
+        translateY(-2px);
+}
+
+
+.nav-links a.active {
+    color: #ffffff;
+}
+
+
+.nav-links a.active::after {
+    content: "";
+
+    display: block;
+
+    width: 100%;
+    height: 2px;
+
+    margin-top: 6px;
+
+    background: #e50914;
+
+    box-shadow:
+        0 0 10px rgba(229, 9, 20, 0.7);
+}
+
+
+#logoutBtn {
+    border: none;
+
+    padding: 9px 16px;
+
     border-radius: 8px;
+
+    background: #e50914;
+
     color: white;
-    font-weight: bold;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
 }
 
-.browse-btn:hover {
-    background: var(--primary-dark);
+
+#logoutBtn:hover {
+    background: #b80710;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(229, 9, 20, 0.3);
 }
 
-.loading {
+
+/* =========================================================
+   CINEMATIC HERO
+========================================================= */
+
+.booking-hero {
+    position: relative;
+
+    min-height: 650px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
     text-align: center;
-    padding: 80px 0;
-    color: var(--muted);
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(229, 9, 20, 0.13),
+            transparent 42%
+        ),
+        linear-gradient(
+            180deg,
+            #090a0e 0%,
+            #07080b 100%
+        );
+}
+
+
+/* RED CINEMATIC GLOW */
+
+.booking-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 700px;
+    height: 700px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(229, 9, 20, 0.13),
+            transparent 68%
+        );
+
+    filter: blur(25px);
+
+    animation:
+        heroGlow 5s ease-in-out infinite alternate;
+}
+
+
+@keyframes heroGlow {
+
+    from {
+        transform: scale(0.9);
+
+        opacity: 0.55;
+    }
+
+    to {
+        transform: scale(1.1);
+
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-content {
+    position: relative;
+
+    z-index: 5;
+
+    width: min(900px, 90%);
+
+    animation:
+        heroEnter 1s ease forwards;
+}
+
+
+@keyframes heroEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   HERO LABEL
+========================================================= */
+
+.hero-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px 18px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(229, 9, 20, 0.08);
+
+    border:
+        1px solid rgba(229, 9, 20, 0.35);
+
+    color: #ff5a61;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 0 25px rgba(229, 9, 20, 0.12);
+
+    animation:
+        labelPulse 2.5s ease-in-out infinite alternate;
+}
+
+
+@keyframes labelPulse {
+
+    from {
+        box-shadow:
+            0 0 10px rgba(229, 9, 20, 0.10);
+    }
+
+    to {
+        box-shadow:
+            0 0 28px rgba(229, 9, 20, 0.35);
+    }
+
+}
+
+
+.hero-label span {
     font-size: 18px;
 }
 
-.bookings-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.booking-hero h1 {
+    margin: 24px 0 14px;
+
+    font-size:
+        clamp(48px, 7vw, 82px);
+
+    line-height: 0.95;
+
+    font-weight: 800;
+
+    letter-spacing: -3px;
+
+    animation:
+        titleReveal 1.1s ease;
 }
+
+
+@keyframes titleReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scale(0.9);
+
+        filter:
+            blur(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scale(1);
+
+        filter:
+            blur(0);
+    }
+
+}
+
+
+.booking-hero h1 span {
+    display: block;
+
+    color: #ffffff;
+}
+
+
+.booking-hero h1 strong {
+    display: block;
+
+    color: #e50914;
+
+    font-weight: 800;
+
+    text-shadow:
+        0 0 20px rgba(229, 9, 20, 0.25),
+        0 0 55px rgba(229, 9, 20, 0.15);
+}
+
+
+/* =========================================================
+   TITLE LINE
+========================================================= */
+
+.title-line {
+    width: 90px;
+    height: 3px;
+
+    margin: 25px auto;
+
+    background: #e50914;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 15px rgba(229, 9, 20, 0.8),
+        0 0 35px rgba(229, 9, 20, 0.35);
+
+    animation:
+        lineGrow 1.2s ease;
+}
+
+
+@keyframes lineGrow {
+
+    from {
+        width: 0;
+
+        opacity: 0;
+    }
+
+    to {
+        width: 90px;
+
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   HERO DESCRIPTION
+========================================================= */
+
+.booking-hero p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: #9da0a8;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   MOVING FILM REEL
+========================================================= */
+
+.cinema-decoration {
+    position: absolute;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    opacity: 0.12;
+
+    filter:
+        grayscale(1)
+        brightness(1.8);
+
+    font-size: 120px;
+
+    text-shadow:
+        0 0 30px rgba(229, 9, 20, 0.4);
+}
+
+
+.film-reel {
+    top: 90px;
+    left: 7%;
+
+    animation:
+        floatReel 7s ease-in-out infinite;
+}
+
+
+@keyframes floatReel {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(-10deg);
+    }
+
+    50% {
+        transform:
+            translateY(-25px)
+            rotate(10deg);
+    }
+
+}
+
+
+/* =========================================================
+   MOVING TICKET
+========================================================= */
+
+.ticket-decoration {
+    right: 7%;
+    bottom: 100px;
+
+    font-size: 110px;
+
+    animation:
+        floatTicket 6s ease-in-out infinite;
+}
+
+
+@keyframes floatTicket {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(10deg);
+    }
+
+    50% {
+        transform:
+            translateY(-30px)
+            rotate(-10deg);
+    }
+
+}
+
+
+/* =========================================================
+   CINEMATIC LIGHTS
+========================================================= */
+
+.light {
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(229, 9, 20, 0.35),
+            transparent 70%
+        );
+
+    filter: blur(20px);
+
+    pointer-events: none;
+
+    opacity: 0.25;
+
+    animation:
+        lightMove 5s ease-in-out infinite alternate;
+}
+
+
+.light-one {
+    top: 10%;
+    left: 25%;
+}
+
+
+.light-two {
+    top: 35%;
+    right: 20%;
+
+    animation-delay: 1.5s;
+}
+
+
+.light-three {
+    bottom: 5%;
+    left: 45%;
+
+    animation-delay: 3s;
+}
+
+
+@keyframes lightMove {
+
+    from {
+        transform:
+            translateY(0)
+            scale(0.9);
+
+        opacity: 0.15;
+    }
+
+    to {
+        transform:
+            translateY(-35px)
+            scale(1.2);
+
+        opacity: 0.4;
+    }
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.booking-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    max-width: 750px;
+
+    margin: 45px auto 0;
+}
+
+
+.stat-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 22px;
+
+    text-align: left;
+
+    background:
+        rgba(16, 17, 23, 0.82);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 16px;
+
+    backdrop-filter: blur(12px);
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.stat-card:hover {
+    transform:
+        translateY(-8px);
+
+    border-color:
+        rgba(229, 9, 20, 0.45);
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(229, 9, 20, 0.12);
+}
+
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background:
+        rgba(229, 9, 20, 0.10);
+
+    border:
+        1px solid rgba(229, 9, 20, 0.25);
+
+    font-size: 21px;
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.stat-card:hover .stat-icon {
+    transform:
+        scale(1.12)
+        rotate(-6deg);
+
+    box-shadow:
+        0 0 20px rgba(229, 9, 20, 0.25);
+}
+
+
+.stat-info strong {
+    display: block;
+
+    font-size: 28px;
+
+    color: #ffffff;
+}
+
+
+.stat-info span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #858892;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TICKETS SECTION
+========================================================= */
+
+.tickets-section {
+    position: relative;
+
+    padding:
+        90px 0 110px;
+
+    background:
+        #07080b;
+}
+
+
+.tickets-section::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 80%;
+    height: 1px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(229, 9, 20, 0.5),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   TICKETS HEADER
+========================================================= */
+
+.tickets-header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 40px;
+}
+
+
+.section-label {
+    color: #e50914;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.tickets-header h2 {
+    margin: 8px 0;
+
+    font-size: 42px;
+
+    color: #ffffff;
+
+    letter-spacing: -1px;
+}
+
+
+.tickets-header p {
+    margin: 0;
+
+    color: #858892;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
+
+.refresh-btn {
+    padding: 13px 20px;
+
+    border:
+        1px solid rgba(229, 9, 20, 0.35);
+
+    border-radius: 10px;
+
+    background:
+        rgba(229, 9, 20, 0.08);
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.refresh-btn:hover {
+    background:
+        #e50914;
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 12px 30px rgba(229, 9, 20, 0.25);
+}
+
+
+.refresh-btn:active {
+    transform:
+        scale(0.95);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+    min-height: 180px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    color: #858892;
+}
+
+
+.loading-spinner {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    border:
+        3px solid rgba(255, 255, 255, 0.08);
+
+    border-top-color:
+        #e50914;
+
+    animation:
+        spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-message {
+    padding: 18px;
+
+    margin-bottom: 25px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(229, 9, 20, 0.08);
+
+    border:
+        1px solid rgba(229, 9, 20, 0.25);
+
+    color: #ff7379;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   BOOKINGS CONTAINER
+========================================================= */
+
+.bookings-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 24px;
+}
+
+
+/* =========================================================
+   BOOKING CARD
+========================================================= */
 
 .booking-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 25px;
-    transition: 0.3s;
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111218,
+            #0b0c10
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.35);
+
+    animation:
+        ticketAppear 0.7s ease both;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
 }
+
+
+.booking-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #e50914,
+            #ff3b44,
+            #e50914
+        );
+
+    box-shadow:
+        0 0 18px rgba(229, 9, 20, 0.45);
+}
+
+
+.booking-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    top: -100px;
+    right: -100px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(229, 9, 20, 0.12),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
 
 .booking-card:hover {
-    border-color: rgba(229, 9, 20, 0.45);
-    transform: translateY(-4px);
+    transform:
+        translateY(-8px)
+        perspective(800px)
+        rotateX(2deg);
+
+    border-color:
+        rgba(229, 9, 20, 0.4);
+
+    box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(229, 9, 20, 0.10);
 }
 
-.booking-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 22px;
+
+@keyframes ticketAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(30px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
 }
 
-.booking-number {
-    color: var(--primary);
-    font-weight: 800;
+
+/* =========================================================
+   BOOKING CARD CONTENT
+========================================================= */
+
+.booking-card h3 {
+    margin:
+        0 0 18px;
+
+    color: #ffffff;
+
+    font-size: 22px;
 }
 
-.booking-status {
-    padding: 6px 10px;
-    border-radius: 20px;
-    background: rgba(46, 204, 113, 0.1);
-    color: #7bed9f;
-    font-size: 12px;
-    font-weight: bold;
+
+.booking-card p {
+    color: #92959e;
+
+    line-height: 1.7;
 }
+
+
+/* =========================================================
+   BOOKING DETAILS
+========================================================= */
 
 .booking-info {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 25px;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 20px;
 }
+
+
+.booking-info-item {
+    padding: 14px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
 
 .booking-info-item span {
     display: block;
-    color: var(--muted);
-    font-size: 12px;
+
     margin-bottom: 5px;
+
+    color: #777a83;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
 }
+
 
 .booking-info-item strong {
-    font-size: 15px;
+    color: #ffffff;
+
+    font-size: 14px;
 }
 
-.booking-actions {
-    border-top: 1px solid var(--border);
-    padding-top: 18px;
-    display: flex;
-    justify-content: flex-end;
+
+/* =========================================================
+   BOOKING ID
+========================================================= */
+
+.booking-id {
+    color: #e50914 !important;
+
+    font-weight: 800;
+
+    text-shadow:
+        0 0 10px rgba(229, 9, 20, 0.25);
 }
 
+
+/* =========================================================
+   DELETE / CANCEL BUTTON
+========================================================= */
+
+.delete-btn,
 .cancel-btn {
-    padding: 10px 16px;
-    border: 1px solid rgba(229, 9, 20, 0.4);
-    border-radius: 8px;
-    background: transparent;
+    margin-top: 22px;
+
+    padding: 11px 16px;
+
+    border:
+        1px solid rgba(229, 9, 20, 0.3);
+
+    border-radius: 9px;
+
+    background:
+        rgba(229, 9, 20, 0.06);
+
     color: #ff6b72;
+
+    font-weight: 700;
+
     cursor: pointer;
-    font-weight: bold;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
 }
 
+
+.delete-btn:hover,
 .cancel-btn:hover {
-    background: rgba(229, 9, 20, 0.1);
+    background:
+        #e50914;
+
+    color: #ffffff;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(229, 9, 20, 0.25);
 }
+
+
+/* =========================================================
+   EMPTY BOOKINGS
+========================================================= */
 
 .empty-bookings {
-    grid-column: 1 / -1;
-    text-align: center;
     padding: 80px 20px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+
+    text-align: center;
+
+    border:
+        1px dashed rgba(255, 255, 255, 0.10);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.015);
 }
 
-.empty-bookings .icon {
+
+.empty-bookings-icon {
     font-size: 55px;
+
     margin-bottom: 15px;
+
+    filter:
+        drop-shadow(
+            0 0 15px rgba(229, 9, 20, 0.35)
+        );
 }
 
-.empty-bookings h2 {
+
+.empty-bookings h3 {
     margin-bottom: 10px;
+
+    color: #ffffff;
+
+    font-size: 24px;
 }
+
 
 .empty-bookings p {
-    color: var(--muted);
+    color: #858892;
+
     margin-bottom: 25px;
 }
 
-.booking-message {
-    padding: 13px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    background:
+        #050609;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.footer-content {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 30px;
+
+    padding:
+        50px 0;
+}
+
+
+.footer .logo {
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+
+.footer p {
+    color: #777a83;
+
+    margin-top: 10px;
+}
+
+
+.footer-links {
+    display: flex;
+
+    gap: 25px;
+}
+
+
+.footer-links a {
+    color: #858892;
+
+    text-decoration: none;
+
+    transition:
+        color 0.3s ease;
+}
+
+
+.footer-links a:hover {
+    color: #e50914;
+}
+
+
+.footer-bottom {
+    padding:
+        20px;
+
     text-align: center;
+
+    color: #656870;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.06);
+
+    font-size: 13px;
 }
 
-.booking-message.success {
-    background: rgba(46, 204, 113, 0.1);
-    border: 1px solid rgba(46, 204, 113, 0.3);
-    color: #7bed9f;
-}
 
-.booking-message.error {
-    background: rgba(229, 9, 20, 0.1);
-    border: 1px solid rgba(229, 9, 20, 0.3);
-    color: #ff6b72;
-}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-.logout-btn {
-    padding: 9px 16px;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
+@media (max-width: 900px) {
 
-.logout-btn:hover {
-    border-color: var(--primary);
-    color: #ff6b72;
-}
-
-@media (max-width: 750px) {
-
-    .bookings-header {
-        flex-direction: column;
-        align-items: flex-start;
+    .nav-links {
+        gap: 15px;
     }
 
-    .bookings-grid {
+
+    .booking-stats {
         grid-template-columns: 1fr;
     }
 
+
+    .bookings-container {
+        grid-template-columns: 1fr;
+    }
+
+
+    .cinema-decoration {
+        opacity: 0.06;
+    }
+
+
+    .booking-hero {
+        min-height: 700px;
+    }
+
 }
 
-@media (max-width: 500px) {
+
+@media (max-width: 700px) {
+
+    .nav-container {
+        padding:
+            16px 20px;
+    }
+
+
+    .nav-links {
+        gap: 10px;
+    }
+
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+
+    .booking-hero h1 {
+        font-size: 50px;
+
+        letter-spacing: -2px;
+    }
+
+
+    .tickets-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .refresh-btn {
+        width: 100%;
+    }
+
 
     .booking-info {
         grid-template-columns: 1fr;
     }
 
-    .bookings-header h1 {
-        font-size: 38px;
+
+    .film-reel {
+        left: -30px;
     }
 
+
+    .ticket-decoration {
+        right: -30px;
+    }
+
+
+    .footer-content {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .footer-links {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* =========================================================
+   RED CINEMATIC GLOW
+========================================================= */
+
+::selection {
+    background:
+        #e50914;
+
+    color: #ffffff;
 }

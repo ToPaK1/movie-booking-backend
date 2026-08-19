@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,342 +13,459 @@
     <title>CineBook | Movie Booking</title>
 
     <link rel="stylesheet" href="css/style.css">
+
 </head>
+
 
 <body>
 
-    <!-- ================= NAVBAR ================= -->
 
-    <header class="navbar">
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-        <div class="container nav-content">
+<header class="cinema-navbar">
 
-            <a href="index.html" class="logo">
-                🎬 CineBook
+    <div class="nav-container">
+
+        <a href="index.html" class="cinema-logo">
+            <span>🎬</span>
+            CineBook
+        </a>
+
+
+        <nav class="cinema-nav-links">
+
+            <a
+                href="index.html"
+                class="active"
+            >
+                Home
             </a>
 
-            <nav class="nav-links">
+            <a href="movies.html">
+                Movies
+            </a>
 
-                <a href="index.html" class="active">
-                    Home
+            <a href="cinema.html">
+                Cinemas
+            </a>
+
+            <a href="bookings.html">
+                My Bookings
+            </a>
+
+        </nav>
+
+
+        <div class="nav-auth">
+
+            <a
+                href="login.html"
+                class="nav-login"
+                id="loginLink"
+            >
+                Login
+            </a>
+
+            <a
+                href="signup.html"
+                class="nav-signup"
+                id="signupLink"
+            >
+                Sign Up
+            </a>
+
+            <button
+                id="logoutBtn"
+                class="nav-logout"
+                style="display:none;"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="cinematic-hero">
+
+    <div class="hero-background">
+
+        <div class="hero-noise"></div>
+
+        <div class="hero-glow hero-glow-one"></div>
+
+        <div class="hero-glow hero-glow-two"></div>
+
+    </div>
+
+
+    <div class="hero-content">
+
+        <div class="hero-copy">
+
+            <div class="hero-kicker">
+
+                <span class="kicker-line"></span>
+
+                <span>
+                    CINEBOOK ORIGINAL EXPERIENCE
+                </span>
+
+            </div>
+
+
+            <h1>
+
+                YOUR NEXT
+
+                <span>
+                    MOVIE NIGHT
+                </span>
+
+                STARTS HERE.
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Discover unforgettable stories,
+                explore the best cinemas,
+                choose your perfect showtime,
+                and book your seats in seconds.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a
+                    href="movies.html"
+                    class="hero-primary-btn"
+                >
+
+                    <span class="btn-icon">
+                        ▶
+                    </span>
+
+                    Explore Movies
+
                 </a>
 
-                <a href="movies.html">
-                    Movies
+
+                <a
+                    href="cinema.html"
+                    class="hero-secondary-btn"
+                >
+
+                    Find a Cinema
+
+                    <span>
+                        →
+                    </span>
+
                 </a>
 
-                <a href="cinemas.html">
-                    Cinemas
-                </a>
+            </div>
 
-                <a href="bookings.html">
-                    My Bookings
-                </a>
 
-            </nav>
+            <div class="hero-stats">
 
-            <div class="nav-actions">
+                <div class="hero-stat">
 
-                <a href="login.html" class="login-btn">
-                    Login
-                </a>
+                    <strong>
+                        4+
+                    </strong>
 
-                <a href="signup.html" class="signup-btn">
-                    Sign Up
-                </a>
+                    <span>
+                        Movies
+                    </span>
+
+                </div>
+
+
+                <div class="stat-divider"></div>
+
+
+                <div class="hero-stat">
+
+                    <strong>
+                        3
+                    </strong>
+
+                    <span>
+                        Cinemas
+                    </span>
+
+                </div>
+
+
+                <div class="stat-divider"></div>
+
+
+                <div class="hero-stat">
+
+                    <strong>
+                        24/7
+                    </strong>
+
+                    <span>
+                        Booking
+                    </span>
+
+                </div>
 
             </div>
 
         </div>
 
-    </header>
+
+        <!-- ================= HERO VISUAL ================= -->
+
+        <div class="hero-visual">
+
+            <div class="poster-glow"></div>
 
 
-    <!-- ================= HERO ================= -->
+            <div class="hero-poster">
 
-    <main>
+                <div class="poster-shine"></div>
 
-        <section class="hero">
+                <img
+                    src="images/inception.jpg"
+                    alt="Featured Movie"
+                >
 
-            <div class="container hero-content">
 
-                <div class="hero-text">
+                <div class="poster-info">
 
-                    <span class="hero-badge">
-                        🍿 Your movie night starts here
+                    <span>
+                        FEATURED TONIGHT
                     </span>
-
-                    <h1>
-                        Discover Your
-                        <span>Next Favorite Movie</span>
-                    </h1>
-
-                    <p>
-                        Explore the latest movies, find your favorite
-                        cinema, choose your showtime, and book your seats
-                        easily.
-                    </p>
-
-                    <div class="hero-buttons">
-
-                        <a
-                            href="movies.html"
-                            class="primary-btn"
-                        >
-                            Browse Movies
-                        </a>
-
-                        <a
-                            href="cinemas.html"
-                            class="secondary-btn"
-                        >
-                            Explore Cinemas
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <div class="hero-card">
-
-                    <div class="ticket-icon">
-                        🎟️
-                    </div>
 
                     <h3>
-                        Ready for your next movie?
+                        Inception
                     </h3>
-
-                    <p>
-                        Choose a movie and book your seats in just a
-                        few clicks.
-                    </p>
-
-                    <a
-                        href="movies.html"
-                        class="card-btn"
-                    >
-                        Start Booking
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= FEATURES ================= -->
-
-        <section class="features">
-
-            <div class="container">
-
-                <div class="section-heading">
-
-                    <span>
-                        WHY CINEBOOK?
-                    </span>
-
-                    <h2>
-                        Everything You Need
-                    </h2>
-
-                    <p>
-                        A simple and convenient movie booking experience.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-grid">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🎬
-                        </div>
-
-                        <h3>
-                            Latest Movies
-                        </h3>
-
-                        <p>
-                            Discover movies and explore their details,
-                            genres, ratings and release dates.
-                        </p>
-
-                    </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🏢
-                        </div>
-
-                        <h3>
-                            Find Cinemas
-                        </h3>
-
-                        <p>
-                            Explore available cinemas and choose the
-                            location that works best for you.
-                        </p>
-
-                    </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🎟️
-                        </div>
-
-                        <h3>
-                            Easy Booking
-                        </h3>
-
-                        <p>
-                            Choose your show, select your seats and
-                            complete your booking quickly.
-                        </p>
-
-                    </div>
-
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-                            🔐
-                        </div>
-
-                        <h3>
-                            Secure Account
-                        </h3>
-
-                        <p>
-                            Your account is protected with secure
-                            authentication and JWT authorization.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= MOVIES PREVIEW ================= -->
-
-        <section class="movies-preview">
-
-            <div class="container">
-
-                <div class="section-heading">
-
-                    <span>
-                        MOVIE BOOKING
-                    </span>
-
-                    <h2>
-                        Ready to Watch?
-                    </h2>
-
-                    <p>
-                        Find your movie and start your cinema experience.
-                    </p>
-
-                </div>
-
-
-                <div class="movie-preview-box">
 
                     <div>
 
-                        <h3>
-                            Find Your Perfect Movie
-                        </h3>
+                        ⭐ 8.8
 
-                        <p>
-                            Browse our movie collection and discover
-                            what's showing now.
-                        </p>
+                        <span>
+                            •
+                        </span>
+
+                        148 min
 
                     </div>
-
-                    <a
-                        href="movies.html"
-                        class="primary-btn"
-                    >
-                        View Movies →
-                    </a>
 
                 </div>
 
             </div>
 
-        </section>
 
-    </main>
+            <div class="floating-card floating-rating">
 
+                <span class="floating-icon">
+                    ⭐
+                </span>
 
-    <!-- ================= FOOTER ================= -->
+                <div>
 
-    <footer class="footer">
+                    <strong>
+                        8.8
+                    </strong>
 
-        <div class="container footer-content">
+                    <small>
+                        Movie Rating
+                    </small>
 
-            <div>
-
-                <a
-                    href="index.html"
-                    class="logo"
-                >
-                    🎬 CineBook
-                </a>
-
-                <p>
-                    Your simple movie booking experience.
-                </p>
+                </div>
 
             </div>
 
 
-            <div class="footer-links">
+            <div class="floating-card floating-ticket">
 
-                <a href="index.html">
-                    Home
-                </a>
+                <span class="floating-icon">
+                    🎟️
+                </span>
 
-                <a href="movies.html">
-                    Movies
-                </a>
+                <div>
 
-                <a href="cinemas.html">
-                    Cinemas
-                </a>
+                    <strong>
+                        Easy Booking
+                    </strong>
 
-                <a href="login.html">
-                    Login
-                </a>
+                    <small>
+                        In a few clicks
+                    </small>
+
+                </div>
 
             </div>
 
         </div>
 
+    </div>
 
-        <div class="footer-bottom">
+
+    <div class="hero-bottom-fade"></div>
+
+
+    <div class="scroll-indicator">
+
+        <span>
+            SCROLL TO EXPLORE
+        </span>
+
+        <div class="scroll-line"></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="cinema-footer">
+
+
+    <div class="footer-container">
+
+
+        <div class="footer-brand">
+
+            <a
+                href="index.html"
+                class="cinema-logo"
+            >
+
+                <span>🎬</span>
+
+                CineBook
+
+            </a>
+
 
             <p>
-                © 2026 CineBook. All rights reserved.
+                Your next movie experience starts here.
             </p>
 
         </div>
 
-    </footer>
+
+
+        <div class="footer-navigation">
+
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html">
+                Movies
+            </a>
+
+            <a href="cinema.html">
+                Cinemas
+            </a>
+
+            <a href="bookings.html">
+                Bookings
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 CineBook
+        </span>
+
+        <span>
+            Made for movie lovers 🎬
+        </span>
+
+    </div>
+
+
+</footer>
+
+
+
+<script>
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const loginLink =
+    document.getElementById("loginLink");
+
+const signupLink =
+    document.getElementById("signupLink");
+
+const token =
+    localStorage.getItem("token");
+
+
+if (token) {
+
+    if (loginLink) {
+        loginLink.style.display = "none";
+    }
+
+    if (signupLink) {
+        signupLink.style.display = "none";
+    }
+
+    if (logoutBtn) {
+
+        logoutBtn.style.display =
+            "inline-flex";
+
+        logoutBtn.addEventListener(
+            "click",
+            () => {
+
+                localStorage.removeItem("token");
+
+                localStorage.removeItem("user");
+
+                window.location.href =
+                    "index.html";
+
+            }
+        );
+
+    }
+
+}
+
+</script>
+
 
 </body>
 

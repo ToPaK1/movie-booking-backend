@@ -1,0 +1,480 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CineBook - Cinemas</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                🎬 CineBook
+            </a>
+
+            <div class="nav-links">
+
+                <a href="index.html">Home</a>
+
+                <a href="movies.html">Movies</a>
+
+                <a href="cinema.html" class="active">
+                    Cinemas
+                </a>
+
+                <a href="bookings.html">
+                    My Bookings
+                </a>
+
+                <a href="login.html" id="loginLink">
+                    Login
+                </a>
+
+                <button
+                    id="logoutBtn"
+                    class="logout-btn"
+                    style="display: none;"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="page-header">
+
+        <div class="container">
+
+            <h1>Our Cinemas</h1>
+
+            <p>
+                Discover cinemas and find the perfect place
+                to watch your favorite movies.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CINEMAS ================= -->
+
+    <main class="container">
+
+        <div id="loading" class="loading">
+            Loading cinemas...
+        </div>
+
+        <div
+            id="message"
+            class="message"
+            style="display: none;"
+        ></div>
+
+        <div
+            id="cinemasContainer"
+            class="cinemas-grid"
+        ></div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <h2>🎬 CineBook</h2>
+
+                <p>
+                    Your movie booking platform.
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinema.html">
+                    Cinemas
+                </a>
+
+                <a href="bookings.html">
+                    My Bookings
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const API_URL =
+            "http://localhost:3000/api";
+
+        const cinemasContainer =
+            document.getElementById(
+                "cinemasContainer"
+            );
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+        const loginLink =
+            document.getElementById(
+                "loginLink"
+            );
+
+        const logoutBtn =
+            document.getElementById(
+                "logoutBtn"
+            );
+
+
+        // ================= LOAD CINEMAS =================
+
+        async function loadCinemas() {
+
+            try {
+
+                loading.style.display =
+                    "block";
+
+                message.style.display =
+                    "none";
+
+                const response =
+                    await fetch(
+                        `${API_URL}/cinemas`
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failed to load cinemas"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "Cinemas:",
+                    data
+                );
+
+
+                // Handle different possible
+                // API response structures
+
+                const cinemas =
+                    Array.isArray(data)
+                        ? data
+                        : data.cinemas || data.data || [];
+
+
+                loading.style.display =
+                    "none";
+
+
+                if (cinemas.length === 0) {
+
+                    showMessage(
+                        "No cinemas available.",
+                        "info"
+                    );
+
+                    return;
+
+                }
+
+
+                displayCinemas(
+                    cinemas
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading cinemas:",
+                    error
+                );
+
+
+                loading.style.display =
+                    "none";
+
+
+                showMessage(
+                    "Unable to load cinemas. Please make sure the server is running.",
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        // ================= DISPLAY CINEMAS =================
+
+        function displayCinemas(
+            cinemas
+        ) {
+
+            cinemasContainer.innerHTML =
+                "";
+
+
+            cinemas.forEach(
+                cinema => {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "cinema-card";
+
+
+                    card.innerHTML = `
+
+                        <div class="cinema-icon">
+                            🎬
+                        </div>
+
+                        <div class="cinema-content">
+
+                            <h2>
+                                ${escapeHTML(
+                                    cinema.name ||
+                                    cinema.cinema_name ||
+                                    "Cinema"
+                                )}
+                            </h2>
+
+                            <p class="cinema-location">
+
+                                📍
+
+                                ${escapeHTML(
+                                    cinema.location ||
+                                    cinema.address ||
+                                    "Location not available"
+                                )}
+
+                            </p>
+
+                            ${
+                                cinema.phone
+                                    ? `
+                                    <p>
+                                        📞 ${escapeHTML(
+                                            cinema.phone
+                                        )}
+                                    </p>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                cinema.city
+                                    ? `
+                                    <p>
+                                        🌆 ${escapeHTML(
+                                            cinema.city
+                                        )}
+                                    </p>
+                                    `
+                                    : ""
+                            }
+
+                            <button
+                                class="view-cinema-btn"
+                                onclick="viewCinema(${cinema.id})"
+                            >
+                                View Cinema
+                            </button>
+
+                        </div>
+
+                    `;
+
+
+                    cinemasContainer.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ================= VIEW CINEMA =================
+
+        function viewCinema(
+            cinemaId
+        ) {
+
+            window.location.href =
+                `movie-details.html?cinemaId=${cinemaId}`;
+
+        }
+
+
+        // ================= MESSAGE =================
+
+        function showMessage(
+            text,
+            type
+        ) {
+
+            message.textContent =
+                text;
+
+            message.className =
+                `message ${type}`;
+
+            message.style.display =
+                "block";
+
+        }
+
+
+        // ================= ESCAPE HTML =================
+
+        function escapeHTML(
+            value
+        ) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.textContent =
+                value ?? "";
+
+            return div.innerHTML;
+
+        }
+
+
+        // ================= AUTH UI =================
+
+        function updateAuthUI() {
+
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
+
+
+            if (token) {
+
+                loginLink.style.display =
+                    "none";
+
+                logoutBtn.style.display =
+                    "inline-block";
+
+            } else {
+
+                loginLink.style.display =
+                    "inline-block";
+
+                logoutBtn.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        // ================= LOGOUT =================
+
+        logoutBtn.addEventListener(
+            "click",
+            () => {
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+                window.location.href =
+                    "login.html";
+
+            }
+        );
+
+
+        // ================= INITIALIZE =================
+
+        updateAuthUI();
+
+        loadCinemas();
+
+    </script>
+
+</body>
+
+</html>
+```

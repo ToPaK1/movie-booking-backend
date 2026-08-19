@@ -1,137 +1,1117 @@
+/* =========================================================
+   CINEBOOK - BOOKING PAGE
+   Cinematic / Glow / Animated / Seat Selection
+   ========================================================= */
+
 .booking-page {
+    position: relative;
     min-height: calc(100vh - 150px);
-    padding: 70px 0 100px;
+    padding: 75px 0 110px;
+    overflow: hidden;
 }
+
+
+/* =========================================================
+   BACKGROUND GLOW
+   ========================================================= */
+
+.booking-background-glow {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glow-one {
+    top: 80px;
+    left: -220px;
+    background: var(--primary);
+    animation: glowMove 8s ease-in-out infinite;
+}
+
+.glow-two {
+    right: -220px;
+    bottom: 100px;
+    background: #7c3aed;
+    animation: glowMoveReverse 10s ease-in-out infinite;
+}
+
+@keyframes glowMove {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(60px) scale(1.15);
+    }
+}
+
+@keyframes glowMoveReverse {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-70px) scale(1.2);
+    }
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 .booking-header {
+    position: relative;
+    z-index: 2;
     margin-bottom: 45px;
+    animation: fadeUp 0.8s ease forwards;
 }
 
-.booking-header > span {
+.booking-label {
+    display: inline-block;
     color: var(--primary);
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
 }
 
 .booking-header h1 {
-    font-size: 45px;
-    margin: 10px 0;
+    margin: 0;
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+}
+
+.booking-header h1 span {
+    color: var(--primary);
+    text-shadow:
+        0 0 20px rgba(229, 9, 20, 0.35),
+        0 0 50px rgba(229, 9, 20, 0.15);
 }
 
 .booking-header p {
+    margin-top: 16px;
     color: var(--muted);
-}
-
-.booking-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.booking-summary,
-.booking-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 30px;
-}
-
-.booking-summary h2,
-.booking-card h2 {
-    margin-bottom: 25px;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 17px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.summary-item:last-child {
-    border-bottom: none;
-}
-
-.summary-item span {
-    color: var(--muted);
-}
-
-.summary-item strong {
-    text-align: right;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 14px 16px;
-    background: #101017;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    color: white;
-    font-size: 15px;
-    outline: none;
-}
-
-.form-group input:focus {
-    border-color: var(--primary);
-}
-
-.confirm-btn {
-    width: 100%;
-    padding: 15px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 9px;
-    background: var(--primary);
-    color: white;
+    max-width: 600px;
     font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+    line-height: 1.7;
 }
 
-.confirm-btn:hover {
-    background: var(--primary-dark);
+.title-line {
+    width: 80px;
+    height: 4px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background: var(--primary);
+    box-shadow:
+        0 0 12px var(--primary),
+        0 0 30px rgba(229, 9, 20, 0.4);
 }
+
+
+/* =========================================================
+   SHOW INFO CARD
+   ========================================================= */
+
+.show-info-card {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    padding: 25px 28px;
+    margin-bottom: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 22px;
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35);
+
+    animation: fadeUp 0.9s ease forwards;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.show-info-card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(229, 9, 20, 0.35);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.5),
+        0 0 35px rgba(229, 9, 20, 0.08);
+}
+
+.show-icon {
+    width: 70px;
+    height: 70px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 32px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(229, 9, 20, 0.2),
+            rgba(229, 9, 20, 0.05)
+        );
+
+    border: 1px solid rgba(229, 9, 20, 0.25);
+
+    box-shadow:
+        0 0 25px rgba(229, 9, 20, 0.12);
+}
+
+.show-details {
+    flex: 1;
+}
+
+.small-label {
+    display: block;
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.show-details h2 {
+    margin: 0 0 12px;
+    font-size: 25px;
+}
+
+.show-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.show-meta strong {
+    color: #fff;
+    margin-left: 4px;
+}
+
+.show-id {
+    text-align: right;
+    padding-left: 25px;
+    border-left: 1px solid var(--border);
+}
+
+.show-id span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.show-id strong {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
 
 .booking-message {
-    padding: 13px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    position: relative;
+    z-index: 5;
+
+    padding: 15px 18px;
+    margin-bottom: 25px;
+
+    border-radius: 12px;
+
     text-align: center;
+    font-weight: 600;
+
+    animation: messagePop 0.4s ease;
 }
 
 .booking-message.success {
     background: rgba(46, 204, 113, 0.1);
     border: 1px solid rgba(46, 204, 113, 0.3);
     color: #7bed9f;
+
+    box-shadow:
+        0 0 25px rgba(46, 204, 113, 0.08);
 }
 
 .booking-message.error {
     background: rgba(229, 9, 20, 0.1);
     border: 1px solid rgba(229, 9, 20, 0.3);
     color: #ff6b72;
+
+    box-shadow:
+        0 0 25px rgba(229, 9, 20, 0.08);
 }
 
-@media (max-width: 800px) {
+@keyframes messagePop {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.booking-layout {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(330px, 0.8fr);
+
+    gap: 30px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.section-title {
+    margin-bottom: 28px;
+}
+
+.section-title > span,
+.card-top > span {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.section-title h2,
+.card-top h2 {
+    margin: 8px 0;
+    font-size: 27px;
+}
+
+.section-title p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SEAT SECTION
+   ========================================================= */
+
+.seat-section {
+    position: relative;
+
+    padding: 35px 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.4);
+
+    animation:
+        fadeUp 0.9s ease 0.15s both;
+}
+
+
+/* =========================================================
+   CINEMA SCREEN
+   ========================================================= */
+
+.cinema-screen-container {
+    position: relative;
+
+    width: 75%;
+    margin: 10px auto 45px;
+
+    perspective: 500px;
+}
+
+.screen {
+    position: relative;
+
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.85);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 4px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.9),
+            rgba(255, 255, 255, 0.15)
+        );
+
+    border-radius:
+        50% 50% 8px 8px;
+
+    transform:
+        rotateX(-12deg);
+
+    box-shadow:
+        0 10px 30px rgba(255, 255, 255, 0.1),
+        0 0 35px rgba(255, 255, 255, 0.08);
+}
+
+.screen-light {
+    position: absolute;
+
+    left: 10%;
+    right: 10%;
+    bottom: -25px;
+
+    height: 50px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    filter: blur(25px);
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   SEAT MAP
+   ========================================================= */
+
+.seat-map {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.seat-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.row-label {
+    width: 22px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-align: center;
+}
+
+.seat-gap {
+    width: 22px;
+}
+
+
+/* =========================================================
+   SEATS
+   ========================================================= */
+
+.seat {
+    position: relative;
+
+    width: 40px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 10px 10px 7px 7px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+
+    transform-style: preserve-3d;
+}
+
+.seat::after {
+    content: "";
+
+    position: absolute;
+
+    left: 5px;
+    right: 5px;
+    bottom: -4px;
+
+    height: 7px;
+
+    border-radius: 0 0 6px 6px;
+
+    background: inherit;
+
+    opacity: 0.6;
+}
+
+
+/* AVAILABLE */
+
+.seat.available {
+    background: #24242d;
+    color: #bdbdc7;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        0 5px 10px rgba(0, 0, 0, 0.35);
+}
+
+.seat.available:hover {
+    transform:
+        translateY(-5px)
+        rotateX(10deg)
+        scale(1.08);
+
+    color: white;
+
+    background: #30303b;
+
+    border-color:
+        rgba(229, 9, 20, 0.6);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.45),
+        0 0 18px rgba(229, 9, 20, 0.25);
+}
+
+
+/* SELECTED */
+
+.seat.selected {
+    color: white;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    border-color:
+        var(--primary);
+
+    box-shadow:
+        0 0 15px rgba(229, 9, 20, 0.55),
+        0 0 30px rgba(229, 9, 20, 0.2);
+
+    animation:
+        seatSelected 0.35s ease;
+}
+
+@keyframes seatSelected {
+
+    0% {
+        transform: scale(0.8);
+    }
+
+    60% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* OCCUPIED */
+
+.seat.occupied {
+    background: #111118;
+
+    color: #454550;
+
+    cursor: not-allowed;
+
+    border: 1px solid rgba(255, 255, 255, 0.035);
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   LEGEND
+   ========================================================= */
+
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+
+    margin-top: 42px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.seat-legend div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.legend-seat {
+    width: 13px;
+    height: 13px;
+
+    display: inline-block;
+
+    border-radius: 4px;
+}
+
+.legend-seat.available {
+    background: #24242d;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-seat.selected {
+    background: var(--primary);
+    box-shadow:
+        0 0 10px rgba(229, 9, 20, 0.5);
+}
+
+.legend-seat.occupied {
+    background: #111118;
+}
+
+
+/* =========================================================
+   AVAILABLE COUNT
+   ========================================================= */
+
+.available-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 20px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.available-count strong {
+    color: white;
+}
+
+
+/* =========================================================
+   BOOKING CARD
+   ========================================================= */
+
+.booking-card {
+    position: sticky;
+    top: 25px;
+
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.02)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 24px;
+
+    backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45);
+
+    animation:
+        fadeUp 0.9s ease 0.25s both;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease;
+}
+
+.booking-card:hover {
+    border-color:
+        rgba(229, 9, 20, 0.25);
+
+    transform:
+        translateY(-4px);
+}
+
+.card-top {
+    margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-group {
+    margin-bottom: 19px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #ddd;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 14px 15px;
+
+    background:
+        rgba(10, 10, 16, 0.8);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 11px;
+
+    color: white;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.form-group input::placeholder {
+    color: #666673;
+}
+
+.form-group input:focus {
+    border-color:
+        var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(229, 9, 20, 0.08),
+        0 0 20px rgba(229, 9, 20, 0.08);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   SELECTED SEATS BOX
+   ========================================================= */
+
+.selected-seats-box {
+    margin-top: 25px;
+    padding: 17px;
+
+    background:
+        rgba(0, 0, 0, 0.25);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 14px;
+}
+
+.selected-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 13px;
+
+    font-size: 13px;
+}
+
+.selected-header span {
+    color: var(--muted);
+}
+
+.selected-header strong {
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(229, 9, 20, 0.15);
+
+    color: var(--primary);
+
+    font-size: 12px;
+}
+
+.selected-seats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.no-seats {
+    color: #60606b;
+    font-size: 12px;
+}
+
+.selected-seat {
+    min-width: 35px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 9px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(229, 9, 20, 0.15);
+
+    border:
+        1px solid rgba(229, 9, 20, 0.3);
+
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    animation:
+        selectedSeatIn 0.25s ease;
+}
+
+@keyframes selectedSeatIn {
+
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   TOTAL
+   ========================================================= */
+
+.booking-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 20px;
+    padding: 18px 0;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+.booking-total span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.booking-total strong {
+    font-size: 25px;
+    color: white;
+}
+
+
+/* =========================================================
+   CONFIRM BUTTON
+   ========================================================= */
+
+.confirm-btn {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 18px;
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(229, 9, 20, 0.2);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+.confirm-btn:hover:not(:disabled) {
+    transform:
+        translateY(-4px);
+
+    filter:
+        brightness(1.08);
+
+    box-shadow:
+        0 15px 35px rgba(229, 9, 20, 0.3),
+        0 0 25px rgba(229, 9, 20, 0.15);
+}
+
+.confirm-btn:active:not(:disabled) {
+    transform:
+        translateY(-1px);
+}
+
+.confirm-btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
 
     .booking-layout {
         grid-template-columns: 1fr;
     }
 
+    .booking-card {
+        position: relative;
+        top: auto;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .booking-page {
+        padding: 50px 0 80px;
+    }
+
     .booking-header h1 {
-        font-size: 36px;
+        font-size: 38px;
+    }
+
+    .show-info-card {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 20px;
+    }
+
+    .show-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 25px;
+    }
+
+    .show-details {
+        width: calc(100% - 80px);
+    }
+
+    .show-details h2 {
+        font-size: 20px;
+    }
+
+    .show-meta {
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .show-id {
+        width: 100%;
+        padding:
+            15px 0 0;
+
+        border-left: none;
+        border-top:
+            1px solid var(--border);
+
+        text-align: left;
+    }
+
+    .seat-section {
+        padding: 25px 12px;
+        overflow: hidden;
+    }
+
+    .cinema-screen-container {
+        width: 85%;
+    }
+
+    .seat-row {
+        gap: 5px;
+    }
+
+    .seat {
+        width: 31px;
+        height: 30px;
+        font-size: 9px;
+    }
+
+    .seat-gap {
+        width: 10px;
+    }
+
+    .row-label {
+        width: 17px;
+    }
+
+    .seat-legend {
+        gap: 12px;
+        font-size: 10px;
+    }
+
+    .booking-card {
+        padding: 24px 20px;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    .seat {
+        width: 27px;
+        height: 27px;
+        border-radius: 7px;
+    }
+
+    .seat-gap {
+        width: 5px;
+    }
+
+    .seat-row {
+        gap: 3px;
+    }
+
+    .row-label {
+        width: 14px;
     }
 
 }

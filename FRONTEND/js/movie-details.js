@@ -1,118 +1,173 @@
 const API_URL = "http://localhost:3000/api";
 
-const loading = document.getElementById("loading");
-const errorMessage = document.getElementById("error");
-const movieDetails = document.getElementById("movieDetails");
-
-const movieTitle = document.getElementById("movieTitle");
-const movieGenre = document.getElementById("movieGenre");
-const movieDescription = document.getElementById("movieDescription");
-const movieDuration = document.getElementById("movieDuration");
-const movieRating = document.getElementById("movieRating");
-const movieReleaseDate = document.getElementById("movieReleaseDate");
-
-const showsContainer = document.getElementById("showsContainer");
-
-
-// Get movie ID from URL
-
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(
+    window.location.search
+);
 
 const movieId = params.get("id");
 
+const loading =
+    document.getElementById("loading");
+
+const error =
+    document.getElementById("error");
+
+const movieDetails =
+    document.getElementById("movieDetails");
+
+const movieTitle =
+    document.getElementById("movieTitle");
+
+const movieDescription =
+    document.getElementById("movieDescription");
+
+const movieGenre =
+    document.getElementById("movieGenre");
+
+const movieDuration =
+    document.getElementById("movieDuration");
+
+const movieRating =
+    document.getElementById("movieRating");
+
+const movieReleaseDate =
+    document.getElementById("movieReleaseDate");
+
+const showsContainer =
+    document.getElementById("showsContainer");
+
+
+// =====================================================
+// LOAD MOVIE
+// =====================================================
 
 async function loadMovie() {
 
-    if (!movieId) {
-
-        showError();
-
-        return;
-    }
-
     try {
 
-        const response = await fetch(
-            `${API_URL}/movies/${movieId}`
-        );
-
-        if (!response.ok) {
-            throw new Error("Movie not found");
+        if (!movieId) {
+            throw new Error("Movie ID is missing");
         }
 
-        const movie = await response.json();
+        const response =
+            await fetch(
+                `${API_URL}/movies/${movieId}`
+            );
 
-        displayMovie(movie);
+        if (!response.ok) {
+            throw new Error(
+                "Movie not found"
+            );
+        }
 
-        await loadShows();
+        const movie =
+            await response.json();
 
-    } catch (error) {
+        console.log(
+            "Movie:",
+            movie
+        );
 
-        console.error(error);
+        movieTitle.textContent =
+            movie.title;
 
-        showError();
+        movieDescription.textContent =
+            movie.description || "";
+
+        movieGenre.textContent =
+            movie.genre || "";
+
+        movieDuration.textContent =
+            movie.duration || "-";
+
+        movieRating.textContent =
+            movie.rating || "-";
+
+        movieReleaseDate.textContent =
+            movie.release_date || "-";
+
+
+        movieDetails.style.display =
+            "block";
+
+        loading.style.display =
+            "none";
+
+
+        loadShows();
+
+    } catch (err) {
+
+        console.error(err);
+
+        loading.style.display =
+            "none";
+
+        error.style.display =
+            "block";
+
+        error.textContent =
+            err.message ||
+            "Unable to load movie.";
 
     }
 
 }
 
 
-function displayMovie(movie) {
-
-    loading.style.display = "none";
-
-    movieDetails.style.display = "block";
-
-    movieTitle.textContent =
-        movie.title || "Unknown Movie";
-
-    movieGenre.textContent =
-        movie.genre || "Unknown Genre";
-
-    movieDescription.textContent =
-        movie.description ||
-        "No description available.";
-
-    movieDuration.textContent =
-        movie.duration || "-";
-
-    movieRating.textContent =
-        movie.rating || "-";
-
-    movieReleaseDate.textContent =
-        movie.release_date || "-";
-
-}
-
+// =====================================================
+// LOAD SHOWS
+// =====================================================
 
 async function loadShows() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/shows`
-        );
+        const response =
+            await fetch(
+                `${API_URL}/shows`
+            );
 
         if (!response.ok) {
-            throw new Error("Failed to load shows");
+            throw new Error(
+                "Unable to load shows"
+            );
         }
 
-        const shows = await response.json();
+        const shows =
+            await response.json();
 
-        const movieShows = shows.filter(
-            show => String(show.movie_id) === String(movieId)
+        console.log(
+            "All Shows:",
+            shows
         );
 
-        displayShows(movieShows);
 
-    } catch (error) {
+        const movieShows =
+            shows.filter(
+                show =>
+                    Number(show.movie_id) ===
+                    Number(movieId)
+            );
 
-        console.error(error);
+
+        displayShows(
+            movieShows
+        );
+
+
+    } catch (err) {
+
+        console.error(err);
 
         showsContainer.innerHTML = `
-            <div class="no-shows">
-                Unable to load shows.
+
+            <div class="error-message">
+
+                Unable to load available shows.
+
             </div>
+
         `;
 
     }
@@ -120,122 +175,201 @@ async function loadShows() {
 }
 
 
-async function displayShows(shows) {
+// =====================================================
+// DISPLAY SHOWS
+// =====================================================
+
+function displayShows(shows) {
 
     showsContainer.innerHTML = "";
+
 
     if (shows.length === 0) {
 
         showsContainer.innerHTML = `
-            <div class="no-shows">
+
+            <div class="error-message">
+
                 No shows available for this movie.
+
             </div>
+
         `;
 
         return;
-    }
-
-
-    // Get cinemas
-
-    let cinemas = [];
-
-    try {
-
-        const response = await fetch(
-            `${API_URL}/cinemas`
-        );
-
-        if (response.ok) {
-            cinemas = await response.json();
-        }
-
-    } catch (error) {
-
-        console.error(error);
 
     }
 
 
     shows.forEach(show => {
 
-        const cinema = cinemas.find(
-            item =>
-                String(item.id) === String(show.cinema_id)
-        );
+        const card =
+            document.createElement("div");
 
-        const cinemaName =
-            cinema
-                ? cinema.name
-                : `Cinema #${show.cinema_id}`;
+        card.className =
+            "show-card";
 
-        const card = document.createElement("div");
-
-        card.className = "show-card";
 
         card.innerHTML = `
 
-            <div class="show-date">
-                📅 ${show.show_date || "Date unavailable"}
-            </div>
+            <div class="show-card-content">
 
-            <div class="show-time">
-                🕐 ${show.show_time || "Time unavailable"}
-            </div>
+                <span class="show-label">
+                    🎬 SHOWTIME
+                </span>
 
-            <div class="show-cinema">
-                🏢 ${cinemaName}
-            </div>
+                <h3>
+                    ${show.cinema_name || "Cinema"}
+                </h3>
 
-            <div class="show-seats">
-                🎟 ${show.available_seats || 0}
-                seats available
-            </div>
+                <p>
+                    📍 ${show.location || ""}
+                </p>
 
-            <button
-                class="book-btn"
-                onclick="bookShow(${show.id})"
-            >
-                Book Now
-            </button>
+                <div class="show-info">
+
+                    <span>
+                        📅 ${show.show_date}
+                    </span>
+
+                    <span>
+                        🕐 ${show.show_time}
+                    </span>
+
+                    <span>
+                        💺 ${show.available_seats}
+                        seats
+                    </span>
+
+                </div>
+
+                <button
+                    class="book-show-btn"
+                    onclick="bookShow(${show.id})"
+                >
+                    🎟️ Book Now
+                </button>
+
+            </div>
 
         `;
 
-        showsContainer.appendChild(card);
+
+        showsContainer.appendChild(
+            card
+        );
 
     });
 
 }
 
 
+// =====================================================
+// BOOK SHOW
+// =====================================================
+
 function bookShow(showId) {
 
-    const token = localStorage.getItem("token");
+    console.log(
+        "Selected Show ID:",
+        showId
+    );
+
+
+    const token =
+        localStorage.getItem(
+            "token"
+        );
+
 
     if (!token) {
 
-        alert("Please login first.");
+        alert(
+            "Please login before booking."
+        );
 
-        window.location.href = "login.html";
+        window.location.href =
+            "login.html";
 
         return;
+
     }
 
+
+    /*
+     * Save useful show information
+     * for the seat-selection page.
+     */
+
+    const show =
+        document.querySelector(
+            `[onclick="bookShow(${showId})"]`
+        );
+
+
+    if (show) {
+
+        const card =
+            show.closest(
+                ".show-card"
+            );
+
+
+        if (card) {
+
+            const cinema =
+                card.querySelector(
+                    "h3"
+                );
+
+            const info =
+                card.querySelectorAll(
+                    ".show-info span"
+                );
+
+
+            if (cinema) {
+
+                localStorage.setItem(
+                    "selectedCinema",
+                    cinema.textContent.trim()
+                );
+
+            }
+
+
+            if (info.length >= 2) {
+
+                localStorage.setItem(
+                    "selectedShowTime",
+                    info[1].textContent
+                        .replace("🕐", "")
+                        .trim()
+                );
+
+            }
+
+        }
+
+    }
+
+
+    localStorage.setItem(
+        "selectedMovie",
+        movieTitle.textContent
+    );
+
+
+    // IMPORTANT
+
     window.location.href =
-        `booking.html?show_id=${showId}`;
+        `seat-selection.html?showId=${showId}`;
 
 }
 
 
-function showError() {
-
-    loading.style.display = "none";
-
-    movieDetails.style.display = "none";
-
-    errorMessage.style.display = "block";
-
-}
-
+// =====================================================
+// START
+// =====================================================
 
 loadMovie();

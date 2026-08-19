@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -13,21 +14,22 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bookings.css">
+
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- ================= NAVBAR ================= -->
 
-    <header class="navbar">
+    <nav class="navbar">
 
-        <div class="container nav-content">
+        <div class="nav-container">
 
             <a href="index.html" class="logo">
                 🎬 CineBook
             </a>
 
-            <nav class="nav-links">
+            <div class="nav-links">
 
                 <a href="index.html">
                     Home
@@ -41,17 +43,23 @@
                     Cinemas
                 </a>
 
-                <a href="bookings.html" class="active">
+                <a
+                    href="bookings.html"
+                    class="active"
+                >
                     My Bookings
                 </a>
 
-            </nav>
-
-            <div class="nav-actions">
+                <a
+                    href="login.html"
+                    id="loginLink"
+                >
+                    Login
+                </a>
 
                 <button
                     id="logoutBtn"
-                    class="logout-btn"
+                    style="display: none;"
                 >
                     Logout
                 </button>
@@ -60,72 +68,273 @@
 
         </div>
 
-    </header>
+    </nav>
 
 
-    <!-- BOOKINGS -->
+    <!-- ================= MAIN ================= -->
 
-    <main class="bookings-page">
+    <main>
 
-        <div class="container">
 
-            <div class="bookings-header">
+        <!-- ================= HERO ================= -->
 
-                <div>
+        <section class="booking-hero">
 
-                    <span>
-                        CINEBOOK
-                    </span>
+            <!-- Background Decorations -->
 
-                    <h1>
-                        My Bookings
-                    </h1>
+            <div class="cinema-decoration film-reel">
+                🎞️
+            </div>
 
-                    <p>
-                        Manage your movie reservations.
-                    </p>
+            <div class="cinema-decoration ticket-decoration">
+                🎟️
+            </div>
+
+            <div class="light light-one"></div>
+            <div class="light light-two"></div>
+            <div class="light light-three"></div>
+
+
+            <div class="hero-content">
+
+                <div class="hero-label">
+
+                    <span>🎟️</span>
+
+                    CINEBOOK TICKETS
 
                 </div>
 
-                <a
-                    href="movies.html"
-                    class="browse-btn"
+
+                <h1>
+
+                    <span>My</span>
+
+                    <strong>
+                        Bookings
+                    </strong>
+
+                </h1>
+
+
+                <div class="title-line"></div>
+
+
+                <p>
+                    Your movie nights, all in one place.
+                    Manage your upcoming cinema experiences.
+                </p>
+
+
+                <!-- ================= STATS ================= -->
+
+                <div class="booking-stats">
+
+
+                    <!-- TOTAL -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🎟️
+                        </div>
+
+                        <div class="stat-info">
+
+                            <strong id="totalBookings">
+                                0
+                            </strong>
+
+                            <span>
+                                Total Bookings
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- UPCOMING -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🎬
+                        </div>
+
+                        <div class="stat-info">
+
+                            <strong id="upcomingBookings">
+                                0
+                            </strong>
+
+                            <span>
+                                Upcoming
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SEATS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            💺
+                        </div>
+
+                        <div class="stat-info">
+
+                            <strong id="seatsBooked">
+                                0
+                            </strong>
+
+                            <span>
+                                Seats Booked
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TICKETS ================= -->
+
+        <section class="tickets-section">
+
+            <div class="container">
+
+
+                <!-- HEADER -->
+
+                <div class="tickets-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            OUR TICKETS
+                        </span>
+
+                        <h2>
+                            Your Bookings
+                        </h2>
+
+                        <p>
+                            Keep track of your movie reservations
+                            and upcoming cinema experiences.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        id="refreshBtn"
+                        class="refresh-btn"
+                    >
+                        ↻ Refresh
+                    </button>
+
+                </div>
+
+
+                <!-- LOADING -->
+
+                <div
+                    id="loading"
+                    class="loading"
                 >
-                    🎬 Browse Movies
+
+                    <div class="loading-spinner"></div>
+
+                    <span>
+                        Loading your bookings...
+                    </span>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                <div
+                    id="error"
+                    class="error-message"
+                    style="display: none;"
+                >
+                </div>
+
+
+                <!-- BOOKINGS -->
+
+                <div
+                    id="bookingsContainer"
+                    class="bookings-container"
+                >
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+
+            <div>
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+                    🎬 CineBook
+                </a>
+
+                <p>
+                    Your simple movie booking experience.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="login.html">
+                    Login
                 </a>
 
             </div>
 
 
-            <div
-                id="message"
-                class="booking-message"
-                style="display: none;"
-            ></div>
-
-
-            <div
-                id="loading"
-                class="loading"
-            >
-                Loading your bookings...
-            </div>
-
-
-            <div
-                id="bookingsContainer"
-                class="bookings-grid"
-            >
-            </div>
-
         </div>
 
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer class="footer">
 
         <div class="footer-bottom">
 
@@ -137,6 +346,8 @@
 
     </footer>
 
+
+    <!-- ================= JAVASCRIPT ================= -->
 
     <script src="js/bookings.js"></script>
 

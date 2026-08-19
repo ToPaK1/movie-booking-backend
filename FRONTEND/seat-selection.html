@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | Select Seats</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        /* ==============================
+           PAGE
+        ============================== */
+
+        .seats-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .seats-page::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+
+            height: 500px;
+
+            background:
+                rgba(229, 9, 20, 0.10);
+
+            filter: blur(130px);
+
+            border-radius: 50%;
+
+            top: 10%;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            pointer-events: none;
+
+        }
+
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .seat-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+
+        }
+
+
+        .seat-header span {
+
+            color: #e50914;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+        }
+
+
+        .seat-header h1 {
+
+            font-size: clamp(32px, 5vw, 50px);
+
+            margin: 10px 0;
+
+        }
+
+
+        .seat-header p {
+
+            color: #a1a1aa;
+
+        }
+
+
+        /* ==============================
+           BOOKING LAYOUT
+        ============================== */
+
+        .booking-layout {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns: 1fr 300px;
+
+            gap: 30px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* ==============================
+           SEAT AREA
+        ============================== */
+
+        .seat-panel {
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 24px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.45);
+
+        }
+
+
+        /* ==============================
+           SCREEN
+        ============================== */
+
+        .screen {
+
+            width: 75%;
+
+            height: 45px;
+
+            margin: 0 auto 55px;
+
+            border-radius:
+                50% 50% 10px 10px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #ffffff,
+                    rgba(255,255,255,0.08)
+                );
+
+            box-shadow:
+                0 15px 45px
+                rgba(255,255,255,0.15);
+
+            text-align: center;
+
+            padding-top: 12px;
+
+            color: #111;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 4px;
+
+        }
+
+
+        /* ==============================
+           SEATS
+        ============================== */
+
+        .seat-map {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
+            align-items: center;
+
+        }
+
+
+        .seat-row {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+
+        .row-label {
+
+            width: 25px;
+
+            color: #71717a;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .seat {
+
+            width: 38px;
+
+            height: 34px;
+
+            border-radius:
+                9px 9px 5px 5px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            background:
+                #25252b;
+
+            color: #a1a1aa;
+
+            cursor: pointer;
+
+            transition:
+                0.25s ease;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .seat:hover {
+
+            transform:
+                translateY(-4px);
+
+            background:
+                #38383f;
+
+            color: white;
+
+        }
+
+
+        /* SELECTED */
+
+        .seat.selected {
+
+            background:
+                #e50914;
+
+            border-color:
+                #ff3b44;
+
+            color: white;
+
+            box-shadow:
+                0 0 20px
+                rgba(229,9,20,0.45);
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        /* OCCUPIED */
+
+        .seat.occupied {
+
+            background:
+                #111113;
+
+            border-color:
+                #27272a;
+
+            color:
+                #3f3f46;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        .seat.occupied:hover {
+
+            transform: none;
+
+        }
+
+
+        /* ==============================
+           LEGEND
+        ============================== */
+
+        .seat-legend {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            margin-top: 40px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .legend-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #a1a1aa;
+
+            font-size: 12px;
+
+        }
+
+
+        .legend-seat {
+
+            width: 18px;
+
+            height: 16px;
+
+            border-radius: 5px;
+
+            background: #25252b;
+
+        }
+
+
+        .legend-seat.selected {
+
+            background: #e50914;
+
+        }
+
+
+        .legend-seat.occupied {
+
+            background: #111113;
+
+        }
+
+
+        /* ==============================
+           SUMMARY
+        ============================== */
+
+        .booking-summary {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(30,30,35,0.95),
+                    rgba(14,14,18,0.95)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 24px;
+
+            padding: 30px;
+
+            height: fit-content;
+
+            position: sticky;
+
+            top: 100px;
+
+            box-shadow:
+                0 25px 60px
+                rgba(0,0,0,0.5);
+
+        }
+
+
+        .booking-summary h2 {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .summary-item {
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+
+        }
+
+
+        .summary-item span {
+
+            display: block;
+
+            color: #71717a;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .summary-item strong {
+
+            color: #f4f4f5;
+
+        }
+
+
+        .selected-seats {
+
+            min-height: 30px;
+
+            color: #e50914;
+
+            font-weight: 700;
+
+        }
+
+
+        .summary-total {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-top: 25px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .summary-total span {
+
+            color: #a1a1aa;
+
+        }
+
+
+        .summary-total strong {
+
+            font-size: 24px;
+
+            color: white;
+
+        }
+
+
+        /* ==============================
+           BUTTON
+        ============================== */
+
+        .confirm-btn {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: #e50914;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 30px
+                rgba(229,9,20,0.22);
+
+            transition:
+                0.3s ease;
+
+        }
+
+
+        .confirm-btn:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 15px 40px
+                rgba(229,9,20,0.35);
+
+        }
+
+
+        .confirm-btn:disabled {
+
+            background: #27272a;
+
+            color: #71717a;
+
+            cursor: not-allowed;
+
+            box-shadow: none;
+
+            transform: none;
+
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 850px) {
+
+            .booking-layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .booking-summary {
+
+                position: static;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .seat-panel {
+
+                padding: 20px 10px;
+
+            }
+
+
+            .seat {
+
+                width: 29px;
+
+                height: 28px;
+
+                font-size: 8px;
+
+            }
+
+
+            .seat-row {
+
+                gap: 5px;
+
+            }
+
+
+            .screen {
+
+                width: 90%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                🎬 CineBook
+            </a>
+
+
+            <div class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="movies.html">
+                    Movies
+                </a>
+
+                <a href="cinemas.html">
+                    Cinemas
+                </a>
+
+                <a href="bookings.html">
+                    My Bookings
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= PAGE ================= -->
+
+    <main>
+
+        <section class="seats-page">
+
+            <div class="container">
+
+
+                <!-- HEADER -->
+
+                <div class="seat-header">
+
+                    <span>
+                        CINEBOOK BOOKING
+                    </span>
+
+                    <h1>
+                        Select Your Seats
+                    </h1>
+
+                    <p>
+                        Choose your favorite seats and continue
+                        to complete your booking.
+                    </p>
+
+                </div>
+
+
+
+                <!-- BOOKING -->
+
+                <div class="booking-layout">
+
+
+                    <!-- ================= SEAT PANEL ================= -->
+
+                    <div class="seat-panel">
+
+
+                        <div class="screen">
+                            SCREEN
+                        </div>
+
+
+                        <div
+                            id="seatMap"
+                            class="seat-map"
+                        >
+                        </div>
+
+
+                        <!-- LEGEND -->
+
+                        <div class="seat-legend">
+
+                            <div class="legend-item">
+
+                                <div class="legend-seat"></div>
+
+                                Available
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <div class="legend-seat selected"></div>
+
+                                Selected
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <div class="legend-seat occupied"></div>
+
+                                Occupied
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= SUMMARY ================= -->
+
+                    <aside class="booking-summary">
+
+
+                        <h2>
+                            Booking Summary
+                        </h2>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Movie
+                            </span>
+
+                            <strong id="movieName">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Cinema
+                            </span>
+
+                            <strong id="cinemaName">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Showtime
+                            </span>
+
+                            <strong id="showTime">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Selected Seats
+                            </span>
+
+                            <strong
+                                id="selectedSeats"
+                                class="selected-seats"
+                            >
+                                None
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                $<span id="totalPrice">0</span>
+                            </strong>
+
+                        </div>
+
+
+                        <button
+                            id="confirmBtn"
+                            class="confirm-btn"
+                            disabled
+                        >
+                            Confirm Booking
+                        </button>
+
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CineBook. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/seat-selection.js"></script>
+
+</body>
+
+</html>

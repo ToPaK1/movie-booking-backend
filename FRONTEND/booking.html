@@ -17,7 +17,7 @@
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- ================= NAVBAR ================= -->
 
     <header class="navbar">
 
@@ -49,7 +49,10 @@
 
             <div class="nav-actions">
 
-                <a href="login.html" class="login-btn">
+                <a
+                    href="login.html"
+                    class="login-btn"
+                >
                     Login
                 </a>
 
@@ -60,101 +63,281 @@
     </header>
 
 
-    <!-- BOOKING -->
+    <!-- ================= BOOKING PAGE ================= -->
 
     <main class="booking-page">
 
+        <div class="booking-background-glow glow-one"></div>
+        <div class="booking-background-glow glow-two"></div>
+
+
         <div class="container">
+
+            <!-- ================= HEADER ================= -->
 
             <div class="booking-header">
 
-                <span>
-                    CINEBOOK
+                <span class="booking-label">
+                    🎟 CINEBOOK EXPERIENCE
                 </span>
 
                 <h1>
-                    Complete Your Booking
+                    Book Your
+                    <span>Movie Ticket</span>
                 </h1>
 
+                <div class="title-line"></div>
+
                 <p>
-                    Enter your information and reserve your seats.
+                    Choose your seats and get ready for an unforgettable
+                    cinema experience.
                 </p>
 
             </div>
 
 
+            <!-- ================= SHOW INFO ================= -->
+
+            <div class="show-info-card">
+
+                <div class="show-icon">
+                    🎬
+                </div>
+
+                <div class="show-details">
+
+                    <span class="small-label">
+                        YOUR SELECTED SHOW
+                    </span>
+
+                    <h2 id="movieName">
+                        Loading movie...
+                    </h2>
+
+                    <div class="show-meta">
+
+                        <span>
+                            🎭
+                            <strong id="cinemaName">
+                                Loading...
+                            </strong>
+                        </span>
+
+                        <span>
+                            📅
+                            <strong id="showDate">
+                                -
+                            </strong>
+                        </span>
+
+                        <span>
+                            🕐
+                            <strong id="showTime">
+                                -
+                            </strong>
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="show-id">
+
+                    <span>
+                        SHOW ID
+                    </span>
+
+                    <strong id="showId">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MESSAGE ================= -->
+
+            <div
+                id="message"
+                class="booking-message"
+                style="display: none;"
+            ></div>
+
+
+            <!-- ================= MAIN BOOKING GRID ================= -->
+
             <div class="booking-layout">
 
 
-                <!-- SHOW INFORMATION -->
+                <!-- ================= SEAT SELECTION ================= -->
 
-                <div class="booking-summary">
+                <section class="seat-section">
 
-                    <h2>
-                        Show Details
-                    </h2>
-
-                    <div class="summary-item">
+                    <div class="section-title">
 
                         <span>
-                            Show ID
+                            STEP 01
                         </span>
 
-                        <strong id="showId">
-                            -
-                        </strong>
+                        <h2>
+                            Select Your Seats
+                        </h2>
+
+                        <p>
+                            Choose the seats you want to reserve.
+                        </p>
 
                     </div>
 
-                    <div class="summary-item">
 
-                        <span>
-                            Movie
-                        </span>
+                    <!-- SCREEN -->
 
-                        <strong id="movieName">
-                            Loading...
-                        </strong>
+                    <div class="cinema-screen-container">
 
-                    </div>
+                        <div class="screen-light"></div>
 
-                    <div class="summary-item">
-
-                        <span>
-                            Cinema
-                        </span>
-
-                        <strong id="cinemaName">
-                            Loading...
-                        </strong>
+                        <div class="screen">
+                            CINEMA SCREEN
+                        </div>
 
                     </div>
 
-                    <div class="summary-item">
 
-                        <span>
-                            Date
-                        </span>
+                    <!-- SEATS -->
 
-                        <strong id="showDate">
-                            -
-                        </strong>
+                    <div class="seat-map">
+
+                        <div class="seat-row">
+
+                            <span class="row-label">
+                                A
+                            </span>
+
+                            <button class="seat available" data-seat="A1">1</button>
+                            <button class="seat available" data-seat="A2">2</button>
+                            <button class="seat available" data-seat="A3">3</button>
+                            <button class="seat available" data-seat="A4">4</button>
+
+                            <span class="seat-gap"></span>
+
+                            <button class="seat available" data-seat="A5">5</button>
+                            <button class="seat available" data-seat="A6">6</button>
+                            <button class="seat available" data-seat="A7">7</button>
+                            <button class="seat available" data-seat="A8">8</button>
+
+                        </div>
+
+
+                        <div class="seat-row">
+
+                            <span class="row-label">
+                                B
+                            </span>
+
+                            <button class="seat available" data-seat="B1">1</button>
+                            <button class="seat available" data-seat="B2">2</button>
+                            <button class="seat available" data-seat="B3">3</button>
+                            <button class="seat available" data-seat="B4">4</button>
+
+                            <span class="seat-gap"></span>
+
+                            <button class="seat available" data-seat="B5">5</button>
+                            <button class="seat available" data-seat="B6">6</button>
+                            <button class="seat available" data-seat="B7">7</button>
+                            <button class="seat available" data-seat="B8">8</button>
+
+                        </div>
+
+
+                        <div class="seat-row">
+
+                            <span class="row-label">
+                                C
+                            </span>
+
+                            <button class="seat available" data-seat="C1">1</button>
+                            <button class="seat occupied" data-seat="C2">2</button>
+                            <button class="seat available" data-seat="C3">3</button>
+                            <button class="seat available" data-seat="C4">4</button>
+
+                            <span class="seat-gap"></span>
+
+                            <button class="seat available" data-seat="C5">5</button>
+                            <button class="seat available" data-seat="C6">6</button>
+                            <button class="seat occupied" data-seat="C7">7</button>
+                            <button class="seat available" data-seat="C8">8</button>
+
+                        </div>
+
+
+                        <div class="seat-row">
+
+                            <span class="row-label">
+                                D
+                            </span>
+
+                            <button class="seat available" data-seat="D1">1</button>
+                            <button class="seat available" data-seat="D2">2</button>
+                            <button class="seat available" data-seat="D3">3</button>
+                            <button class="seat available" data-seat="D4">4</button>
+
+                            <span class="seat-gap"></span>
+
+                            <button class="seat available" data-seat="D5">5</button>
+                            <button class="seat available" data-seat="D6">6</button>
+                            <button class="seat available" data-seat="D7">7</button>
+                            <button class="seat available" data-seat="D8">8</button>
+
+                        </div>
+
+
+                        <div class="seat-row">
+
+                            <span class="row-label">
+                                E
+                            </span>
+
+                            <button class="seat available" data-seat="E1">1</button>
+                            <button class="seat available" data-seat="E2">2</button>
+                            <button class="seat available" data-seat="E3">3</button>
+                            <button class="seat available" data-seat="E4">4</button>
+
+                            <span class="seat-gap"></span>
+
+                            <button class="seat available" data-seat="E5">5</button>
+                            <button class="seat available" data-seat="E6">6</button>
+                            <button class="seat available" data-seat="E7">7</button>
+                            <button class="seat available" data-seat="E8">8</button>
+
+                        </div>
 
                     </div>
 
-                    <div class="summary-item">
 
-                        <span>
-                            Time
-                        </span>
+                    <!-- LEGEND -->
 
-                        <strong id="showTime">
-                            -
-                        </strong>
+                    <div class="seat-legend">
+
+                        <div>
+                            <span class="legend-seat available"></span>
+                            Available
+                        </div>
+
+                        <div>
+                            <span class="legend-seat selected"></span>
+                            Selected
+                        </div>
+
+                        <div>
+                            <span class="legend-seat occupied"></span>
+                            Occupied
+                        </div>
 
                     </div>
 
-                    <div class="summary-item">
+
+                    <div class="available-count">
 
                         <span>
                             Available Seats
@@ -166,85 +349,126 @@
 
                     </div>
 
-                </div>
+                </section>
 
 
-                <!-- BOOKING FORM -->
+                <!-- ================= BOOKING SUMMARY ================= -->
 
-                <div class="booking-card">
+                <aside class="booking-card">
 
-                    <h2>
-                        Your Information
-                    </h2>
+                    <div class="card-top">
 
-                    <div
-                        id="message"
-                        class="booking-message"
-                        style="display: none;"
-                    ></div>
+                        <span>
+                            STEP 02
+                        </span>
 
+                        <h2>
+                            Booking Summary
+                        </h2>
+
+                    </div>
+
+
+                    <!-- CUSTOMER -->
+
+                    <div class="form-group">
+
+                        <label for="customerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="customerName"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="customerEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="customerEmail"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SELECTED SEATS -->
+
+                    <div class="selected-seats-box">
+
+                        <div class="selected-header">
+
+                            <span>
+                                Selected Seats
+                            </span>
+
+                            <strong id="selectedCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <div
+                            id="selectedSeats"
+                            class="selected-seats"
+                        >
+                            <span class="no-seats">
+                                No seats selected
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOTAL -->
+
+                    <div class="booking-total">
+
+                        <span>
+                            Number of Seats
+                        </span>
+
+                        <strong id="seatsBooked">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <!-- HIDDEN FORM -->
 
                     <form id="bookingForm">
-
-                        <div class="form-group">
-
-                            <label for="customerName">
-                                Full Name
-                            </label>
-
-                            <input
-                                type="text"
-                                id="customerName"
-                                placeholder="Enter your full name"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="customerEmail">
-                                Email
-                            </label>
-
-                            <input
-                                type="email"
-                                id="customerEmail"
-                                placeholder="Enter your email"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="seatsBooked">
-                                Number of Seats
-                            </label>
-
-                            <input
-                                type="number"
-                                id="seatsBooked"
-                                min="1"
-                                value="1"
-                                required
-                            >
-
-                        </div>
-
 
                         <button
                             type="submit"
                             class="confirm-btn"
                         >
+                            <span>
+                                🎟
+                            </span>
+
                             Confirm Booking
+
+                            <span>
+                                →
+                            </span>
+
                         </button>
 
                     </form>
 
-                </div>
+                </aside>
 
             </div>
 
@@ -253,7 +477,7 @@
     </main>
 
 
-    <!-- FOOTER -->
+    <!-- ================= FOOTER ================= -->
 
     <footer class="footer">
 

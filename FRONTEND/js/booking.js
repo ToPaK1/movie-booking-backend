@@ -30,6 +30,15 @@ const bookingForm =
 const message =
     document.getElementById("message");
 
+const selectedSeatsContainer =
+    document.getElementById("selectedSeats");
+
+const selectedCount =
+    document.getElementById("selectedCount");
+
+const seatsBooked =
+    document.getElementById("seatsBooked");
+
 
 // ================= USER =================
 
@@ -44,12 +53,19 @@ if (!token) {
 
     alert("Please login first.");
 
-    window.location.href = "login.html";
-
+    window.location.href =
+        "login.html";
 }
 
 
-// Fill user information
+// ================= SELECTED SEATS =================
+
+let selectedSeats = [];
+
+let maxSeats = 0;
+
+
+// ================= USER DATA =================
 
 if (savedUser) {
 
@@ -60,11 +76,13 @@ if (savedUser) {
 
         document.getElementById(
             "customerName"
-        ).value = user.name || "";
+        ).value =
+            user.name || "";
 
         document.getElementById(
             "customerEmail"
-        ).value = user.email || "";
+        ).value =
+            user.email || "";
 
     } catch (error) {
 
@@ -84,7 +102,138 @@ function showMessage(text, type) {
     message.className =
         `booking-message ${type}`;
 
-    message.style.display = "block";
+    message.style.display =
+        "block";
+
+    message.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+// ================= SEAT SELECTION =================
+
+function setupSeats() {
+
+    const seats =
+        document.querySelectorAll(
+            ".seat.available"
+        );
+
+
+    seats.forEach(seat => {
+
+        seat.addEventListener(
+            "click",
+            () => {
+
+                const seatNumber =
+                    seat.dataset.seat;
+
+
+                if (
+                    seat.classList.contains(
+                        "selected"
+                    )
+                ) {
+
+                    seat.classList.remove(
+                        "selected"
+                    );
+
+                    selectedSeats =
+                        selectedSeats.filter(
+                            item =>
+                                item !== seatNumber
+                        );
+
+                } else {
+
+                    if (
+                        selectedSeats.length >=
+                        maxSeats
+                    ) {
+
+                        showMessage(
+                            `You can select a maximum of ${maxSeats} seats.`,
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    seat.classList.add(
+                        "selected"
+                    );
+
+                    selectedSeats.push(
+                        seatNumber
+                    );
+
+                }
+
+
+                updateSeatSummary();
+
+            }
+        );
+
+    });
+
+}
+
+
+// ================= UPDATE SEAT SUMMARY =================
+
+function updateSeatSummary() {
+
+    selectedCount.textContent =
+        selectedSeats.length;
+
+    seatsBooked.textContent =
+        selectedSeats.length;
+
+
+    selectedSeatsContainer.innerHTML =
+        "";
+
+
+    if (
+        selectedSeats.length === 0
+    ) {
+
+        selectedSeatsContainer.innerHTML =
+            `<span class="no-seats">
+                No seats selected
+            </span>`;
+
+        return;
+    }
+
+
+    selectedSeats.forEach(
+        seat => {
+
+            const element =
+                document.createElement(
+                    "span"
+                );
+
+            element.className =
+                "selected-seat";
+
+            element.textContent =
+                seat;
+
+            selectedSeatsContainer.appendChild(
+                element
+            );
+
+        }
+    );
 
 }
 
@@ -106,9 +255,10 @@ async function loadShow() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/shows/${showId}`
-        );
+        const response =
+            await fetch(
+                `${API_URL}/shows/${showId}`
+            );
 
 
         if (!response.ok) {
@@ -133,24 +283,28 @@ async function loadShow() {
         showTime.textContent =
             show.show_time || "-";
 
-        availableSeats.textContent =
-            show.available_seats ?? 0;
 
-
-        await loadMovie(show.movie_id);
-
-        await loadCinema(show.cinema_id);
-
-
-        // Set max seats
-
-        const seatsInput =
-            document.getElementById(
-                "seatsBooked"
+        maxSeats =
+            Number(
+                show.available_seats || 0
             );
 
-        seatsInput.max =
-            show.available_seats;
+
+        availableSeats.textContent =
+            maxSeats;
+
+
+        await loadMovie(
+            show.movie_id
+        );
+
+
+        await loadCinema(
+            show.cinema_id
+        );
+
+
+        setupSeats();
 
 
     } catch (error) {
@@ -173,15 +327,18 @@ async function loadMovie(movieId) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/movies/${movieId}`
-        );
+        const response =
+            await fetch(
+                `${API_URL}/movies/${movieId}`
+            );
 
 
         if (!response.ok) {
+
             throw new Error(
                 "Movie not found"
             );
+
         }
 
 
@@ -190,7 +347,8 @@ async function loadMovie(movieId) {
 
 
         movieName.textContent =
-            movie.title || "Unknown Movie";
+            movie.title ||
+            "Unknown Movie";
 
 
     } catch (error) {
@@ -211,15 +369,18 @@ async function loadCinema(cinemaId) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/cinemas/${cinemaId}`
-        );
+        const response =
+            await fetch(
+                `${API_URL}/cinemas/${cinemaId}`
+            );
 
 
         if (!response.ok) {
+
             throw new Error(
                 "Cinema not found"
             );
+
         }
 
 
@@ -228,7 +389,8 @@ async function loadCinema(cinemaId) {
 
 
         cinemaName.textContent =
-            cinema.name || "Unknown Cinema";
+            cinema.name ||
+            "Unknown Cinema";
 
 
     } catch (error) {
@@ -247,28 +409,30 @@ async function loadCinema(cinemaId) {
 
 bookingForm.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
         event.preventDefault();
 
 
         const customerName =
-            document.getElementById(
-                "customerName"
-            ).value.trim();
+            document
+                .getElementById(
+                    "customerName"
+                )
+                .value
+                .trim();
+
 
         const customerEmail =
-            document.getElementById(
-                "customerEmail"
-            ).value.trim();
+            document
+                .getElementById(
+                    "customerEmail"
+                )
+                .value
+                .trim();
 
-        const seatsBooked =
-            Number(
-                document.getElementById(
-                    "seatsBooked"
-                ).value
-            );
 
+        // ================= VALIDATION =================
 
         if (!showId) {
 
@@ -281,7 +445,9 @@ bookingForm.addEventListener(
         }
 
 
-        if (seatsBooked < 1) {
+        if (
+            selectedSeats.length === 0
+        ) {
 
             showMessage(
                 "Please select at least one seat.",
@@ -292,38 +458,78 @@ bookingForm.addEventListener(
         }
 
 
+        if (!customerName) {
+
+            showMessage(
+                "Please enter your name.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!customerEmail) {
+
+            showMessage(
+                "Please enter your email.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        // ================= BUTTON =================
+
+        const button =
+            document.querySelector(
+                ".confirm-btn"
+            );
+
+        button.disabled =
+            true;
+
+        button.innerHTML =
+            "⏳ Processing Booking...";
+
+
         try {
 
-            const response = await fetch(
-                `${API_URL}/bookings`,
-                {
-                    method: "POST",
+            const response =
+                await fetch(
+                    `${API_URL}/bookings`,
+                    {
+                        method: "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
 
-                        "Authorization":
-                            `Bearer ${token}`
-                    },
+                            "Authorization":
+                                `Bearer ${token}`
+                        },
 
-                    body: JSON.stringify({
+                        body:
+                            JSON.stringify({
 
-                        customer_name:
-                            customerName,
+                                customer_name:
+                                    customerName,
 
-                        customer_email:
-                            customerEmail,
+                                customer_email:
+                                    customerEmail,
 
-                        show_id:
-                            Number(showId),
+                                show_id:
+                                    Number(
+                                        showId
+                                    ),
 
-                        seats_booked:
-                            seatsBooked
+                                seats_booked:
+                                    selectedSeats.length
 
-                    })
-                }
-            );
+                            })
+                    }
+                );
 
 
             const data =
@@ -341,34 +547,41 @@ bookingForm.addEventListener(
 
 
             showMessage(
-                `Booking created successfully! Booking ID: ${data.bookingId}`,
+                `🎉 Booking created successfully! Booking ID: ${data.bookingId}`,
                 "success"
             );
 
 
-            bookingForm.reset();
+            button.innerHTML =
+                "✓ Booking Confirmed";
 
 
-            document.getElementById(
-                "customerName"
-            ).value = customerName;
+            setTimeout(
+                () => {
 
-            document.getElementById(
-                "customerEmail"
-            ).value = customerEmail;
+                    window.location.href =
+                        "bookings.html";
 
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "bookings.html";
-
-            }, 1500);
+                },
+                1800
+            );
 
 
         } catch (error) {
 
             console.error(error);
+
+
+            button.disabled =
+                false;
+
+            button.innerHTML =
+                `
+                <span>🎟</span>
+                Confirm Booking
+                <span>→</span>
+                `;
+
 
             showMessage(
                 error.message,
@@ -380,5 +593,7 @@ bookingForm.addEventListener(
     }
 );
 
+
+// ================= START =================
 
 loadShow();

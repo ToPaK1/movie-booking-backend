@@ -1,61 +1,86 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const path = require("path");
 
+require("dotenv").config();
 
 // ================= ROUTES =================
 
-const authRoutes =
-    require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
+const movieRoutes = require("./routes/movieRoutes");
+const showRoutes = require("./routes/showRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
+const cinemaRoutes = require("./routes/cinemaRoutes");
 
-const movieRoutes =
-    require("./routes/movieRoutes");
+// ================= ERROR HANDLER =================
 
-const showRoutes =
-    require("./routes/showRoutes");
-
-const bookingRoutes =
-    require("./routes/bookingRoutes");
-
-const cinemaRoutes =
-    require("./routes/cinemaRoutes");
-
-
-// ================= MIDDLEWARE =================
-
-const errorHandler =
-    require("./middleware/errorHandler");
-
+const errorHandler = require("./middleware/errorHandler");
 
 // ================= APP =================
 
 const app = express();
 
+// ================= MIDDLEWARE =================
 
-// Enable CORS
 app.use(cors());
 
-
-// Read JSON request bodies
 app.use(express.json());
 
+// ================= FRONTEND =================
 
-// ================= HOME =================
+const frontendPath = path.join(__dirname, "FRONTEND");
 
-app.get("/", (req, res) => {
+console.log("Frontend path:", frontendPath);
 
-    res.status(200).json({
+// Serve frontend files
+app.use(express.static(frontendPath));
 
-        message:
-            "Movie Booking API is running",
+// ================= IMAGE TEST =================
 
-        status:
-            "success"
+app.get("/test-image", (req, res) => {
+
+    const imagePath =
+        path.join(
+            frontendPath,
+            "images",
+            "inception.jpg"
+        );
+
+    console.log("Image path:", imagePath);
+
+    res.sendFile(imagePath, (err) => {
+
+        if (err) {
+
+            console.error(
+                "Image error:",
+                err
+            );
+
+            if (!res.headersSent) {
+                res.status(404).send(
+                    "Image not found"
+                );
+            }
+
+        }
 
     });
 
 });
 
+// ================= HOME =================
+
+app.get("/", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            frontendPath,
+            "index.html"
+        )
+    );
+
+});
 
 // ================= AUTH =================
 
@@ -64,14 +89,12 @@ app.use(
     authRoutes
 );
 
-
 // ================= MOVIES =================
 
 app.use(
     "/api/movies",
     movieRoutes
 );
-
 
 // ================= SHOWS =================
 
@@ -80,14 +103,12 @@ app.use(
     showRoutes
 );
 
-
 // ================= BOOKINGS =================
 
 app.use(
     "/api/bookings",
     bookingRoutes
 );
-
 
 // ================= CINEMAS =================
 
@@ -96,17 +117,14 @@ app.use(
     cinemaRoutes
 );
 
-
 // ================= ERROR HANDLER =================
 
 app.use(errorHandler);
-
 
 // ================= SERVER =================
 
 const PORT =
     process.env.PORT || 3000;
-
 
 app.listen(
     PORT,
@@ -114,6 +132,14 @@ app.listen(
 
         console.log(
             `Server is running on port ${PORT}`
+        );
+
+        console.log(
+            `Frontend: http://localhost:${PORT}`
+        );
+
+        console.log(
+            `Image test: http://localhost:${PORT}/test-image`
         );
 
     }
