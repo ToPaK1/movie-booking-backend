@@ -16,6 +16,28 @@ db.exec(`
     DROP TABLE IF EXISTS shows;
     DROP TABLE IF EXISTS cinemas;
     DROP TABLE IF EXISTS movies;
+    DROP TABLE IF EXISTS users;
+`);
+
+
+// =====================================================
+// CREATE USERS TABLE
+// =====================================================
+
+db.exec(`
+    CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        name TEXT NOT NULL,
+
+        email TEXT NOT NULL UNIQUE,
+
+        password TEXT NOT NULL,
+
+        role TEXT NOT NULL DEFAULT 'customer',
+
+        phone TEXT
+    );
 `);
 
 
@@ -136,65 +158,41 @@ const movies = [
 
     [
         "Inception",
-
         "A thief who enters the dreams of others to steal secrets.",
-
         "Sci-Fi",
-
         148,
-
         "2010-07-16",
-
         8.8,
-
         "/images/inception.jpg"
     ],
 
     [
         "The Dark Knight",
-
         "Batman faces the Joker in Gotham City.",
-
         "Action",
-
         152,
-
         "2008-07-18",
-
         9.0,
-
         "/images/dark-knight.jpg"
     ],
 
     [
         "Interstellar",
-
         "Explorers travel through a wormhole in space.",
-
         "Sci-Fi",
-
         169,
-
         "2014-11-07",
-
         8.7,
-
         "/images/interstellar.jpg"
     ],
 
     [
         "The Godfather",
-
         "The story of a powerful Italian-American crime family.",
-
         "Crime",
-
         175,
-
         "1972-03-24",
-
         9.2,
-
         "/images/godfather.jpg"
     ]
 
@@ -224,7 +222,6 @@ const movieRows = db
 
 
 console.log("Movies inserted:");
-
 console.log(movieRows);
 
 
@@ -289,7 +286,6 @@ const cinemaRows = db
 
 
 console.log("Cinemas inserted:");
-
 console.log(cinemaRows);
 
 
@@ -381,7 +377,6 @@ const showRows = db
 
 
 console.log("Shows inserted:");
-
 console.log(showRows);
 
 
@@ -405,41 +400,29 @@ const bookings = [
 
     [
         "Mostafa Nassef",
-
         "mostafa@example.com",
-
         showRows[0].id,
-
         2
     ],
 
     [
         "Ahmed Ali",
-
         "ahmed@example.com",
-
         showRows[1].id,
-
         3
     ],
 
     [
         "Omar Hassan",
-
         "omar@example.com",
-
         showRows[2].id,
-
         2
     ],
 
     [
         "Mariam Mohamed",
-
         "mariam@example.com",
-
         showRows[3].id,
-
         4
     ]
 
@@ -458,11 +441,15 @@ for (const booking of bookings) {
 // =====================================================
 
 console.log("");
+
 console.log("======================================");
 console.log("Database initialized successfully!");
 console.log("======================================");
+
+console.log("Users table: READY");
 console.log("Movies: 4");
 console.log("Cinemas: 3");
 console.log("Shows: 5");
 console.log("Bookings: 4");
+
 console.log("======================================");

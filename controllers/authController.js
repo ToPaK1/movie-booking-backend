@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const db = require("../config/database");
 
 
-// ========================================
+// =====================================================
 // SIGN UP
-// ========================================
+// =====================================================
 
 const signup = async (req, res, next) => {
 
@@ -20,15 +20,14 @@ const signup = async (req, res, next) => {
         } = req.body;
 
 
-        // ================= VALIDATION =================
+        // =====================================================
+        // VALIDATION
+        // =====================================================
 
         if (!name || !email || !password) {
 
             return res.status(400).json({
-
-                message:
-                    "Name, email and password are required"
-
+                message: "Name, email and password are required"
             });
 
         }
@@ -37,48 +36,48 @@ const signup = async (req, res, next) => {
         if (password.length < 6) {
 
             return res.status(400).json({
-
-                message:
-                    "Password must be at least 6 characters"
-
+                message: "Password must be at least 6 characters"
             });
 
         }
 
 
-        // ================= CHECK EMAIL =================
+        // =====================================================
+        // CHECK IF EMAIL ALREADY EXISTS
+        // =====================================================
 
-        const existingUser =
-            db.prepare(
-                "SELECT * FROM users WHERE email = ?"
-            ).get(email);
+        const existingUser = db
+            .prepare(
+                "SELECT id FROM users WHERE email = ?"
+            )
+            .get(email);
 
 
         if (existingUser) {
 
             return res.status(409).json({
-
-                message:
-                    "Email already exists"
-
+                message: "Email already exists"
             });
 
         }
 
 
-        // ================= HASH PASSWORD =================
+        // =====================================================
+        // HASH PASSWORD
+        // =====================================================
 
-        const hashedPassword =
-            await bcrypt.hash(
-                password,
-                10
-            );
+        const hashedPassword = await bcrypt.hash(
+            password,
+            10
+        );
 
 
-        // ================= CREATE USER =================
+        // =====================================================
+        // CREATE USER
+        // =====================================================
 
-        const result =
-            db.prepare(`
+        const result = db
+            .prepare(`
                 INSERT INTO users
                 (
                     name,
@@ -88,7 +87,8 @@ const signup = async (req, res, next) => {
                     phone
                 )
                 VALUES (?, ?, ?, ?, ?)
-            `).run(
+            `)
+            .run(
                 name,
                 email,
                 hashedPassword,
@@ -97,15 +97,15 @@ const signup = async (req, res, next) => {
             );
 
 
-        // ================= RESPONSE =================
+        // =====================================================
+        // RESPONSE
+        // =====================================================
 
-        res.status(201).json({
+        return res.status(201).json({
 
-            message:
-                "Account created successfully",
+            message: "Account created successfully",
 
-            userId:
-                result.lastInsertRowid
+            userId: result.lastInsertRowid
 
         });
 
@@ -118,9 +118,9 @@ const signup = async (req, res, next) => {
 };
 
 
-// ========================================
+// =====================================================
 // LOGIN
-// ========================================
+// =====================================================
 
 const login = async (req, res, next) => {
 
@@ -132,113 +132,100 @@ const login = async (req, res, next) => {
         } = req.body;
 
 
-        // ================= VALIDATION =================
+        // =====================================================
+        // VALIDATION
+        // =====================================================
 
         if (!email || !password) {
 
             return res.status(400).json({
-
-                message:
-                    "Email and password are required"
-
+                message: "Email and password are required"
             });
 
         }
 
 
-        // ================= FIND USER =================
+        // =====================================================
+        // FIND USER
+        // =====================================================
 
-        const user =
-            db.prepare(
+        const user = db
+            .prepare(
                 "SELECT * FROM users WHERE email = ?"
-            ).get(email);
+            )
+            .get(email);
 
 
         if (!user) {
 
             return res.status(401).json({
-
-                message:
-                    "Invalid email or password"
-
+                message: "Invalid email or password"
             });
 
         }
 
 
-        // ================= CHECK PASSWORD =================
+        // =====================================================
+        // COMPARE PASSWORD
+        // =====================================================
 
-        const passwordMatch =
-            await bcrypt.compare(
-                password,
-                user.password
-            );
+        const passwordMatch = await bcrypt.compare(
+            password,
+            user.password
+        );
 
 
         if (!passwordMatch) {
 
             return res.status(401).json({
-
-                message:
-                    "Invalid email or password"
-
+                message: "Invalid email or password"
             });
 
         }
 
 
-        // ================= CREATE JWT =================
+        // =====================================================
+        // CREATE JWT
+        // =====================================================
 
-        const token =
-            jwt.sign(
+        const token = jwt.sign(
 
-                {
-                    id:
-                        user.id,
+            {
+                id: user.id,
+                email: user.email,
+                role: user.role
+            },
 
-                    email:
-                        user.email,
+            process.env.JWT_SECRET,
 
-                    role:
-                        user.role
+            {
+                expiresIn: "24h"
+            }
 
-                },
-
-                process.env.JWT_SECRET,
-
-                {
-                    expiresIn:
-                        "24h"
-                }
-
-            );
+        );
 
 
-        // ================= RESPONSE =================
+        // =====================================================
+        // RESPONSE
+        // =====================================================
 
-        res.status(200).json({
+        return res.status(200).json({
 
-            message:
-                "Login successful",
+            message: "Login successful",
 
             token,
 
             user: {
 
-                id:
-                    user.id,
+                id: user.id,
 
-                name:
-                    user.name,
+                name: user.name,
 
-                email:
-                    user.email,
+                email: user.email,
 
-                role:
-                    user.role,
+                role: user.role,
 
-                phone:
-                    user.phone
+                phone: user.phone
 
             }
 
@@ -252,6 +239,10 @@ const login = async (req, res, next) => {
 
 };
 
+
+// =====================================================
+// EXPORT
+// =====================================================
 
 module.exports = {
 
