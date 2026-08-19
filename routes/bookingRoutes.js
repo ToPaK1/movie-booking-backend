@@ -1,60 +1,104 @@
 const express = require("express");
 
-const router = express.Router();
-
-const bookingController =
-    require("../controllers/bookingController");
+const {
+    getAllBookings,
+    getMyBookings,
+    getBookingById,
+    createBooking,
+    updateBooking,
+    deleteBooking
+} = require("../controllers/bookingController");
 
 const authMiddleware =
     require("../middleware/authMiddleware");
 
+const {
+    createBookingValidation,
+    updateBookingValidation,
+    bookingIdValidation
+} = require("../middleware/validation");
 
-// Get all bookings
+
+// =====================================================
+// ROUTER
+// =====================================================
+
+const router = express.Router();
+
+
+// =====================================================
+// GET ALL BOOKINGS
+// =====================================================
+// Authentication required
+
 router.get(
     "/",
     authMiddleware,
-    bookingController.getAllBookings
+    getAllBookings
 );
 
 
-// Get current user's bookings
+// =====================================================
+// GET MY BOOKINGS
+// =====================================================
+
 router.get(
     "/my",
     authMiddleware,
-    bookingController.getMyBookings
+    getMyBookings
 );
 
 
-// Get booking by ID
+// =====================================================
+// GET BOOKING BY ID
+// =====================================================
+
 router.get(
     "/:id",
     authMiddleware,
-    bookingController.getBookingById
+    bookingIdValidation,
+    getBookingById
 );
 
 
-// Create booking
+// =====================================================
+// CREATE BOOKING
+// =====================================================
+
 router.post(
     "/",
     authMiddleware,
-    bookingController.createBooking
+    createBookingValidation,
+    createBooking
 );
 
 
-// Update booking
+// =====================================================
+// UPDATE BOOKING
+// =====================================================
+
 router.put(
     "/:id",
     authMiddleware,
-    bookingController.updateBooking
+    updateBookingValidation,
+    updateBooking
 );
 
 
-// Delete booking
+// =====================================================
+// DELETE BOOKING
+// =====================================================
+
 router.delete(
     "/:id",
     authMiddleware,
-    bookingController.deleteBooking
+    bookingIdValidation,
+    deleteBooking
 );
 
+
+// =====================================================
+// EXPORT
+// =====================================================
 
 module.exports = router;

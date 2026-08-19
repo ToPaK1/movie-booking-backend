@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CineBook | Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="container nav-content">
+
+        <a href="index.html" class="logo">
+            🎬 CineBook
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html">
+                Movies
+            </a>
+
+            <a href="cinema.html">
+                Cinemas
+            </a>
+
+            <a href="bookings.html">
+                My Bookings
+            </a>
+
+        </nav>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= ADMIN HERO ================= -->
+
+<section class="admin-hero">
+
+    <div class="container">
+
+        <div class="admin-badge">
+            👑 ADMIN PANEL
+        </div>
+
+        <h1>
+            Welcome, <span id="adminName">Admin</span>
+        </h1>
+
+        <p>
+            Manage your movies, cinemas, shows and bookings
+            from one place.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<main class="container admin-dashboard">
+
+    <!-- ================= STATS ================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🎬
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Movies
+                </span>
+
+                <strong id="moviesCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🏢
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Cinemas
+                </span>
+
+                <strong id="cinemasCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🎭
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Shows
+                </span>
+
+                <strong id="showsCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🎟️
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Bookings
+                </span>
+
+                <strong id="bookingsCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= QUICK ACTIONS ================= -->
+
+    <section class="dashboard-section">
+
+        <div class="section-title">
+
+            <span>
+                MANAGEMENT
+            </span>
+
+            <h2>
+                Quick Actions
+            </h2>
+
+        </div>
+
+
+        <div class="actions-grid">
+
+            <button
+                class="action-card"
+                id="addMovieBtn"
+            >
+
+                <span class="action-icon">
+                    🎬
+                </span>
+
+                <span>
+                    Add Movie
+                </span>
+
+                <small>
+                    Create a new movie
+                </small>
+
+            </button>
+
+
+            <button
+                class="action-card"
+                id="addCinemaBtn"
+            >
+
+                <span class="action-icon">
+                    🏢
+                </span>
+
+                <span>
+                    Add Cinema
+                </span>
+
+                <small>
+                    Add a new cinema
+                </small>
+
+            </button>
+
+
+            <button
+                class="action-card"
+                id="addShowBtn"
+            >
+
+                <span class="action-icon">
+                    🎭
+                </span>
+
+                <span>
+                    Add Show
+                </span>
+
+                <small>
+                    Schedule a show
+                </small>
+
+            </button>
+
+
+            <button
+                class="action-card"
+                id="viewBookingsBtn"
+            >
+
+                <span class="action-icon">
+                    🎟️
+                </span>
+
+                <span>
+                    View Bookings
+                </span>
+
+                <small>
+                    Manage reservations
+                </small>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RECENT BOOKINGS ================= -->
+
+    <section class="dashboard-section">
+
+        <div class="section-title">
+
+            <span>
+                BOOKINGS
+            </span>
+
+            <h2>
+                Recent Bookings
+            </h2>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Movie
+                        </th>
+
+                        <th>
+                            User
+                        </th>
+
+                        <th>
+                            Seats
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="bookingsTable">
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="table-loading"
+                        >
+                            Loading bookings...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MOVIES ================= -->
+
+    <section class="dashboard-section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                <span>
+                    CONTENT
+                </span>
+
+                <h2>
+                    Movies
+                </h2>
+
+            </div>
+
+            <button
+                class="primary-btn"
+                id="addMovieBtn2"
+            >
+                + Add Movie
+            </button>
+
+        </div>
+
+
+        <div
+            id="moviesGrid"
+            class="admin-movies-grid"
+        >
+
+            <div class="table-loading">
+                Loading movies...
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="container footer-content">
+
+        <div class="footer-brand">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                🎬 CineBook
+            </a>
+
+            <p>
+                Your movie booking platform.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 CineBook. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="js/admin.js"></script>
+
+</body>
+
+</html>

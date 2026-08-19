@@ -1,480 +1,710 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CineBook - Cinemas</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="css/style.css">
+    <title>CineBook | Cinemas</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
 </head>
 
-<body>
 
-    <!-- ================= NAVBAR ================= -->
+<body class="cinema-page">
 
-    <nav class="navbar">
 
-        <div class="nav-container">
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-            <a href="index.html" class="logo">
-                🎬 CineBook
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            🎬 CineBook
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
             </a>
 
-            <div class="nav-links">
+            <a href="movies.html">
+                Movies
+            </a>
 
-                <a href="index.html">Home</a>
+            <a
+                href="cinema.html"
+                class="active"
+            >
+                Cinemas
+            </a>
 
-                <a href="movies.html">Movies</a>
+            <a href="bookings.html">
+                My Bookings
+            </a>
 
-                <a href="cinema.html" class="active">
-                    Cinemas
-                </a>
+            <a
+                href="login.html"
+                id="loginLink"
+            >
+                Login
+            </a>
 
-                <a href="bookings.html">
-                    My Bookings
-                </a>
-
-                <a href="login.html" id="loginLink">
-                    Login
-                </a>
-
-                <button
-                    id="logoutBtn"
-                    class="logout-btn"
-                    style="display: none;"
-                >
-                    Logout
-                </button>
-
-            </div>
+            <button
+                id="logoutBtn"
+                class="logout-btn"
+                style="display:none;"
+            >
+                Logout
+            </button>
 
         </div>
 
-    </nav>
+    </div>
+
+</nav>
 
 
-    <!-- ================= HERO ================= -->
 
-    <section class="page-header">
+<!-- =====================================================
+     CINEMA HERO
+===================================================== -->
 
-        <div class="container">
+<section class="cinema-hero">
 
-            <h1>Our Cinemas</h1>
+    <div class="cinema-hero-overlay"></div>
+
+
+    <!-- Animated lights -->
+
+    <div class="hero-light hero-light-one"></div>
+
+    <div class="hero-light hero-light-two"></div>
+
+    <div class="hero-light hero-light-three"></div>
+
+
+    <!-- Floating particles -->
+
+    <div class="cinema-particles">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+
+    <div class="cinema-hero-content">
+
+        <div class="hero-badge">
+
+            🎥 PREMIUM CINEMA EXPERIENCE
+
+        </div>
+
+
+        <h1>
+
+            Experience Movies
+
+            <span>
+                Like Never Before
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Discover premium cinemas, comfortable seats,
+            stunning screens and unforgettable movie nights.
+
+        </p>
+
+
+        <a
+            href="#cinemas"
+            class="hero-button"
+        >
+
+            Explore Cinemas
+
+            <span>
+                ↓
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <div class="hero-scroll">
+
+        <span></span>
+
+        Scroll to explore
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CINEMAS SECTION
+===================================================== -->
+
+<section
+    id="cinemas"
+    class="cinemas-section"
+>
+
+    <div class="container">
+
+
+        <div class="cinemas-heading">
+
+            <span>
+                OUR LOCATIONS
+            </span>
+
+            <h2>
+                Find Your Perfect Cinema
+            </h2>
 
             <p>
-                Discover cinemas and find the perfect place
-                to watch your favorite movies.
+                Choose your favorite location and enjoy
+                the ultimate movie experience.
             </p>
 
         </div>
 
-    </section>
 
-
-    <!-- ================= CINEMAS ================= -->
-
-    <main class="container">
-
-        <div id="loading" class="loading">
+        <div
+            id="loading"
+            class="loading"
+        >
             Loading cinemas...
         </div>
+
 
         <div
             id="message"
             class="message"
-            style="display: none;"
+            style="display:none;"
         ></div>
+
 
         <div
             id="cinemasContainer"
             class="cinemas-grid"
         ></div>
 
-    </main>
+    </div>
+
+</section>
 
 
-    <!-- ================= FOOTER ================= -->
 
-    <footer class="footer">
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
-        <div class="footer-container">
+<footer class="footer">
 
-            <div class="footer-brand">
+    <div class="footer-container">
 
-                <h2>🎬 CineBook</h2>
+        <div class="footer-brand">
 
-                <p>
-                    Your movie booking platform.
-                </p>
-
-            </div>
-
-            <div class="footer-links">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="movies.html">
-                    Movies
-                </a>
-
-                <a href="cinema.html">
-                    Cinemas
-                </a>
-
-                <a href="bookings.html">
-                    My Bookings
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
+            <h2>
+                🎬 CineBook
+            </h2>
 
             <p>
-                © 2026 CineBook. All rights reserved.
+                Your movie booking platform.
             </p>
 
         </div>
 
-    </footer>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html">
+                Movies
+            </a>
+
+            <a href="cinema.html">
+                Cinemas
+            </a>
+
+            <a href="bookings.html">
+                My Bookings
+            </a>
+
+        </div>
+
+    </div>
 
 
-    <!-- ================= JAVASCRIPT ================= -->
+    <div class="footer-bottom">
 
-    <script>
+        <p>
+            © 2026 CineBook. All rights reserved.
+        </p>
 
-        const API_URL =
-            "http://localhost:3000/api";
+    </div>
 
-        const cinemasContainer =
-            document.getElementById(
-                "cinemasContainer"
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+const API_URL =
+    "http://localhost:3000/api";
+
+
+const cinemasContainer =
+    document.getElementById(
+        "cinemasContainer"
+    );
+
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const loginLink =
+    document.getElementById(
+        "loginLink"
+    );
+
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+
+
+/* =====================================================
+   LOAD CINEMAS
+===================================================== */
+
+async function loadCinemas() {
+
+    try {
+
+        loading.style.display =
+            "block";
+
+        message.style.display =
+            "none";
+
+
+        const response =
+            await fetch(
+                `${API_URL}/cinemas`
             );
 
-        const loading =
-            document.getElementById(
-                "loading"
-            );
 
-        const message =
-            document.getElementById(
-                "message"
-            );
+        if (!response.ok) {
 
-        const loginLink =
-            document.getElementById(
-                "loginLink"
-            );
-
-        const logoutBtn =
-            document.getElementById(
-                "logoutBtn"
-            );
-
-
-        // ================= LOAD CINEMAS =================
-
-        async function loadCinemas() {
-
-            try {
-
-                loading.style.display =
-                    "block";
-
-                message.style.display =
-                    "none";
-
-                const response =
-                    await fetch(
-                        `${API_URL}/cinemas`
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Failed to load cinemas"
-                    );
-
-                }
-
-
-                const data =
-                    await response.json();
-
-
-                console.log(
-                    "Cinemas:",
-                    data
-                );
-
-
-                // Handle different possible
-                // API response structures
-
-                const cinemas =
-                    Array.isArray(data)
-                        ? data
-                        : data.cinemas || data.data || [];
-
-
-                loading.style.display =
-                    "none";
-
-
-                if (cinemas.length === 0) {
-
-                    showMessage(
-                        "No cinemas available.",
-                        "info"
-                    );
-
-                    return;
-
-                }
-
-
-                displayCinemas(
-                    cinemas
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error loading cinemas:",
-                    error
-                );
-
-
-                loading.style.display =
-                    "none";
-
-
-                showMessage(
-                    "Unable to load cinemas. Please make sure the server is running.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        // ================= DISPLAY CINEMAS =================
-
-        function displayCinemas(
-            cinemas
-        ) {
-
-            cinemasContainer.innerHTML =
-                "";
-
-
-            cinemas.forEach(
-                cinema => {
-
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    card.className =
-                        "cinema-card";
-
-
-                    card.innerHTML = `
-
-                        <div class="cinema-icon">
-                            🎬
-                        </div>
-
-                        <div class="cinema-content">
-
-                            <h2>
-                                ${escapeHTML(
-                                    cinema.name ||
-                                    cinema.cinema_name ||
-                                    "Cinema"
-                                )}
-                            </h2>
-
-                            <p class="cinema-location">
-
-                                📍
-
-                                ${escapeHTML(
-                                    cinema.location ||
-                                    cinema.address ||
-                                    "Location not available"
-                                )}
-
-                            </p>
-
-                            ${
-                                cinema.phone
-                                    ? `
-                                    <p>
-                                        📞 ${escapeHTML(
-                                            cinema.phone
-                                        )}
-                                    </p>
-                                    `
-                                    : ""
-                            }
-
-                            ${
-                                cinema.city
-                                    ? `
-                                    <p>
-                                        🌆 ${escapeHTML(
-                                            cinema.city
-                                        )}
-                                    </p>
-                                    `
-                                    : ""
-                            }
-
-                            <button
-                                class="view-cinema-btn"
-                                onclick="viewCinema(${cinema.id})"
-                            >
-                                View Cinema
-                            </button>
-
-                        </div>
-
-                    `;
-
-
-                    cinemasContainer.appendChild(
-                        card
-                    );
-
-                }
+            throw new Error(
+                "Failed to load cinemas"
             );
 
         }
 
 
-        // ================= VIEW CINEMA =================
-
-        function viewCinema(
-            cinemaId
-        ) {
-
-            window.location.href =
-                `movie-details.html?cinemaId=${cinemaId}`;
-
-        }
+        const data =
+            await response.json();
 
 
-        // ================= MESSAGE =================
+        const cinemas =
+            Array.isArray(data)
+                ? data
+                : data.cinemas ||
+                  data.data ||
+                  [];
 
-        function showMessage(
-            text,
-            type
-        ) {
 
-            message.textContent =
-                text;
+        loading.style.display =
+            "none";
 
-            message.className =
-                `message ${type}`;
 
-            message.style.display =
-                "block";
+        if (!cinemas.length) {
+
+            showMessage(
+                "No cinemas available.",
+                "info"
+            );
+
+            return;
 
         }
 
 
-        // ================= ESCAPE HTML =================
+        displayCinemas(cinemas);
 
-        function escapeHTML(
-            value
-        ) {
+    }
 
-            const div =
+    catch (error) {
+
+        console.error(error);
+
+        loading.style.display =
+            "none";
+
+
+        showMessage(
+            "Unable to load cinemas. Please make sure the server is running.",
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   DISPLAY CINEMAS
+===================================================== */
+
+function displayCinemas(cinemas) {
+
+    cinemasContainer.innerHTML = "";
+
+
+    cinemas.forEach(
+        (cinema, index) => {
+
+            const card =
                 document.createElement(
-                    "div"
+                    "article"
                 );
 
-            div.textContent =
-                value ?? "";
 
-            return div.innerHTML;
+            card.className =
+                "cinema-card";
+
+
+            card.style.setProperty(
+                "--delay",
+                `${index * 0.15}s`
+            );
+
+
+            card.innerHTML = `
+
+                <div class="cinema-card-glow"></div>
+
+
+                <div class="cinema-number">
+
+                    0${index + 1}
+
+                </div>
+
+
+                <div class="cinema-card-icon">
+
+                    🎬
+
+                </div>
+
+
+                <div class="cinema-card-content">
+
+                    <span class="cinema-label">
+
+                        CINEBOOK CINEMA
+
+                    </span>
+
+
+                    <h3>
+
+                        ${escapeHTML(
+                            cinema.name ||
+                            "Cinema"
+                        )}
+
+                    </h3>
+
+
+                    <div class="cinema-info">
+
+                        <div>
+
+                            <span>
+                                📍
+                            </span>
+
+                            ${escapeHTML(
+                                cinema.location ||
+                                "Location unavailable"
+                            )}
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                💺
+                            </span>
+
+                            ${
+                                cinema.total_seats ??
+                                "N/A"
+                            }
+
+                            Seats
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cinema-card-bottom">
+
+                        <span class="available">
+
+                            <i></i>
+
+                            Available Now
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            cinemasContainer.appendChild(
+                card
+            );
 
         }
+    );
 
 
-        // ================= AUTH UI =================
+    startCardAnimations();
 
-        function updateAuthUI() {
+}
 
-            const token =
-                localStorage.getItem(
-                    "token"
+
+
+/* =====================================================
+   CARD ANIMATION
+===================================================== */
+
+function startCardAnimations() {
+
+    const cards =
+        document.querySelectorAll(
+            ".cinema-card"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(
+                    entry => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target.classList.add(
+                                "show"
+                            );
+
+                        }
+
+                    }
                 );
 
-
-            if (token) {
-
-                loginLink.style.display =
-                    "none";
-
-                logoutBtn.style.display =
-                    "inline-block";
-
-            } else {
-
-                loginLink.style.display =
-                    "inline-block";
-
-                logoutBtn.style.display =
-                    "none";
-
-            }
-
-        }
-
-
-        // ================= LOGOUT =================
-
-        logoutBtn.addEventListener(
-            "click",
-            () => {
-
-                localStorage.removeItem(
-                    "token"
-                );
-
-                localStorage.removeItem(
-                    "user"
-                );
-
-                window.location.href =
-                    "login.html";
-
+            },
+            {
+                threshold: 0.15
             }
         );
 
 
-        // ================= INITIALIZE =================
+    cards.forEach(
+        card => observer.observe(card)
+    );
+
+}
+
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        `message ${type}`;
+
+    message.style.display =
+        "block";
+
+}
+
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+function updateAuthUI() {
+
+    const token =
+        localStorage.getItem(
+            "token"
+        );
+
+
+    if (token) {
+
+        loginLink.style.display =
+            "none";
+
+        logoutBtn.style.display =
+            "inline-block";
+
+    }
+
+    else {
+
+        loginLink.style.display =
+            "inline-block";
+
+        logoutBtn.style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+    "click",
+    () => {
+
+        localStorage.removeItem(
+            "token"
+        );
+
+        localStorage.removeItem(
+            "user"
+        );
+
+        window.location.href =
+            "login.html";
+
+    }
+);
+
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
         updateAuthUI();
 
         loadCinemas();
 
-    </script>
+    }
+);
+
+</script>
+
 
 </body>
 
 </html>
-```

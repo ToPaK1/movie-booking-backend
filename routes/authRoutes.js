@@ -1,8 +1,21 @@
 const express = require("express");
 
-const router = express.Router();
+const {
+    signup,
+    login
+} = require("../controllers/authController");
 
-const authController = require("../controllers/authController");
+const {
+    signupValidation,
+    loginValidation
+} = require("../middleware/validation");
+
+
+// =====================================================
+// ROUTER
+// =====================================================
+
+const router = express.Router();
 
 
 // =====================================================
@@ -11,7 +24,8 @@ const authController = require("../controllers/authController");
 
 router.post(
     "/signup",
-    authController.signup
+    signupValidation,
+    signup
 );
 
 
@@ -21,12 +35,13 @@ router.post(
 
 router.post(
     "/login",
-    authController.login
+    loginValidation,
+    login
 );
 
 
 // =====================================================
-// EXPORT ROUTER
+// EXPORT
 // =====================================================
 
 module.exports = router;

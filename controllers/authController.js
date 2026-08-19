@@ -1,7 +1,27 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const userModel = require("../models/userModel");
 
-const db = require("../config/database");
+// =====================================================
+// SANITIZE USER
+// =====================================================
+// This function makes sure that password is NEVER
+// returned to the frontend.
+
+const sanitizeUser = (user) => {
+
+    if (!user) {
+        return null;
+    }
+
+    return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone
+    };
+};
 
 
 // =====================================================
@@ -20,92 +40,117 @@ const signup = async (req, res, next) => {
         } = req.body;
 
 
-        // =====================================================
+        // =========================
         // VALIDATION
-        // =====================================================
+        // =========================
 
         if (!name || !email || !password) {
 
             return res.status(400).json({
-                message: "Name, email and password are required"
+                message:
+                    "Name, email and password are required"
             });
 
         }
 
+
+        // =========================
+        // EMAIL VALIDATION
+        // =========================
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (!emailRegex.test(email)) {
+
+            return res.status(400).json({
+                message:
+                    "Please enter a valid email address"
+            });
+
+        }
+
+
+        // =========================
+        // PASSWORD VALIDATION
+        // =========================
 
         if (password.length < 6) {
 
             return res.status(400).json({
-                message: "Password must be at least 6 characters"
+                message:
+                    "Password must be at least 6 characters"
             });
 
         }
 
 
-        // =====================================================
-        // CHECK IF EMAIL ALREADY EXISTS
-        // =====================================================
+        // =========================
+        // CHECK EXISTING USER
+        // =========================
 
-        const existingUser = db
-            .prepare(
-                "SELECT id FROM users WHERE email = ?"
-            )
-            .get(email);
+        const existingUser =
+            userModel.getUserByEmail(email);
 
 
         if (existingUser) {
 
             return res.status(409).json({
-                message: "Email already exists"
+                message:
+                    "Email is already registered"
             });
 
         }
 
 
-        // =====================================================
+        // =========================
         // HASH PASSWORD
-        // =====================================================
+        // =========================
 
-        const hashedPassword = await bcrypt.hash(
-            password,
-            10
-        );
-
-
-        // =====================================================
-        // CREATE USER
-        // =====================================================
-
-        const result = db
-            .prepare(`
-                INSERT INTO users
-                (
-                    name,
-                    email,
-                    password,
-                    role,
-                    phone
-                )
-                VALUES (?, ?, ?, ?, ?)
-            `)
-            .run(
-                name,
-                email,
-                hashedPassword,
-                "customer",
-                phone || null
+        const hashedPassword =
+            await bcrypt.hash(
+                password,
+                10
             );
 
 
-        // =====================================================
+        // =========================
+        // CREATE USER
+        // =========================
+
+        const result =
+            userModel.createUser({
+
+                name,
+                email,
+                password: hashedPassword,
+                role: "customer",
+                phone: phone || null
+
+            });
+
+
+        // =========================
+        // GET CREATED USER
+        // =========================
+
+        const newUser =
+            userModel.getSafeUserById(
+                result.lastInsertRowid
+            );
+
+
+        // =========================
         // RESPONSE
-        // =====================================================
+        // =========================
 
         return res.status(201).json({
 
-            message: "Account created successfully",
+            message:
+                "Account created successfully",
 
-            userId: result.lastInsertRowid
+            user: newUser
 
         });
 
@@ -132,102 +177,108 @@ const login = async (req, res, next) => {
         } = req.body;
 
 
-        // =====================================================
+        // =========================
         // VALIDATION
-        // =====================================================
+        // =========================
 
         if (!email || !password) {
 
             return res.status(400).json({
-                message: "Email and password are required"
+                message:
+                    "Email and password are required"
             });
 
         }
 
 
-        // =====================================================
+        // =========================
         // FIND USER
-        // =====================================================
+        // =========================
+        // IMPORTANT:
+        // getUserByEmail() includes the
+        // hashed password because bcrypt
+        // needs it for comparison.
 
-        const user = db
-            .prepare(
-                "SELECT * FROM users WHERE email = ?"
-            )
-            .get(email);
+        const user =
+            userModel.getUserByEmail(email);
 
 
         if (!user) {
 
             return res.status(401).json({
-                message: "Invalid email or password"
+                message:
+                    "Invalid email or password"
             });
 
         }
 
 
-        // =====================================================
-        // COMPARE PASSWORD
-        // =====================================================
+        // =========================
+        // CHECK PASSWORD
+        // =========================
 
-        const passwordMatch = await bcrypt.compare(
-            password,
-            user.password
-        );
+        const passwordMatch =
+            await bcrypt.compare(
+                password,
+                user.password
+            );
 
 
         if (!passwordMatch) {
 
             return res.status(401).json({
-                message: "Invalid email or password"
+                message:
+                    "Invalid email or password"
             });
 
         }
 
 
-        // =====================================================
+        // =========================
         // CREATE JWT
-        // =====================================================
+        // =========================
 
-        const token = jwt.sign(
+        const token =
+            jwt.sign(
 
-            {
-                id: user.id,
-                email: user.email,
-                role: user.role
-            },
+                {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                },
 
-            process.env.JWT_SECRET,
+                process.env.JWT_SECRET,
 
-            {
-                expiresIn: "24h"
-            }
+                {
+                    expiresIn:
+                        process.env.JWT_EXPIRES_IN ||
+                        "1d"
+                }
 
-        );
+            );
 
 
-        // =====================================================
+        // =========================
+        // SAFE USER
+        // =========================
+        // Password is removed here.
+
+        const safeUser =
+            sanitizeUser(user);
+
+
+        // =========================
         // RESPONSE
-        // =====================================================
+        // =========================
 
         return res.status(200).json({
 
-            message: "Login successful",
+            message:
+                "Login successful",
 
             token,
 
-            user: {
-
-                id: user.id,
-
-                name: user.name,
-
-                email: user.email,
-
-                role: user.role,
-
-                phone: user.phone
-
-            }
+            user: safeUser
 
         });
 
@@ -241,13 +292,12 @@ const login = async (req, res, next) => {
 
 
 // =====================================================
-// EXPORT
+// EXPORTS
 // =====================================================
 
 module.exports = {
 
     signup,
-
     login
 
 };

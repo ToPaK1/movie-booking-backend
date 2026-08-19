@@ -115,12 +115,44 @@ const createBooking = (req, res, next) => {
             seats_booked:
                 req.body.seats_booked,
 
-            // Get user ID from JWT
             user_id:
                 req.user.id
 
         };
 
+
+        // =========================
+        // VALIDATION
+        // =========================
+
+        if (
+            !booking.customer_name ||
+            !booking.customer_email ||
+            !booking.show_id ||
+            !booking.seats_booked
+        ) {
+
+            return res.status(400).json({
+                message:
+                    "Customer name, email, show ID and seats booked are required"
+            });
+
+        }
+
+
+        if (booking.seats_booked <= 0) {
+
+            return res.status(400).json({
+                message:
+                    "Seats booked must be greater than 0"
+            });
+
+        }
+
+
+        // =========================
+        // CREATE BOOKING
+        // =========================
 
         const result =
             bookingModel.createBooking(booking);
@@ -143,7 +175,6 @@ const createBooking = (req, res, next) => {
     }
 
 };
-
 
 // ================= UPDATE BOOKING =================
 

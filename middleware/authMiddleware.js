@@ -1,58 +1,71 @@
 const jwt = require("jsonwebtoken");
 
-const authMiddleware = (req, res, next) => {
+
+// =====================================================
+// AUTHENTICATION MIDDLEWARE
+// =====================================================
+
+const authenticateToken = (req, res, next) => {
 
     try {
 
-        // Get Authorization header
+        // =============================================
+        // GET AUTHORIZATION HEADER
+        // =============================================
+
         const authHeader =
             req.headers.authorization;
 
 
-        // Check if token exists
         if (!authHeader) {
 
             return res.status(401).json({
-
                 message:
-                    "Authentication required"
-
+                    "Access denied. No token provided."
             });
 
         }
 
 
-        // Check Bearer format
-        if (!authHeader.startsWith("Bearer ")) {
+        // =============================================
+        // CHECK BEARER TOKEN
+        // =============================================
+
+        const parts =
+            authHeader.split(" ");
+
+
+        if (
+            parts.length !== 2 ||
+            parts[0] !== "Bearer"
+        ) {
 
             return res.status(401).json({
-
                 message:
-                    "Invalid authorization format"
-
+                    "Invalid authorization format."
             });
 
         }
 
 
-        // Extract token
         const token =
-            authHeader.split(" ")[1];
+            parts[1];
 
 
         if (!token) {
 
             return res.status(401).json({
-
                 message:
-                    "Token is missing"
-
+                    "Access denied. Token is missing."
             });
 
         }
 
 
-        // Verify token
+        // =============================================
+        // VERIFY JWT
+        // =============================================
+
         const decoded =
             jwt.verify(
                 token,
@@ -60,14 +73,41 @@ const authMiddleware = (req, res, next) => {
             );
 
 
-        // Store user information
-        // inside request
-        req.user = decoded;
+        // =============================================
+        // STORE USER DATA
+        // =============================================
+        // IMPORTANT:
+        // The JWT payload contains ONLY:
+        // id
+        // email
+        // role
+        //
+        // NEVER password.
 
+        req.user = {
+
+            id: decoded.id,
+
+            email: decoded.email,
+
+            role: decoded.role
+
+        };
+
+
+        // =============================================
+        // CONTINUE
+        // =============================================
 
         next();
 
     } catch (error) {
+
+        console.error(
+            "Authentication error:",
+            error.message
+        );
+
 
         if (
             error.name ===
@@ -75,10 +115,8 @@ const authMiddleware = (req, res, next) => {
         ) {
 
             return res.status(401).json({
-
                 message:
-                    "Token has expired"
-
+                    "Token has expired."
             });
 
         }
@@ -90,27 +128,25 @@ const authMiddleware = (req, res, next) => {
         ) {
 
             return res.status(401).json({
-
                 message:
-                    "Invalid token"
-
+                    "Invalid token."
             });
 
         }
 
 
-        return res.status(500).json({
-
+        return res.status(401).json({
             message:
-                "Authentication error",
-
-            error:
-                error.message
-
+                "Authentication failed."
         });
 
     }
 
 };
 
-module.exports = authMiddleware;
+
+// =====================================================
+// EXPORT
+// =====================================================
+
+module.exports = authenticateToken;

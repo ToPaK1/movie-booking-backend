@@ -1,25 +1,25 @@
 const API_URL = "http://localhost:3000/api";
 
-const params = new URLSearchParams(
-    window.location.search
-);
+// =====================================================
+// GET MOVIE ID
+// =====================================================
 
-const movieId = params.get("id");
+const urlParams =
+    new URLSearchParams(window.location.search);
 
-const loading =
-    document.getElementById("loading");
+const movieId =
+    urlParams.get("id");
 
-const error =
-    document.getElementById("error");
 
-const movieDetails =
-    document.getElementById("movieDetails");
+// =====================================================
+// DOM ELEMENTS
+// =====================================================
+
+const moviePoster =
+    document.getElementById("moviePoster");
 
 const movieTitle =
     document.getElementById("movieTitle");
-
-const movieDescription =
-    document.getElementById("movieDescription");
 
 const movieGenre =
     document.getElementById("movieGenre");
@@ -33,8 +33,17 @@ const movieRating =
 const movieReleaseDate =
     document.getElementById("movieReleaseDate");
 
+const movieDescription =
+    document.getElementById("movieDescription");
+
 const showsContainer =
     document.getElementById("showsContainer");
+
+const loading =
+    document.getElementById("loading");
+
+const errorMessage =
+    document.getElementById("errorMessage");
 
 
 // =====================================================
@@ -43,72 +52,88 @@ const showsContainer =
 
 async function loadMovie() {
 
+    if (!movieId) {
+
+        showError(
+            "Movie ID is missing."
+        );
+
+        return;
+
+    }
+
+
     try {
 
-        if (!movieId) {
-            throw new Error("Movie ID is missing");
-        }
+        showLoading();
 
-        const response =
+        hideError();
+
+
+        // =================================================
+        // GET MOVIE
+        // =================================================
+
+        const movieResponse =
             await fetch(
                 `${API_URL}/movies/${movieId}`
             );
 
-        if (!response.ok) {
+
+        if (!movieResponse.ok) {
+
+            if (movieResponse.status === 404) {
+
+                throw new Error(
+                    "Movie not found."
+                );
+
+            }
+
             throw new Error(
-                "Movie not found"
+                `Failed to load movie (${movieResponse.status})`
             );
+
         }
 
-        const movie =
-            await response.json();
 
-        console.log(
-            "Movie:",
-            movie
+        const movieData =
+            await movieResponse.json();
+
+
+        const movie =
+            movieData.movie ||
+            movieData.data ||
+            movieData;
+
+
+        displayMovie(movie);
+
+
+        // =================================================
+        // GET SHOWS
+        // =================================================
+
+        await loadMovieShows(
+            movieId
         );
 
-        movieTitle.textContent =
-            movie.title;
 
-        movieDescription.textContent =
-            movie.description || "";
+    } catch (error) {
 
-        movieGenre.textContent =
-            movie.genre || "";
+        console.error(
+            "Error loading movie:",
+            error
+        );
 
-        movieDuration.textContent =
-            movie.duration || "-";
+        showError(
+            error.message ||
+            "Unable to load movie."
+        );
 
-        movieRating.textContent =
-            movie.rating || "-";
+    } finally {
 
-        movieReleaseDate.textContent =
-            movie.release_date || "-";
-
-
-        movieDetails.style.display =
-            "block";
-
-        loading.style.display =
-            "none";
-
-
-        loadShows();
-
-    } catch (err) {
-
-        console.error(err);
-
-        loading.style.display =
-            "none";
-
-        error.style.display =
-            "block";
-
-        error.textContent =
-            err.message ||
-            "Unable to load movie.";
+        hideLoading();
 
     }
 
@@ -116,36 +141,254 @@ async function loadMovie() {
 
 
 // =====================================================
-// LOAD SHOWS
+// DISPLAY MOVIE
 // =====================================================
 
-async function loadShows() {
+function displayMovie(movie) {
+
+    if (!movie) {
+
+        showError(
+            "Movie data is not available."
+        );
+
+        return;
+
+    }
+
+
+    // =================================================
+    // TITLE
+    // =================================================
+
+    if (movieTitle) {
+
+        movieTitle.textContent =
+            movie.title ||
+            "Untitled Movie";
+
+    }
+
+
+    // =================================================
+    // GENRE
+    // =================================================
+
+    if (movieGenre) {
+
+        movieGenre.textContent =
+            movie.genre ||
+            "Unknown";
+
+    }
+
+
+    // =================================================
+    // DURATION
+    // =================================================
+
+    if (movieDuration) {
+
+        movieDuration.textContent =
+            movie.duration
+                ? `${movie.duration} minutes`
+                : "N/A";
+
+    }
+
+
+    // =================================================
+    // RATING
+    // =================================================
+
+    if (movieRating) {
+
+        movieRating.textContent =
+            movie.rating !== null &&
+            movie.rating !== undefined
+                ? `⭐ ${Number(movie.rating).toFixed(1)}`
+                : "⭐ N/A";
+
+    }
+
+
+    // =================================================
+    // RELEASE DATE
+    // =================================================
+
+    if (movieReleaseDate) {
+
+        movieReleaseDate.textContent =
+            formatDate(
+                movie.release_date
+            );
+
+    }
+
+
+    // =================================================
+    // DESCRIPTION
+    // =================================================
+
+    if (movieDescription) {
+
+        movieDescription.textContent =
+            movie.description ||
+            "No description available.";
+
+    }
+
+
+    // =================================================
+    // POSTER
+    // =================================================
+
+    displayMoviePoster(
+        movie.poster,
+        movie.title
+    );
+
+}
+
+
+// =====================================================
+// DISPLAY POSTER
+// =====================================================
+
+function displayMoviePoster(
+    poster,
+    title
+) {
+
+    if (!moviePoster) {
+        return;
+    }
+
+
+    const posterUrl =
+        getPosterUrl(poster);
+
+
+    moviePoster.innerHTML = `
+
+        <img
+            src="${posterUrl}"
+            alt="${escapeHTML(title || "Movie poster")}"
+            class="movie-poster-image"
+            onerror="
+                this.onerror=null;
+                this.src='images/movie-placeholder.svg';
+            "
+        >
+
+    `;
+
+}
+
+
+// =====================================================
+// GET POSTER URL
+// =====================================================
+
+function getPosterUrl(poster) {
+
+    if (!poster) {
+
+        return "images/movie-placeholder.svg";
+
+    }
+
+
+    if (
+        poster.startsWith("http://") ||
+        poster.startsWith("https://")
+    ) {
+
+        return poster;
+
+    }
+
+
+    if (poster.startsWith("/")) {
+
+        return `http://localhost:3000${poster}`;
+
+    }
+
+
+    return poster;
+
+}
+
+
+// =====================================================
+// LOAD MOVIE SHOWS
+// =====================================================
+
+async function loadMovieShows(
+    movieId
+) {
+
+    if (!showsContainer) {
+        return;
+    }
+
 
     try {
+
+        showsContainer.innerHTML = `
+
+            <div class="shows-loading">
+                Loading available shows...
+            </div>
+
+        `;
+
 
         const response =
             await fetch(
                 `${API_URL}/shows`
             );
 
+
         if (!response.ok) {
+
             throw new Error(
-                "Unable to load shows"
+                `Failed to load shows (${response.status})`
             );
+
         }
 
-        const shows =
+
+        const data =
             await response.json();
 
-        console.log(
-            "All Shows:",
-            shows
-        );
+
+        let shows = [];
+
+
+        if (Array.isArray(data)) {
+
+            shows = data;
+
+        } else if (
+            Array.isArray(data.shows)
+        ) {
+
+            shows = data.shows;
+
+        } else if (
+            Array.isArray(data.data)
+        ) {
+
+            shows = data.data;
+
+        }
 
 
         const movieShows =
             shows.filter(
-                show =>
+                (show) =>
                     Number(show.movie_id) ===
                     Number(movieId)
             );
@@ -156,15 +399,29 @@ async function loadShows() {
         );
 
 
-    } catch (err) {
+    } catch (error) {
 
-        console.error(err);
+        console.error(
+            "Error loading shows:",
+            error
+        );
+
 
         showsContainer.innerHTML = `
 
-            <div class="error-message">
+            <div class="error-state">
 
-                Unable to load available shows.
+                <div>
+                    ❌
+                </div>
+
+                <h3>
+                    Unable to load shows
+                </h3>
+
+                <p>
+                    ${escapeHTML(error.message)}
+                </p>
 
             </div>
 
@@ -181,16 +438,31 @@ async function loadShows() {
 
 function displayShows(shows) {
 
+    if (!showsContainer) {
+        return;
+    }
+
+
     showsContainer.innerHTML = "";
 
 
-    if (shows.length === 0) {
+    if (!shows || shows.length === 0) {
 
         showsContainer.innerHTML = `
 
-            <div class="error-message">
+            <div class="no-shows">
 
-                No shows available for this movie.
+                <div class="no-shows-icon">
+                    🎭
+                </div>
+
+                <h3>
+                    No shows available
+                </h3>
+
+                <p>
+                    There are currently no available shows for this movie.
+                </p>
 
             </div>
 
@@ -201,80 +473,158 @@ function displayShows(shows) {
     }
 
 
-    shows.forEach(show => {
+    shows.forEach(
+        (show) => {
 
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "show-card";
+            const showCard =
+                createShowCard(show);
 
 
-        card.innerHTML = `
+            showsContainer.appendChild(
+                showCard
+            );
 
-            <div class="show-card-content">
-
-                <span class="show-label">
-                    🎬 SHOWTIME
-                </span>
-
-                <h3>
-                    ${show.cinema_name || "Cinema"}
-                </h3>
-
-                <p>
-                    📍 ${show.location || ""}
-                </p>
-
-                <div class="show-info">
-
-                    <span>
-                        📅 ${show.show_date}
-                    </span>
-
-                    <span>
-                        🕐 ${show.show_time}
-                    </span>
-
-                    <span>
-                        💺 ${show.available_seats}
-                        seats
-                    </span>
-
-                </div>
-
-                <button
-                    class="book-show-btn"
-                    onclick="bookShow(${show.id})"
-                >
-                    🎟️ Book Now
-                </button>
-
-            </div>
-
-        `;
-
-
-        showsContainer.appendChild(
-            card
-        );
-
-    });
+        }
+    );
 
 }
 
 
 // =====================================================
-// BOOK SHOW
+// CREATE SHOW CARD
 // =====================================================
 
-function bookShow(showId) {
+function createShowCard(show) {
 
-    console.log(
-        "Selected Show ID:",
-        showId
-    );
+    const card =
+        document.createElement("div");
 
+
+    card.className =
+        "show-card";
+
+
+    const showDate =
+        formatDate(
+            show.show_date
+        );
+
+
+    const showTime =
+        formatTime(
+            show.show_time
+        );
+
+
+    const availableSeats =
+        show.available_seats !== undefined
+            ? show.available_seats
+            : "N/A";
+
+
+    const cinemaName =
+        escapeHTML(
+            show.cinema_name ||
+            show.cinema ||
+            "Cinema"
+        );
+
+
+    card.innerHTML = `
+
+        <div class="show-info">
+
+            <div class="show-date">
+
+                📅
+
+                <span>
+                    ${showDate}
+                </span>
+
+            </div>
+
+
+            <div class="show-time">
+
+                🕐
+
+                <span>
+                    ${showTime}
+                </span>
+
+            </div>
+
+
+            <div class="show-cinema">
+
+                🎬
+
+                <span>
+                    ${cinemaName}
+                </span>
+
+            </div>
+
+
+            <div class="show-seats">
+
+                💺
+
+                <span>
+                    ${availableSeats} seats available
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="book-show-btn"
+            data-show-id="${show.id}"
+        >
+            Book Now
+        </button>
+
+    `;
+
+
+    const bookButton =
+        card.querySelector(
+            ".book-show-btn"
+        );
+
+
+    if (bookButton) {
+
+        bookButton.addEventListener(
+            "click",
+            () => {
+
+                handleBooking(
+                    show.id
+                );
+
+            }
+        );
+
+    }
+
+
+    return card;
+
+}
+
+
+// =====================================================
+// HANDLE BOOKING
+// =====================================================
+
+function handleBooking(
+    showId
+) {
 
     const token =
         localStorage.getItem(
@@ -284,86 +634,229 @@ function bookShow(showId) {
 
     if (!token) {
 
-        alert(
-            "Please login before booking."
-        );
+        const shouldLogin =
+            confirm(
+                "You need to login before booking. Go to login page?"
+            );
 
-        window.location.href =
-            "login.html";
+
+        if (shouldLogin) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
 
         return;
 
     }
 
 
-    /*
-     * Save useful show information
-     * for the seat-selection page.
-     */
+    window.location.href =
+        `booking.html?show_id=${encodeURIComponent(showId)}`;
 
-    const show =
-        document.querySelector(
-            `[onclick="bookShow(${showId})"]`
-        );
+}
 
 
-    if (show) {
+// =====================================================
+// FORMAT DATE
+// =====================================================
 
-        const card =
-            show.closest(
-                ".show-card"
-            );
+function formatDate(dateString) {
 
+    if (!dateString) {
 
-        if (card) {
-
-            const cinema =
-                card.querySelector(
-                    "h3"
-                );
-
-            const info =
-                card.querySelectorAll(
-                    ".show-info span"
-                );
-
-
-            if (cinema) {
-
-                localStorage.setItem(
-                    "selectedCinema",
-                    cinema.textContent.trim()
-                );
-
-            }
-
-
-            if (info.length >= 2) {
-
-                localStorage.setItem(
-                    "selectedShowTime",
-                    info[1].textContent
-                        .replace("🕐", "")
-                        .trim()
-                );
-
-            }
-
-        }
+        return "N/A";
 
     }
 
 
-    localStorage.setItem(
-        "selectedMovie",
-        movieTitle.textContent
+    const date =
+        new Date(
+            `${dateString}T00:00:00`
+        );
+
+
+    if (Number.isNaN(date.getTime())) {
+
+        return dateString;
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        }
     );
 
+}
 
-    // IMPORTANT
 
-    window.location.href =
-        `seat-selection.html?showId=${showId}`;
+// =====================================================
+// FORMAT TIME
+// =====================================================
+
+function formatTime(timeString) {
+
+    if (!timeString) {
+
+        return "N/A";
+
+    }
+
+
+    const parts =
+        timeString.split(":");
+
+
+    if (parts.length < 2) {
+
+        return timeString;
+
+    }
+
+
+    let hour =
+        Number(parts[0]);
+
+
+    const minute =
+        parts[1];
+
+
+    const period =
+        hour >= 12
+            ? "PM"
+            : "AM";
+
+
+    hour =
+        hour % 12 || 12;
+
+
+    return `${hour}:${minute} ${period}`;
+
+}
+
+
+// =====================================================
+// LOADING
+// =====================================================
+
+function showLoading() {
+
+    if (!loading) {
+        return;
+    }
+
+
+    loading.style.display =
+        "block";
+
+}
+
+
+function hideLoading() {
+
+    if (!loading) {
+        return;
+    }
+
+
+    loading.style.display =
+        "none";
+
+}
+
+
+// =====================================================
+// ERROR
+// =====================================================
+
+function showError(message) {
+
+    if (errorMessage) {
+
+        errorMessage.textContent =
+            message;
+
+
+        errorMessage.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    if (showsContainer) {
+
+        showsContainer.innerHTML = `
+
+            <div class="error-state">
+
+                <div>
+                    ❌
+                </div>
+
+                <h3>
+                    Something went wrong
+                </h3>
+
+                <p>
+                    ${escapeHTML(message)}
+                </p>
+
+                <button
+                    type="button"
+                    class="book-show-btn"
+                    onclick="loadMovie()"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+function hideError() {
+
+    if (!errorMessage) {
+        return;
+    }
+
+
+    errorMessage.style.display =
+        "none";
+
+}
+
+
+// =====================================================
+// HTML ESCAPE
+// =====================================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+
+    div.textContent =
+        String(value);
+
+
+    return div.innerHTML;
 
 }
 
@@ -372,4 +865,11 @@ function bookShow(showId) {
 // START
 // =====================================================
 
-loadMovie();
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        loadMovie();
+
+    }
+);
