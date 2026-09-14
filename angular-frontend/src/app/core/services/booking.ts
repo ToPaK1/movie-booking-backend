@@ -8,59 +8,43 @@ export interface Booking {
   customer_email: string;
   show_id: number;
   seats_booked: number;
+  selected_seats: string[] | string;
+  ticket_price: number;
+  total_price: number;
   user_id: number;
+  movie_title: string;
+  cinema_name: string;
+  show_date: string;
+  show_time: string;
 }
 
 export interface CreateBookingRequest {
-  customer_name: string;
-  customer_email: string;
   show_id: number;
-  seats_booked: number;
+  selected_seats: string[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class BookingService {
-
   private http = inject(HttpClient);
-
   private apiUrl = 'http://localhost:3000/api/bookings';
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
+    return new HttpHeaders({ Authorization: `Bearer ${localStorage.getItem('token') || ''}` });
   }
 
-  createBooking(booking: CreateBookingRequest): Observable<{ message: string; bookingId: number }> {
-    return this.http.post<{ message: string; bookingId: number }>(
-      this.apiUrl,
-      booking,
-      { headers: this.getHeaders() }
-    );
+  createBooking(booking: CreateBookingRequest): Observable<{ message: string; bookingId: number; booking: Booking }> {
+    return this.http.post<{ message: string; bookingId: number; booking: Booking }>(this.apiUrl, booking, { headers: this.getHeaders() });
   }
 
   getMyBookings(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(
-      `${this.apiUrl}/my`,
-      { headers: this.getHeaders() }
-    );
+    return this.http.get<Booking[]>(`${this.apiUrl}/my`, { headers: this.getHeaders() });
   }
 
   getBookingById(id: number): Observable<Booking> {
-    return this.http.get<Booking>(
-      `${this.apiUrl}/${id}`,
-      { headers: this.getHeaders() }
-    );
+    return this.http.get<Booking>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   deleteBooking(id: number): Observable<any> {
-    return this.http.delete(
-      `${this.apiUrl}/${id}`,
-      { headers: this.getHeaders() }
-    );
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 }
