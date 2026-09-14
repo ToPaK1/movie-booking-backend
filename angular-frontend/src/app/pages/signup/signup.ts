@@ -10,133 +10,58 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './signup.css'
 })
 export class Signup {
-
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
   name = '';
   email = '';
   phone = '';
   password = '';
   confirmPassword = '';
-
   loading = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
 
-  private apiUrl = 'http://localhost:3000/api/auth';
+  private readonly apiUrl = 'http://localhost:3000/api/auth';
 
   signup(): void {
-
     this.errorMessage.set('');
     this.successMessage.set('');
 
-    // Required fields
-    if (
-      !this.name.trim() ||
-      !this.email.trim() ||
-      !this.password ||
-      !this.confirmPassword
-    ) {
-      this.errorMessage.set(
-        'Please fill in all required fields.'
-      );
+    if (!this.name.trim() || !this.email.trim() || !this.password || !this.confirmPassword) {
+      this.errorMessage.set('Please fill in all required fields.');
       return;
     }
-
-    // Password confirmation
     if (this.password !== this.confirmPassword) {
-      this.errorMessage.set(
-        'Passwords do not match.'
-      );
+      this.errorMessage.set('Passwords do not match.');
       return;
     }
-
-    // Password length
     if (this.password.length < 6) {
-      this.errorMessage.set(
-        'Password must be at least 6 characters.'
-      );
+      this.errorMessage.set('Password must be at least 6 characters.');
       return;
     }
 
-    // Email validation
-    const emailPattern =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(this.email.trim())) {
-      this.errorMessage.set(
-        'Please enter a valid email address.'
-      );
+    const email = this.email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.errorMessage.set('Please enter a valid email address.');
       return;
     }
 
     this.loading.set(true);
-
-    const userEmail = this.email.trim();
-
-    this.http.post<any>(
-      `${this.apiUrl}/signup`,
-      {
-        name: this.name.trim(),
-        email: userEmail,
-        password: this.password,
-        phone: this.phone.trim()
-      }
-    ).subscribe({
-
+    this.http.post<any>(`${this.apiUrl}/signup`, {
+      name: this.name.trim(), email, password: this.password, phone: this.phone.trim()
+    }).subscribe({
       next: (response) => {
-
         this.loading.set(false);
-
-        this.successMessage.set(
-          response?.message ||
-          'Account created successfully! Please verify your email.'
-        );
-
-        // Go to email verification page
-        setTimeout(() => {
-
-          this.router.navigate(
-            ['/verify-email'],
-            {
-              queryParams: {
-                email: userEmail
-              }
-            }
-          );
-
-        }, 1200);
+        this.successMessage.set(response?.message || 'Account created successfully!');
+        setTimeout(() => this.router.navigate(['/verify-email'], { queryParams: { email } }), 900);
       },
-
       error: (error) => {
-
         this.loading.set(false);
-
-        console.error(
-          'Signup error:',
-          error
-        );
-
-        if (error.status === 400) {
-
-          this.errorMessage.set(
-            error.error?.message ||
-            'Invalid registration data.'
-          );
-
-        } else if (error.status === 409) {
-
-          this.errorMessage.set(
-            'This email is already registered.'
-          );
-
+        if (error.status === 409) {
+          this.errorMessage.set('This email is already registered.');
         } else {
-
-          this.errorMessage.set(
-            error.error?.message ||
-            'Something went wrong. Please try again.'
-          );
+          this.errorMessage.set(error.error?.message || 'Something went wrong. Please try again.');
         }
       }
     });
