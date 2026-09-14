@@ -5,31 +5,17 @@ const {
     getMyBookings,
     getBookingById,
     createBooking,
-    updateBooking,
     deleteBooking
 } = require("../controllers/bookingController");
 
-const authMiddleware =
-    require("../middleware/authMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const {
     createBookingValidation,
-    updateBookingValidation,
     bookingIdValidation
 } = require("../middleware/validation");
 
-
-// =====================================================
-// ROUTER
-// =====================================================
-
 const router = express.Router();
-
-
-// =====================================================
-// GET ALL BOOKINGS
-// =====================================================
-// Authentication required
 
 router.get(
     "/",
@@ -37,21 +23,11 @@ router.get(
     getAllBookings
 );
 
-
-// =====================================================
-// GET MY BOOKINGS
-// =====================================================
-
 router.get(
     "/my",
     authMiddleware,
     getMyBookings
 );
-
-
-// =====================================================
-// GET BOOKING BY ID
-// =====================================================
 
 router.get(
     "/:id",
@@ -60,11 +36,6 @@ router.get(
     getBookingById
 );
 
-
-// =====================================================
-// CREATE BOOKING
-// =====================================================
-
 router.post(
     "/",
     authMiddleware,
@@ -72,33 +43,11 @@ router.post(
     createBooking
 );
 
-
-// =====================================================
-// UPDATE BOOKING
-// =====================================================
-
-router.put(
-    "/:id",
-    authMiddleware,
-    updateBookingValidation,
-    updateBooking
-);
-
-
-// =====================================================
-// DELETE BOOKING
-// =====================================================
-
 router.delete(
     "/:id",
     authMiddleware,
     bookingIdValidation,
     deleteBooking
 );
-
-
-// =====================================================
-// EXPORT
-// =====================================================
 
 module.exports = router;
