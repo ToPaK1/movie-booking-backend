@@ -1,130 +1,61 @@
 <main class="booking-page">
   <section class="booking-shell">
-
     @if (loading()) {
-      <div class="state-card">
-        <div class="spinner"></div>
-        <h2>Loading show...</h2>
-        <p>Please wait while we prepare your booking.</p>
-      </div>
+      <div class="state-card"><div class="spinner"></div><h2>Loading show...</h2><p>Preparing your seats.</p></div>
     } @else if (errorMessage() && !show()) {
-      <div class="state-card error-state">
-        <div class="state-icon">!</div>
-        <h2>Booking unavailable</h2>
-        <p>{{ errorMessage() }}</p>
-        <a routerLink="/shows" class="primary-btn">Browse Shows</a>
-      </div>
+      <div class="state-card error-state"><h2>Booking unavailable</h2><p>{{ errorMessage() }}</p><a routerLink="/shows" class="primary-btn">Browse Shows</a></div>
     } @else if (show()) {
-      <div class="booking-header">
-        <div>
-          <span class="eyebrow">CINEBOOK • RESERVATION</span>
-          <h1>Book your <span>movie night.</span></h1>
-          <p>Choose your seats and confirm your reservation in a few seconds.</p>
-        </div>
+      <header class="booking-header">
+        <div><span class="eyebrow">CINEBOOK • RESERVATION</span><h1>Choose your <span>perfect seats.</span></h1><p>Select your seats, review the price, then confirm your movie night.</p></div>
         <a routerLink="/shows" class="back-link">← Back to shows</a>
-      </div>
+      </header>
 
-      @if (successMessage()) {
-        <div class="success-banner">✓ {{ successMessage() }}</div>
-      }
-
-      @if (errorMessage()) {
-        <div class="error-banner">{{ errorMessage() }}</div>
-      }
+      @if (successMessage()) { <div class="success-banner">✓ {{ successMessage() }}</div> }
+      @if (errorMessage()) { <div class="error-banner">{{ errorMessage() }}</div> }
 
       <div class="booking-grid">
         <section class="movie-card">
           <div class="poster-wrap">
-            @if (movie()?.poster) {
-              <img [src]="movie()?.poster" [alt]="movie()?.title" />
-            } @else {
-              <div class="poster-placeholder">🎬</div>
-            }
+            @if (movie()?.poster) { <img [src]="movie()?.poster" [alt]="movie()?.title" /> } @else { <div class="poster-placeholder">🎬</div> }
             <div class="poster-overlay"></div>
           </div>
-
           <div class="movie-info">
             <span class="movie-label">NOW BOOKING</span>
-            <h2>{{ movie()?.title || 'Selected Movie' }}</h2>
+            <h2>{{ movie()?.title || show()?.movie_title || 'Selected Movie' }}</h2>
             <p class="genre">{{ movie()?.genre || 'Movie' }}</p>
-
             <div class="details-list">
-              <div>
-                <span>📍 Cinema</span>
-                <strong>{{ cinema()?.name || 'Cinema #' + show()?.cinema_id }}</strong>
-              </div>
-              <div>
-                <span>📅 Date</span>
-                <strong>{{ show()?.show_date }}</strong>
-              </div>
-              <div>
-                <span>🕐 Showtime</span>
-                <strong>{{ show()?.show_time }}</strong>
-              </div>
+              <div><span>📍 Cinema</span><strong>{{ cinema()?.name || show()?.cinema_name }}</strong></div>
+              <div><span>📅 Date</span><strong>{{ show()?.show_date }}</strong></div>
+              <div><span>🕐 Showtime</span><strong>{{ show()?.show_time }}</strong></div>
+              <div><span>🎟️ Ticket price</span><strong>EGP {{ show()?.ticket_price | number:'1.0-2' }}</strong></div>
             </div>
           </div>
         </section>
 
         <section class="checkout-card">
-          <div class="card-heading">
-            <span class="step">01</span>
-            <div>
-              <h2>Select seats</h2>
-              <p>How many tickets do you need?</p>
-            </div>
-          </div>
-
-          <div class="seat-visual">
-            <div class="screen">SCREEN</div>
-            <div class="seat-row">
-              <span>●</span><span>●</span><span>●</span><span>●</span><span>●</span>
-            </div>
-            <small>{{ show()?.available_seats }} seats currently available</small>
-          </div>
-
-          <div class="quantity-box">
-            <div>
-              <strong>Tickets</strong>
-              <span>Maximum {{ show()?.available_seats }} available</span>
-            </div>
-            <div class="quantity-controls">
-              <button type="button" (click)="decreaseSeats()" [disabled]="seats() <= 1">−</button>
-              <input
-                type="number"
-                min="1"
-                [max]="show()?.available_seats || 1"
-                [value]="seats()"
-                (input)="onSeatsChange($event)"
-                aria-label="Number of tickets"
-              />
-              <button
-                type="button"
-                (click)="increaseSeats()"
-                [disabled]="seats() >= (show()?.available_seats || 1)"
-              >+</button>
-            </div>
-          </div>
-
-          <div class="summary">
-            <div><span>Tickets</span><strong>{{ seats() }}</strong></div>
-            <div><span>Show</span><strong>{{ show()?.show_time }}</strong></div>
-            <div class="total"><span>Total tickets</span><strong>{{ seats() }}</strong></div>
-          </div>
-
-          <button
-            type="button"
-            class="confirm-btn"
-            (click)="confirmBooking()"
-            [disabled]="booking() || !show()?.available_seats"
-          >
-            @if (booking()) {
-              <span class="button-spinner"></span> Confirming...
-            } @else {
-              Confirm Booking <span>→</span>
+          <div class="card-heading"><span class="step">01</span><div><h2>Select your seats</h2><p>Grey seats are taken. Click available seats to select them.</p></div></div>
+          <div class="screen">SCREEN</div>
+          <div class="seat-map">
+            @for (row of rows; track row) {
+              <div class="seat-row"><span class="row-label">{{ row }}</span>
+                @for (number of [].constructor(seatsPerRow); track $index) {
+                  @let seat = seatId(row, $index + 1);
+                  <button type="button" class="seat" [class.booked]="isBooked(seat)" [class.selected]="isSelected(seat)" [disabled]="isBooked(seat)" (click)="toggleSeat(seat)" [attr.aria-label]="seat">{{ $index + 1 }}</button>
+                }
+              </div>
             }
+          </div>
+          <div class="legend"><span><i class="available"></i> Available</span><span><i class="selected-dot"></i> Selected</span><span><i class="booked-dot"></i> Booked</span></div>
+          <div class="selection-summary">
+            <div><span>Selected seats</span><strong>{{ selectedSeats().length ? selectedSeats().join(', ') : 'None' }}</strong></div>
+            <div><span>Available</span><strong>{{ show()?.available_seats }}</strong></div>
+            <div><span>Price / ticket</span><strong>EGP {{ show()?.ticket_price | number:'1.0-2' }}</strong></div>
+            <div class="total"><span>Total</span><strong>EGP {{ totalPrice | number:'1.0-2' }}</strong></div>
+          </div>
+          <button type="button" class="confirm-btn" (click)="confirmBooking()" [disabled]="booking() || !selectedSeats().length">
+            @if (booking()) { <span class="button-spinner"></span> Confirming... } @else { Confirm Booking <span>→</span> }
           </button>
-
-          <p class="secure-note">🔒 Your reservation is secured by CineBook authentication.</p>
+          <p class="secure-note">🔒 After confirmation, your seats are locked and a ticket is sent to your email.</p>
         </section>
       </div>
     }
