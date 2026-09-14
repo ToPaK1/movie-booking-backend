@@ -9,22 +9,17 @@ export interface Show {
   show_date: string;
   show_time: string;
   available_seats: number;
+  ticket_price: number;
+  movie_title?: string;
+  cinema_name?: string;
+  booked_seats?: string[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ShowsService {
-
   private http = inject(HttpClient);
-
   private apiUrl = 'http://localhost:3000/api/shows';
 
-  getShows(): Observable<Show[]> {
-    return this.http.get<Show[]>(this.apiUrl);
-  }
-
-  getShowById(id: number): Observable<Show> {
-    return this.http.get<Show>(`${this.apiUrl}/${id}`);
-  }
+  getShows(): Observable<Show[]> { return this.http.get<Show[]>(this.apiUrl); }
+  getShowById(id: number): Observable<Show> { return this.http.get<Show>(`${this.apiUrl}/${id}`); }
 }
