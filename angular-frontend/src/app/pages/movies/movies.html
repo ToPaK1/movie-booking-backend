@@ -1,0 +1,79 @@
+<section class="movies-page">
+
+  <div class="page-header">
+    <span>MOVIE COLLECTION</span>
+    <h1>All Movies</h1>
+    <p>Discover your next favorite movie.</p>
+  </div>
+
+  @if (loading()) {
+
+    <div class="state">
+      Loading movies...
+    </div>
+
+  } @else if (error()) {
+
+    <div class="state error">
+      {{ error() }}
+    </div>
+
+  } @else if (movies().length === 0) {
+
+    <div class="state">
+      No movies available.
+    </div>
+
+  } @else {
+
+    <div class="movies-grid">
+
+      @for (movie of movies(); track movie.id) {
+
+        <article class="movie-card">
+
+          <div class="poster">
+
+            @if (movie.poster) {
+              <img
+                [src]="movie.poster"
+                [alt]="movie.title"
+              >
+            } @else {
+              <span>🎬</span>
+            }
+
+          </div>
+
+          <div class="movie-info">
+
+            <h2>{{ movie.title }}</h2>
+
+            <p class="description">
+              {{ movie.description }}
+            </p>
+
+            <div class="details">
+              <span>{{ movie.genre }}</span>
+              <span>⭐ {{ movie.rating }}</span>
+              <span>{{ movie.duration }} min</span>
+            </div>
+
+            <a
+              [routerLink]="['/movies', movie.id]"
+              class="details-btn"
+            >
+              View Details
+            </a>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  }
+
+</section>

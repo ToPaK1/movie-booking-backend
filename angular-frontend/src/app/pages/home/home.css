@@ -1,0 +1,148 @@
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding: 80px 8%;
+  background:
+    radial-gradient(circle at 70% 40%, #3b1015, transparent 35%),
+    linear-gradient(135deg, #0b0b0f, #15151b);
+}
+
+.hero-content {
+  max-width: 700px;
+}
+
+.badge,
+.section-label {
+  color: #e50914;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  font-size: clamp(45px, 7vw, 80px);
+  margin: 20px 0;
+  line-height: 1;
+}
+
+.hero p {
+  color: #aaa;
+  font-size: 19px;
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 35px;
+}
+
+.hero-buttons a {
+  padding: 14px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.primary-btn {
+  background: #e50914;
+  color: white;
+}
+
+.secondary-btn {
+  border: 1px solid #444;
+  color: white;
+}
+
+.featured {
+  max-width: 1200px;
+  margin: auto;
+  padding: 70px 25px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 30px;
+}
+
+.section-header h2 {
+  font-size: 36px;
+  margin: 10px 0 0;
+}
+
+.section-header a {
+  color: #e50914;
+  text-decoration: none;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.movie-card {
+  background: #15151a;
+  border: 1px solid #26262d;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.movie-card:hover {
+  transform: translateY(-8px);
+  border-color: #e50914;
+}
+
+.poster {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(145deg, #222, #101014);
+  font-size: 60px;
+}
+
+.movie-info {
+  padding: 20px;
+}
+
+.movie-info h3 {
+  margin: 0 0 15px;
+  font-size: 22px;
+}
+
+.movie-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.details-btn {
+  display: block;
+  text-align: center;
+  padding: 11px;
+  background: #222;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+}
+
+.empty {
+  color: #aaa;
+}
+
+@media (max-width: 800px) {
+  .movies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+}

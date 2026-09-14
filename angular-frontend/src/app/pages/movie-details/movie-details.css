@@ -1,0 +1,130 @@
+.details-page {
+  max-width: 1200px;
+  margin: auto;
+  padding: 80px 25px;
+}
+
+.movie-details {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.poster {
+  height: 600px;
+  background: #15151a;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #292930;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.poster span {
+  font-size: 80px;
+}
+
+.genre {
+  color: #e50914;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.content h1 {
+  font-size: 52px;
+  margin: 15px 0;
+}
+
+.rating {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+.description {
+  color: #aaa;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.info {
+  display: flex;
+  gap: 50px;
+  margin: 35px 0;
+}
+
+.info div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info span {
+  color: #777;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.info strong {
+  color: white;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+}
+
+.primary-btn,
+.secondary-btn {
+  text-decoration: none;
+  padding: 14px 22px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.primary-btn {
+  background: #e50914;
+  color: white;
+}
+
+.secondary-btn {
+  border: 1px solid #444;
+  color: white;
+}
+
+.state {
+  text-align: center;
+  padding: 100px;
+  color: #aaa;
+}
+
+.error {
+  color: #e50914;
+}
+
+@media (max-width: 800px) {
+  .movie-details {
+    grid-template-columns: 1fr;
+  }
+
+  .poster {
+    height: 500px;
+  }
+
+  .content h1 {
+    font-size: 38px;
+  }
+
+  .info {
+    flex-wrap: wrap;
+  }
+}

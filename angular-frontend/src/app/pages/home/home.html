@@ -1,0 +1,75 @@
+<section class="hero">
+
+  <div class="hero-content">
+
+    <span class="badge">🎬 MOVIE BOOKING SYSTEM</span>
+
+    <h1>{{ title() }}</h1>
+
+    <p>{{ subtitle() }}</p>
+
+    <div class="hero-buttons">
+      <a routerLink="/movies" class="primary-btn">
+        Browse Movies
+      </a>
+
+      <a routerLink="/cinemas" class="secondary-btn">
+        Explore Cinemas
+      </a>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="featured">
+
+  <div class="section-header">
+    <div>
+      <span class="section-label">FEATURED</span>
+      <h2>Popular Movies</h2>
+    </div>
+
+    <a routerLink="/movies">View All →</a>
+  </div>
+
+  <div class="movies-grid">
+
+    @for (movie of featuredMovies(); track movie.id) {
+
+      <article class="movie-card">
+
+        <div class="poster">
+          <span>🎬</span>
+        </div>
+
+        <div class="movie-info">
+
+          <h3>{{ movie.title }}</h3>
+
+          <div class="movie-meta">
+            <span>{{ movie.genre }}</span>
+            <span>⭐ {{ movie.rating }}</span>
+          </div>
+
+          <a
+            [routerLink]="['/movies', movie.id]"
+            class="details-btn">
+            View Details
+          </a>
+
+        </div>
+
+      </article>
+
+    } @empty {
+
+      <p class="empty">
+        No movies available.
+      </p>
+
+    }
+
+  </div>
+
+</section>

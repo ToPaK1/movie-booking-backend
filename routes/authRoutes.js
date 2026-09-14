@@ -1,47 +1,44 @@
 const express = require("express");
 
-const {
-    signup,
-    login
-} = require("../controllers/authController");
-
-const {
-    signupValidation,
-    loginValidation
-} = require("../middleware/validation");
-
-
-// =====================================================
-// ROUTER
-// =====================================================
-
 const router = express.Router();
 
+const authController =
+    require("../controllers/authController");
 
-// =====================================================
+// ========================================
 // SIGN UP
-// =====================================================
+// ========================================
 
 router.post(
     "/signup",
-    signupValidation,
-    signup
+    authController.signup
 );
 
+// ========================================
+// VERIFY EMAIL
+// ========================================
 
-// =====================================================
+router.post(
+    "/verify-email",
+    authController.verifyEmail
+);
+
+// ========================================
+// RESEND VERIFICATION CODE
+// ========================================
+
+router.post(
+    "/resend-verification",
+    authController.resendVerificationCode
+);
+
+// ========================================
 // LOGIN
-// =====================================================
+// ========================================
 
 router.post(
     "/login",
-    loginValidation,
-    login
+    authController.login
 );
-
-
-// =====================================================
-// EXPORT
-// =====================================================
 
 module.exports = router;

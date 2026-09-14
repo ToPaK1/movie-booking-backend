@@ -1,0 +1,44 @@
+<nav class="navbar">
+  <div class="navbar-container">
+
+    <a routerLink="/" class="logo">
+      🎬 CineBook
+    </a>
+
+    <div class="nav-links">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+
+      <a routerLink="/movies" routerLinkActive="active">
+        Movies
+      </a>
+
+      <a routerLink="/cinemas" routerLinkActive="active">
+        Cinemas
+      </a>
+
+      <a routerLink="/shows" routerLinkActive="active">
+        Shows
+      </a>
+
+      <a routerLink="/bookings" routerLinkActive="active">
+        My Bookings
+      </a>
+    </div>
+
+    <div class="auth-links">
+      <a routerLink="/login" class="login-btn">
+        Login
+      </a>
+
+      <a routerLink="/signup" class="signup-btn">
+        Sign Up
+      </a>
+    </div>
+
+  </div>
+</nav>

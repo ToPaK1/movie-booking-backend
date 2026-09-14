@@ -1,0 +1,76 @@
+<section class="details-page">
+
+  @if (loading()) {
+
+    <div class="state">
+      Loading movie...
+    </div>
+
+  } @else if (error()) {
+
+    <div class="state error">
+      {{ error() }}
+    </div>
+
+  } @else if (movie()) {
+
+    <div class="movie-details">
+
+      <div class="poster">
+        @if (movie()!.poster) {
+          <img
+            [src]="movie()!.poster"
+            [alt]="movie()!.title"
+          >
+        } @else {
+          <span>🎬</span>
+        }
+      </div>
+
+      <div class="content">
+
+        <span class="genre">
+          {{ movie()!.genre }}
+        </span>
+
+        <h1>{{ movie()!.title }}</h1>
+
+        <div class="rating">
+          ⭐ {{ movie()!.rating }}
+        </div>
+
+        <p class="description">
+          {{ movie()!.description }}
+        </p>
+
+        <div class="info">
+
+          <div>
+            <span>Duration</span>
+            <strong>{{ movie()!.duration }} minutes</strong>
+          </div>
+
+          <div>
+            <span>Release Date</span>
+            <strong>{{ movie()!.release_date }}</strong>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <a routerLink="/shows" class="primary-btn">
+            View Shows
+          </a>
+
+          <a routerLink="/movies" class="secondary-btn">
+            Back to Movies
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</section>

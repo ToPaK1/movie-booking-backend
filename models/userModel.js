@@ -1,61 +1,47 @@
 const db = require("../config/database");
 
-
 // =====================================================
 // GET ALL USERS
 // =====================================================
-// Password is NEVER returned.
 
 const getAllUsers = () => {
-
     return db.prepare(`
         SELECT
             id,
             name,
             email,
             role,
-            phone
+            phone,
+            email_verified
         FROM users
         ORDER BY id DESC
     `).all();
-
 };
-
 
 // =====================================================
 // GET USER BY ID
 // =====================================================
-// Safe version.
-// Password is NEVER returned.
 
 const getUserById = (id) => {
-
     return db.prepare(`
         SELECT
             id,
             name,
             email,
             role,
-            phone
+            phone,
+            email_verified
         FROM users
         WHERE id = ?
     `).get(id);
-
 };
-
 
 // =====================================================
 // GET USER BY EMAIL
 // =====================================================
-// IMPORTANT:
-// This function is used internally for LOGIN.
-// It MUST return the hashed password so that
-// bcrypt.compare() can verify the password.
-//
-// DO NOT use this function directly in API responses.
+// Used internally for LOGIN and EMAIL VERIFICATION.
 
 const getUserByEmail = (email) => {
-
     return db.prepare(`
         SELECT
             id,
@@ -63,37 +49,32 @@ const getUserByEmail = (email) => {
             email,
             password,
             role,
-            phone
+            phone,
+            email_verified,
+            verification_code,
+            verification_code_expires
         FROM users
         WHERE email = ?
     `).get(email);
-
 };
-
 
 // =====================================================
 // GET SAFE USER BY ID
 // =====================================================
-// This function is specifically for returning
-// user information to the frontend.
-//
-// Password is NEVER selected.
 
 const getSafeUserById = (id) => {
-
     return db.prepare(`
         SELECT
             id,
             name,
             email,
             role,
-            phone
+            phone,
+            email_verified
         FROM users
         WHERE id = ?
     `).get(id);
-
 };
-
 
 // =====================================================
 // CREATE USER
@@ -104,7 +85,9 @@ const createUser = ({
     email,
     password,
     role = "customer",
-    phone = null
+    phone = null,
+    verificationCode = null,
+    verificationCodeExpires = null
 }) => {
 
     const stmt = db.prepare(`
@@ -113,9 +96,12 @@ const createUser = ({
             email,
             password,
             role,
-            phone
+            phone,
+            email_verified,
+            verification_code,
+            verification_code_expires
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, 0, ?, ?)
     `);
 
     return stmt.run(
@@ -123,20 +109,56 @@ const createUser = ({
         email,
         password,
         role,
-        phone
+        phone,
+        verificationCode,
+        verificationCodeExpires
     );
-
 };
 
+// =====================================================
+// VERIFY EMAIL
+// =====================================================
+
+const verifyEmail = (id) => {
+
+    return db.prepare(`
+        UPDATE users
+        SET
+            email_verified = 1,
+            verification_code = NULL,
+            verification_code_expires = NULL
+        WHERE id = ?
+    `).run(id);
+};
+
+// =====================================================
+// UPDATE VERIFICATION CODE
+// =====================================================
+
+const updateVerificationCode = (
+    id,
+    verificationCode,
+    verificationCodeExpires
+) => {
+
+    return db.prepare(`
+        UPDATE users
+        SET
+            verification_code = ?,
+            verification_code_expires = ?
+        WHERE id = ?
+    `).run(
+        verificationCode,
+        verificationCodeExpires,
+        id
+    );
+};
 
 // =====================================================
 // UPDATE USER ROLE
 // =====================================================
 
-const updateUserRole = (
-    id,
-    role
-) => {
+const updateUserRole = (id, role) => {
 
     return db.prepare(`
         UPDATE users
@@ -146,9 +168,7 @@ const updateUserRole = (
         role,
         id
     );
-
 };
-
 
 // =====================================================
 // DELETE USER
@@ -160,22 +180,20 @@ const deleteUser = (id) => {
         DELETE FROM users
         WHERE id = ?
     `).run(id);
-
 };
-
 
 // =====================================================
 // EXPORTS
 // =====================================================
 
 module.exports = {
-
     getAllUsers,
     getUserById,
     getUserByEmail,
     getSafeUserById,
     createUser,
+    verifyEmail,
+    updateVerificationCode,
     updateUserRole,
     deleteUser
-
 };
