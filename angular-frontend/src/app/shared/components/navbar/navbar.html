@@ -1,44 +1,18 @@
 <nav class="navbar">
   <div class="navbar-container">
-
-    <a routerLink="/" class="logo">
-      🎬 CineBook
-    </a>
+    <a routerLink="/" class="logo"><span class="logo-mark">C</span><span>Cine<span>Book</span></span></a>
 
     <div class="nav-links">
-      <a
-        routerLink="/"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-        Home
-      </a>
-
-      <a routerLink="/movies" routerLinkActive="active">
-        Movies
-      </a>
-
-      <a routerLink="/cinemas" routerLinkActive="active">
-        Cinemas
-      </a>
-
-      <a routerLink="/shows" routerLinkActive="active">
-        Shows
-      </a>
-
-      <a routerLink="/bookings" routerLinkActive="active">
-        My Bookings
-      </a>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/movies" routerLinkActive="active">Movies</a>
+      <a routerLink="/cinemas" routerLinkActive="active">Cinemas</a>
+      <a routerLink="/shows" routerLinkActive="active">Shows</a>
+      <a routerLink="/bookings" routerLinkActive="active">My Tickets</a>
     </div>
 
     <div class="auth-links">
-      <a routerLink="/login" class="login-btn">
-        Login
-      </a>
-
-      <a routerLink="/signup" class="signup-btn">
-        Sign Up
-      </a>
+      <a routerLink="/login" class="login-btn">Sign In</a>
+      <a routerLink="/signup" class="signup-btn">Get Started</a>
     </div>
-
   </div>
 </nav>
