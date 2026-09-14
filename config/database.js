@@ -19,7 +19,19 @@ db.prepare(`
 
 console.log("Users table is ready");
 
+const tableExists = (table) => {
+    return Boolean(
+        db.prepare(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name = ?"
+        ).get(table)
+    );
+};
+
 const addColumnIfMissing = (table, column, definition) => {
+    if (!tableExists(table)) {
+        return;
+    }
+
     const columns = db.prepare(`PRAGMA table_info(${table})`).all();
 
     if (!columns.some((item) => item.name === column)) {
@@ -39,11 +51,7 @@ try {
     addColumnIfMissing("bookings", "ticket_price", "REAL NOT NULL DEFAULT 120");
     addColumnIfMissing("bookings", "total_price", "REAL NOT NULL DEFAULT 0");
 
-    const showsTable = db.prepare(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='shows'"
-    ).get();
-
-    if (showsTable) {
+    if (tableExists("shows")) {
         db.prepare(`
             UPDATE shows
             SET ticket_price = CASE
@@ -54,6 +62,21 @@ try {
                 WHEN id = 5 THEN 140
                 ELSE ticket_price
             END
+        `).run();
+    }
+
+    if (tableExists("bookings") && tableExists("shows")) {
+        db.prepare(`
+            UPDATE bookings
+            SET ticket_price = COALESCE(
+                (SELECT ticket_price FROM shows WHERE shows.id = bookings.show_id),
+                120
+            ),
+            total_price = seats_booked * COALESCE(
+                (SELECT ticket_price FROM shows WHERE shows.id = bookings.show_id),
+                120
+            )
+            WHERE total_price = 0
         `).run();
     }
 } catch (error) {
