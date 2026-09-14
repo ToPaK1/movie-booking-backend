@@ -1,1 +1,101 @@
-<main class="admin-page"><header><div><p class="eyebrow">CINEBOOK CONTROL CENTER</p><h1>Admin Dashboard</h1><p class="muted">Manage your catalog and monitor cinema performance.</p></div><button type="button" (click)="refresh()">Refresh Data</button></header>@if(message()){<div class="notice">{{message()}}</div>}<section class="stats"><article><span>MOVIES</span><strong>{{movies().length}}</strong></article><article><span>CINEMAS</span><strong>{{cinemas().length}}</strong></article><article><span>SHOWS</span><strong>{{shows().length}}</strong></article><article><span>BOOKINGS</span><strong>{{bookings().length}}</strong></article><article><span>TICKETS SOLD</span><strong>{{tickets}}</strong></article><article><span>REVENUE</span><strong>EGP {{revenue|number:'1.0-2'}}</strong></article></section><section class="panel editor"><div class="panel-head"><div><p class="eyebrow">CATALOG MANAGEMENT</p><h2>{{editingId()?'Edit movie':'Add movie'}}</h2></div>@if(editingId()){<button class="ghost" type="button" (click)="resetForm()">Cancel Edit</button>}</div><div class="form-grid"><input [(ngModel)]="form.title" placeholder="Movie title"><input [(ngModel)]="form.genre" placeholder="Genre"><input type="number" [(ngModel)]="form.duration" placeholder="Duration"><input type="number" step="0.1" [(ngModel)]="form.rating" placeholder="Rating"><input type="date" [(ngModel)]="form.release_date"><input [(ngModel)]="form.poster" placeholder="Poster URL"><textarea [(ngModel)]="form.description" placeholder="Description"></textarea></div><button class="save" type="button" (click)="saveMovie()">{{editingId()?'Update Movie':'Create Movie'}}</button></section><section class="panel"><div class="panel-head"><div><p class="eyebrow">CATALOG</p><h2>Movies</h2></div><span>{{movies().length}} titles</span></div><div class="movie-grid">@for(m of movies();track m.id){<article class="movie"><img [src]="m.poster" [alt]="m.title"><div><h3>{{m.title}}</h3><p>{{m.genre}} · {{m.duration}} min · ⭐ {{m.rating}}</p><div class="movie-actions"><button type="button" (click)="editMovie(m)">Edit</button><button class="danger" type="button" (click)="deleteMovie(m)">Delete</button></div></div></article>}</div></section><section class="panel"><div class="panel-head"><div><p class="eyebrow">PERFORMANCE</p><h2>Revenue by movie</h2></div></div>@if(!bookings().length){<p class="muted">No booking data yet.</p>}@else{<div class="bars">@for(m of movies();track m.id){@let value=bookings().filter(b=>b.movie_title===m.title).reduce((n,b)=>n+Number(b.total_price||0),0);<div class="bar-row"><span>{{m.title}}</span><div class="bar"><i [style.width.%]="revenue?value/revenue*100:0"></i></div><b>EGP {{value|number:'1.0-0'}}</b></div>}</div>}</section></main>
+<main class="admin-page">
+  <header>
+    <div>
+      <p class="eyebrow">CINEBOOK CONTROL CENTER</p>
+      <h1>Admin Dashboard</h1>
+      <p class="muted">Manage your catalog and monitor cinema performance.</p>
+    </div>
+    <button type="button" (click)="refresh()">Refresh Data</button>
+  </header>
+
+  @if (message()) {
+    <div class="notice">{{ message() }}</div>
+  }
+
+  <section class="stats">
+    <article><span>MOVIES</span><strong>{{ movies().length }}</strong></article>
+    <article><span>CINEMAS</span><strong>{{ cinemas().length }}</strong></article>
+    <article><span>SHOWS</span><strong>{{ shows().length }}</strong></article>
+    <article><span>BOOKINGS</span><strong>{{ bookings().length }}</strong></article>
+    <article><span>TICKETS SOLD</span><strong>{{ tickets }}</strong></article>
+    <article><span>REVENUE</span><strong>EGP {{ revenue | number:'1.0-2' }}</strong></article>
+  </section>
+
+  <section class="panel editor">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">CATALOG MANAGEMENT</p>
+        <h2>{{ editingId() ? 'Edit movie' : 'Add movie' }}</h2>
+      </div>
+      @if (editingId()) {
+        <button class="ghost" type="button" (click)="resetForm()">Cancel Edit</button>
+      }
+    </div>
+
+    <div class="form-grid">
+      <input [(ngModel)]="form.title" placeholder="Movie title">
+      <input [(ngModel)]="form.genre" placeholder="Genre">
+      <input type="number" [(ngModel)]="form.duration" placeholder="Duration">
+      <input type="number" step="0.1" [(ngModel)]="form.rating" placeholder="Rating">
+      <input type="date" [(ngModel)]="form.release_date">
+      <input [(ngModel)]="form.poster" placeholder="Poster URL">
+      <textarea [(ngModel)]="form.description" placeholder="Description"></textarea>
+    </div>
+
+    <button class="save" type="button" (click)="saveMovie()">
+      {{ editingId() ? 'Update Movie' : 'Create Movie' }}
+    </button>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">CATALOG</p>
+        <h2>Movies</h2>
+      </div>
+      <span>{{ movies().length }} titles</span>
+    </div>
+
+    <div class="movie-grid">
+      @for (movie of movies(); track movie.id) {
+        <article class="movie">
+          <img [src]="movie.poster" [alt]="movie.title">
+          <div>
+            <h3>{{ movie.title }}</h3>
+            <p>{{ movie.genre }} · {{ movie.duration }} min · ⭐ {{ movie.rating }}</p>
+            <div class="movie-actions">
+              <button type="button" (click)="editMovie(movie)">Edit</button>
+              <button class="danger" type="button" (click)="deleteMovie(movie)">Delete</button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">PERFORMANCE</p>
+        <h2>Revenue by movie</h2>
+      </div>
+    </div>
+
+    @if (!bookings().length) {
+      <p class="muted">No booking data yet.</p>
+    } @else {
+      <div class="bars">
+        @for (movie of movies(); track movie.id) {
+          @let value = movieRevenue(movie.title);
+          <div class="bar-row">
+            <span>{{ movie.title }}</span>
+            <div class="bar">
+              <i [style.width.%]="revenuePercentage(value)"></i>
+            </div>
+            <b>EGP {{ value | number:'1.0-0' }}</b>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</main>
