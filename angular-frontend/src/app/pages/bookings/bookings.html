@@ -30,7 +30,13 @@
                 <div class="price"><small>Total</small><strong>EGP {{ booking.total_price | number:'1.0-2' }}</strong></div>
               </div>
             </div>
-            <div class="ticket-footer"><div class="ticket-status"><span class="status-dot"></span> Confirmed</div><button type="button" class="cancel-btn" (click)="deleteBooking(booking.id)">Cancel Booking</button></div>
+            <div class="ticket-footer">
+              <div class="ticket-status"><span class="status-dot"></span> Confirmed</div>
+              <div class="ticket-actions">
+                <a class="view-ticket-btn" [routerLink]="['/booking-confirmation', booking.id]">VIEW TICKET</a>
+                <button type="button" class="cancel-btn" (click)="deleteBooking(booking.id)">Cancel Booking</button>
+              </div>
+            </div>
           </article>
         }
       </div>
