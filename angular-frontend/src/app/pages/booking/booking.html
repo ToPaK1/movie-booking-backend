@@ -38,9 +38,9 @@
           <div class="seat-map">
             @for (row of rows; track row) {
               <div class="seat-row"><span class="row-label">{{ row }}</span>
-                @for (number of [].constructor(seatsPerRow); track $index) {
-                  @let seat = seatId(row, $index + 1);
-                  <button type="button" class="seat" [class.booked]="isBooked(seat)" [class.selected]="isSelected(seat)" [disabled]="isBooked(seat)" (click)="toggleSeat(seat)" [attr.aria-label]="seat">{{ $index + 1 }}</button>
+                @for (number of seatNumbers; track number) {
+                  @let seat = seatId(row, number);
+                  <button type="button" class="seat" [class.booked]="isBooked(seat)" [class.selected]="isSelected(seat)" [disabled]="isBooked(seat)" (click)="toggleSeat(seat)" [attr.aria-label]="seat">{{ number }}</button>
                 }
               </div>
             }
