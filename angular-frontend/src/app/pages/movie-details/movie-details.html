@@ -1,35 +1,30 @@
 <section class="details-page">
   @if (loading()) {
-    <div class="state">Loading movie and cinema schedule...</div>
+    <div class="state loading-state"><span class="spinner"></span><p>Loading movie and showtimes...</p></div>
   } @else if (error()) {
-    <div class="state error">{{ error() }}</div>
+    <div class="state error-state"><span>!</span><h2>Something went wrong</h2><p>{{ error() }}</p><a routerLink="/movies" class="secondary-btn">Back to Movies</a></div>
   } @else if (movie()) {
     <div class="movie-details">
-      <div class="poster">
+      <div class="poster-wrap"><div class="poster-glow"></div><div class="poster">
         @if (movie()!.poster) { <img [src]="movie()!.poster" [alt]="movie()!.title"> } @else { <span>🎬</span> }
-      </div>
+        <div class="poster-overlay"></div><div class="poster-badge">CINEBOOK</div>
+      </div></div>
       <div class="content">
-        <span class="genre">{{ movie()!.genre }}</span>
-        <div class="title-row"><h1>{{ movie()!.title }}</h1>@if(auth.isLoggedIn()){<button class="favorite-btn" [class.saved]="favorite()" type="button" (click)="toggleFavorite()">{{ favorite() ? '♥ Saved' : '♡ Save' }}</button>}</div>
-        <div class="rating">⭐ {{ movie()!.rating }}</div>
+        <div class="eyebrow"><span></span> NOW SHOWING</div>
+        <span class="genre">{{ movie()!.genre || 'Movie' }}</span>
+        <div class="title-row"><h1>{{ movie()!.title }}</h1>@if(auth.isLoggedIn()){<button class="favorite-btn" [class.saved]="favorite()" type="button" (click)="toggleFavorite()"><span>{{ favorite() ? '♥' : '♡' }}</span>{{ favorite() ? 'Saved' : 'Save' }}</button>}</div>
+        <div class="rating-row"><span class="rating">★ {{ movie()!.rating || '—' }}</span><span class="dot"></span><span>{{ movie()!.duration }} min</span><span class="dot"></span><span>{{ movie()!.release_date }}</span></div>
         <p class="description">{{ movie()!.description }}</p>
-        <div class="info">
-          <div><span>Duration</span><strong>{{ movie()!.duration }} minutes</strong></div>
-          <div><span>Release Date</span><strong>{{ movie()!.release_date }}</strong></div>
-          <div><span>Upcoming Shows</span><strong>{{ movieShows().length }}</strong></div>
-        </div>
+        <div class="info"><div><span>GENRE</span><strong>{{ movie()!.genre || '—' }}</strong></div><div><span>DURATION</span><strong>{{ movie()!.duration }} min</strong></div><div><span>RATING</span><strong>★ {{ movie()!.rating || '—' }}</strong></div><div><span>SHOWS</span><strong>{{ movieShows().length }} upcoming</strong></div></div>
+        <a [routerLink]="movieShows().length ? ['/booking'] : ['/shows']" [queryParams]="movieShows().length ? { show_id: movieShows()[0].id } : null" class="main-cta">{{ movieShows().length ? 'Book Best Available Show' : 'Browse All Showtimes' }} <span>→</span></a>
       </div>
     </div>
     <section class="showtimes-section">
-      <div class="section-heading"><span>BOOK YOUR TICKETS</span><h2>Cinemas & Showtimes</h2><p>Live schedule from CineBook. Pick a cinema and a time that works for you.</p></div>
-      @if (movieShows().length === 0) { <div class="empty-shows">No upcoming showtimes are available right now.</div> } @else {
-        <div class="showtimes-grid">@for (show of movieShows(); track show.id) {
-          <article class="show-card"><div class="cinema-top"><div><span class="label">CINEMA</span><h3>{{ cinemaName(show.cinema_id) }}</h3><p>📍 {{ cinemaLocation(show.cinema_id) }}</p></div><strong class="price">EGP {{ show.ticket_price }}</strong></div>
-          <div class="show-meta"><div><span>DATE</span><strong>{{ formatDate(show.show_date) }}</strong></div><div><span>TIME</span><strong>{{ formatTime(show.show_time) }}</strong></div><div><span>SEATS</span><strong>{{ show.available_seats }} left</strong></div></div>
-          <a [routerLink]="['/booking']" [queryParams]="{ show_id: show.id }" class="book-btn">Choose Seats</a></article>
-        }</div>
+      <div class="section-heading"><div><span>BOOK YOUR TICKETS</span><h2>Cinemas & Showtimes</h2></div><p>Choose your cinema, time, and seats. Prices and availability are live.</p></div>
+      @if (movieShows().length === 0) { <div class="empty-shows"><span>◷</span><h3>No upcoming shows</h3><p>There are no available showtimes for this movie right now.</p><a routerLink="/shows" class="secondary-btn">Explore Other Shows</a></div> } @else {
+        <div class="showtimes-grid">@for (show of movieShows(); track show.id) {<article class="show-card"><div class="cinema-top"><div><span class="label">CINEMA</span><h3>{{ cinemaName(show.cinema_id) }}</h3><p>📍 {{ cinemaLocation(show.cinema_id) || 'CineBook Cinema' }}</p></div><strong class="price">EGP {{ show.ticket_price }}</strong></div><div class="show-meta"><div><span>DATE</span><strong>{{ formatDate(show.show_date) }}</strong></div><div><span>TIME</span><strong>{{ formatTime(show.show_time) }}</strong></div><div><span>SEATS</span><strong [class.low-seats]="show.available_seats < 20">{{ show.available_seats }} left</strong></div></div><a [routerLink]="['/booking']" [queryParams]="{ show_id: show.id }" class="book-btn">Choose Seats <span>→</span></a></article>}</div>
       }
-      <div class="actions"><a routerLink="/movies" class="secondary-btn">Back to Movies</a><a routerLink="/shows" class="secondary-btn">View All Shows</a></div>
+      <div class="actions"><a routerLink="/movies" class="secondary-btn">← Back to Movies</a><a routerLink="/shows" class="secondary-btn">View All Shows →</a></div>
     </section>
   }
 </section>
