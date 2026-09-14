@@ -1,1 +1,22 @@
-<nav class="navbar"><div class="navbar-container"><a routerLink="/" class="logo" aria-label="CineBook home"><span class="logo-mark">C</span><span>Cine<span>Book</span></span></a><div class="nav-links"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a><a routerLink="/movies" routerLinkActive="active">Movies</a><a routerLink="/cinemas" routerLinkActive="active">Cinemas</a><a routerLink="/shows" routerLinkActive="active">Shows</a>@if(auth.isLoggedIn()){<a routerLink="/bookings" routerLinkActive="active">My Tickets</a><a routerLink="/favorites" routerLinkActive="active">Favorites</a><a routerLink="/profile" routerLinkActive="active">Profile</a>@if(auth.isAdmin()){<a routerLink="/admin" routerLinkActive="active">Admin</a>}}</div><div class="auth-links">@if(auth.isLoggedIn()){<span class="user-chip">{{auth.getUser()?.name||'Account'}}</span><button type="button" class="logout-btn" (click)="logout()">Logout</button>}@else{<a routerLink="/login" class="login-btn">Sign In</a><a routerLink="/signup" class="signup-btn">Get Started</a>}</div></div></nav>
+<nav class="navbar">
+  <div class="navbar-container">
+    <a routerLink="/" class="logo" aria-label="CineBook home" (click)="closeMenu()"><span class="logo-mark">C</span><span>Cine<span>Book</span></span></a>
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    <div class="nav-links" [class.open]="menuOpen()">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Home</a>
+      <a routerLink="/movies" routerLinkActive="active" (click)="closeMenu()">Movies</a>
+      <a routerLink="/cinemas" routerLinkActive="active" (click)="closeMenu()">Cinemas</a>
+      <a routerLink="/shows" routerLinkActive="active" (click)="closeMenu()">Shows</a>
+      @if(auth.isLoggedIn()){
+        <a routerLink="/bookings" routerLinkActive="active" (click)="closeMenu()">My Tickets</a>
+        <a routerLink="/favorites" routerLinkActive="active" (click)="closeMenu()">Favorites</a>
+        <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">Profile</a>
+        @if(auth.isAdmin()){<a routerLink="/admin" routerLinkActive="active" (click)="closeMenu()">Admin</a>}
+      }
+      <div class="mobile-auth">
+        @if(auth.isLoggedIn()){<button type="button" class="logout-btn" (click)="logout()">Logout</button>}@else{<a routerLink="/login" class="login-btn" (click)="closeMenu()">Sign In</a><a routerLink="/signup" class="signup-btn" (click)="closeMenu()">Get Started</a>}
+      </div>
+    </div>
+    <div class="auth-links">@if(auth.isLoggedIn()){<span class="user-chip">{{auth.getUser()?.name||'Account'}}</span><button type="button" class="logout-btn" (click)="logout()">Logout</button>}@else{<a routerLink="/login" class="login-btn">Sign In</a><a routerLink="/signup" class="signup-btn">Get Started</a>}</div>
+  </div>
+</nav>
