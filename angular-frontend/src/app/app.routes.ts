@@ -10,60 +10,18 @@ import { Bookings } from './pages/bookings/bookings';
 import { Login } from './pages/login/login';
 import { Signup } from './pages/signup/signup';
 import { VerifyEmail } from './pages/verify-email/verify-email';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: Home
-  },
-
-  {
-    path: 'movies',
-    component: Movies
-  },
-
-  {
-    path: 'movies/:id',
-    component: MovieDetails
-  },
-
-  {
-    path: 'cinemas',
-    component: Cinemas
-  },
-
-  {
-    path: 'shows',
-    component: Shows
-  },
-
-  {
-    path: 'booking',
-    component: Booking
-  },
-
-  {
-    path: 'bookings',
-    component: Bookings
-  },
-
-  {
-    path: 'login',
-    component: Login
-  },
-
-  {
-    path: 'signup',
-    component: Signup
-  },
-
-  {
-    path: 'verify-email',
-    component: VerifyEmail
-  },
-
-  {
-    path: '**',
-    redirectTo: ''
-  }
+  { path: '', component: Home },
+  { path: 'movies', component: Movies },
+  { path: 'movies/:id', component: MovieDetails },
+  { path: 'cinemas', component: Cinemas },
+  { path: 'shows', component: Shows },
+  { path: 'booking', component: Booking, canActivate: [authGuard] },
+  { path: 'bookings', component: Bookings, canActivate: [authGuard] },
+  { path: 'login', component: Login },
+  { path: 'signup', component: Signup },
+  { path: 'verify-email', component: VerifyEmail },
+  { path: '**', redirectTo: '' }
 ];
