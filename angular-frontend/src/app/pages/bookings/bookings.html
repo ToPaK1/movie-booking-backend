@@ -1,1 +1,260 @@
-<p>bookings works!</p>
+<div class="bookings-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <section class="page-header">
+
+    <div class="header-content">
+
+      <span class="eyebrow">
+        YOUR TICKETS
+      </span>
+
+      <h1>
+        My Bookings
+      </h1>
+
+      <p>
+        View and manage all your movie bookings.
+      </p>
+
+    </div>
+
+    <button
+      class="refresh-btn"
+      type="button"
+      (click)="refreshBookings()"
+      [disabled]="loading()"
+    >
+      ↻ Refresh
+    </button>
+
+  </section>
+
+
+  <!-- ================= ERROR ================= -->
+
+  @if (errorMessage()) {
+
+    <div class="message error">
+      {{ errorMessage() }}
+    </div>
+
+  }
+
+
+  <!-- ================= SUCCESS ================= -->
+
+  @if (successMessage()) {
+
+    <div class="message success">
+      {{ successMessage() }}
+    </div>
+
+  }
+
+
+  <!-- ================= LOADING ================= -->
+
+  @if (loading()) {
+
+    <div class="loading-container">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading your bookings...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ================= EMPTY ================= -->
+
+  @if (!loading() && bookings().length === 0) {
+
+    <section class="empty-state">
+
+      <div class="empty-icon">
+        🎟️
+      </div>
+
+      <h2>
+        No Bookings Yet
+      </h2>
+
+      <p>
+        You haven't booked any movies yet.
+      </p>
+
+      <a
+        routerLink="/shows"
+        class="browse-btn"
+      >
+        Browse Shows
+      </a>
+
+    </section>
+
+  }
+
+
+  <!-- ================= BOOKINGS ================= -->
+
+  @if (!loading() && bookings().length > 0) {
+
+    <section class="bookings-container">
+
+      <div class="booking-count">
+        {{ bookings().length }}
+        {{ bookings().length === 1 ? 'Booking' : 'Bookings' }}
+      </div>
+
+
+      <div class="bookings-grid">
+
+        @for (booking of bookings(); track booking.id) {
+
+          <article class="booking-card">
+
+            <!-- Ticket Header -->
+
+            <div class="ticket-header">
+
+              <div class="ticket-icon">
+                🎬
+              </div>
+
+              <div class="ticket-number">
+
+                <span>
+                  BOOKING
+                </span>
+
+                <strong>
+                  #{{ booking.id }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- Ticket Body -->
+
+            <div class="ticket-body">
+
+              <div class="movie-title">
+
+                <span class="small-label">
+                  MOVIE SHOW
+                </span>
+
+                <h2>
+                  Show #{{ booking.show_id }}
+                </h2>
+
+              </div>
+
+
+              <div class="details-grid">
+
+                <!-- Customer -->
+
+                <div class="detail-item">
+
+                  <span class="detail-label">
+                    Customer
+                  </span>
+
+                  <span class="detail-value">
+                    {{ booking.customer_name }}
+                  </span>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="detail-item">
+
+                  <span class="detail-label">
+                    Email
+                  </span>
+
+                  <span class="detail-value email">
+                    {{ booking.customer_email }}
+                  </span>
+
+                </div>
+
+
+                <!-- Show -->
+
+                <div class="detail-item">
+
+                  <span class="detail-label">
+                    Show ID
+                  </span>
+
+                  <span class="detail-value">
+                    #{{ booking.show_id }}
+                  </span>
+
+                </div>
+
+
+                <!-- Seats -->
+
+                <div class="detail-item">
+
+                  <span class="detail-label">
+                    Seats
+                  </span>
+
+                  <span class="detail-value seats">
+                    {{ booking.seats_booked }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Ticket Footer -->
+
+            <div class="ticket-footer">
+
+              <div class="ticket-status">
+
+                <span class="status-dot"></span>
+
+                Confirmed
+
+              </div>
+
+              <button
+                type="button"
+                class="cancel-btn"
+                (click)="deleteBooking(booking.id)"
+              >
+                Cancel Booking
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    </section>
+
+  }
+
+</div>

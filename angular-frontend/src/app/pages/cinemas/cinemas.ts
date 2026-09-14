@@ -1,9 +1,44 @@
-import { Component } from '@angular/core';
+
+import { Component, OnInit, inject, signal } from '@angular/core';
+
+import { Cinema, CinemasService } from '../../core/services/cinemas';
 
 @Component({
-  imports: [],
   selector: 'app-cinemas',
-  styleUrl: './cinemas.css',
+  imports: [],
   templateUrl: './cinemas.html',
+  styleUrl: './cinemas.css'
 })
-export class Cinemas {}
+export class Cinemas implements OnInit {
+
+  private readonly cinemasService = inject(CinemasService);
+
+  cinemas = signal<Cinema[]>([]);
+  loading = signal(true);
+  error = signal('');
+
+  ngOnInit(): void {
+    this.loadCinemas();
+  }
+
+  loadCinemas(): void {
+    this.loading.set(true);
+    this.error.set('');
+
+    this.cinemasService.getCinemas().subscribe({
+      next: (data) => {
+        this.cinemas.set(data);
+        this.loading.set(false);
+      },
+
+      error: (err) => {
+        console.error('Failed to load cinemas:', err);
+
+        this.cinemas.set([]);
+        this.error.set('Failed to load cinemas.');
+        this.loading.set(false);
+      }
+    });
+  }
+}
+

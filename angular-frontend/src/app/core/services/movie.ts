@@ -1,3 +1,4 @@
+
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -18,9 +19,9 @@ export interface Movie {
 })
 export class MovieService {
 
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/api/movies';
+  private readonly apiUrl = 'http://localhost:3000/api/movies';
 
   getMovies(): Observable<Movie[]> {
     return this.http.get<Movie[]>(this.apiUrl);

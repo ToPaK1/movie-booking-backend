@@ -1,1 +1,182 @@
-<p>shows works!</p>
+
+<section class="shows-page">
+
+  <div class="shows-header">
+
+    <div>
+      <span class="eyebrow">CINEBOOK</span>
+
+      <h1>Movie Shows</h1>
+
+      <p>
+        Find the perfect showtime and book your seat.
+      </p>
+    </div>
+
+    <button
+      class="refresh-btn"
+      (click)="loadShows()"
+    >
+      ↻ Refresh
+    </button>
+
+  </div>
+
+
+  @if (loading()) {
+
+    <div class="state-message">
+
+      <div class="loader"></div>
+
+      <h3>Loading Shows</h3>
+
+      <p>
+        We're finding the latest showtimes for you...
+      </p>
+
+    </div>
+
+  }
+
+  @else if (error()) {
+
+    <div class="state-message error">
+
+      <h3>Something went wrong</h3>
+
+      <p>
+        {{ error() }}
+      </p>
+
+      <button
+        class="retry-btn"
+        (click)="loadShows()"
+      >
+        Try Again
+      </button>
+
+    </div>
+
+  }
+
+  @else if (shows().length === 0) {
+
+    <div class="state-message">
+
+      <h3>No Shows Available</h3>
+
+      <p>
+        There are currently no movie shows available.
+      </p>
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="shows-grid">
+
+      @for (show of shows(); track show.id) {
+
+        <article class="show-card">
+
+          <div class="show-card-top">
+
+            <span class="show-id">
+              SHOW #{{ show.id }}
+            </span>
+
+            <span class="seats">
+              {{ show.available_seats }} seats left
+            </span>
+
+          </div>
+
+
+          <div class="show-info">
+
+            <div class="info-row">
+
+              <span class="label">
+                Movie
+              </span>
+
+              <span class="value">
+                Movie #{{ show.movie_id }}
+              </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span class="label">
+                Cinema
+              </span>
+
+              <span class="value">
+                Cinema #{{ show.cinema_id }}
+              </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span class="label">
+                Date
+              </span>
+
+              <span class="value">
+                {{ show.show_date }}
+              </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span class="label">
+                Time
+              </span>
+
+              <span class="value time">
+                {{ show.show_time }}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="book-btn"
+            [disabled]="show.available_seats <= 0"
+            (click)="bookNow(show.id)"
+          >
+
+            @if (show.available_seats > 0) {
+
+              <span>Book Now</span>
+
+              <span>→</span>
+
+            } @else {
+
+              <span>Sold Out</span>
+
+            }
+
+          </button>
+
+        </article>
+
+      }
+
+    </div>
+
+  }
+
+</section>

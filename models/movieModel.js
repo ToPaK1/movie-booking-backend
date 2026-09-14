@@ -38,29 +38,29 @@ const createMovie = (movie) => {
         poster
     } = movie;
 
-    return db
-        .prepare(`
-            INSERT INTO movies
-            (
-                title,
-                description,
-                genre,
-                duration,
-                release_date,
-                rating,
-                poster
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        `)
-        .run(
-            title,
-            description,
-            genre,
-            duration,
-            release_date,
-            rating,
-            poster
-        );
+  return db
+  .prepare(`
+    INSERT INTO movies
+    (
+      title,
+      description,
+      genre,
+      duration,
+      release_date,
+      rating,
+      poster
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `)
+  .run(
+    title,
+    description,
+    genre,
+    duration,
+    release_date,
+    rating,
+    poster
+  );
 };
 
 // ================= UPDATE MOVIE =================

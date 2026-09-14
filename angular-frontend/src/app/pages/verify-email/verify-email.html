@@ -1,0 +1,74 @@
+<div class="verify-page">
+
+  <div class="verify-card">
+
+    <div class="logo">
+      🎬
+    </div>
+
+    <h1>Verify Your Email</h1>
+
+    <p class="subtitle">
+      We sent a 6-digit verification code to your email address.
+    </p>
+
+    <div class="email-box">
+      {{ email }}
+    </div>
+
+    <form (ngSubmit)="verifyEmail()">
+
+      <div class="form-group">
+
+        <label for="code">
+          Verification Code
+        </label>
+
+        <input
+          id="code"
+          type="text"
+          name="code"
+          [(ngModel)]="code"
+          placeholder="Enter 6-digit code"
+          maxlength="6"
+          autocomplete="one-time-code"
+        />
+
+      </div>
+
+      @if (errorMessage()) {
+        <div class="message error">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      @if (successMessage()) {
+        <div class="message success">
+          {{ successMessage() }}
+        </div>
+      }
+
+      <button
+        type="submit"
+        [disabled]="loading()"
+      >
+        @if (loading()) {
+          Verifying...
+        } @else {
+          Verify Email
+        }
+      </button>
+
+    </form>
+
+    <div class="bottom-text">
+      Already verified?
+
+      <a routerLink="/login">
+        Login
+      </a>
+    </div>
+
+  </div>
+
+</div>
