@@ -4,21 +4,24 @@
     <button class="refresh-btn" type="button" (click)="loadShows()" [disabled]="loading()">↻ Refresh</button>
   </div>
 
-  @if (loading()) { <div class="state-message"><div class="loader"></div><h3>Loading showtimes</h3><p>Finding the latest screenings for you...</p></div> }
-  @else if (error()) { <div class="state-message error"><h3>Something went wrong</h3><p>{{ error() }}</p><button class="retry-btn" type="button" (click)="loadShows()">Try Again</button></div> }
-  @else if (shows().length === 0) { <div class="state-message"><div class="empty-icon">🎬</div><h3>No Shows Available</h3><p>There are currently no movie shows available.</p></div> }
-  @else {
+  @if (loading()) {
+    <div class="state-message"><div class="loader"></div><h3>Loading showtimes</h3><p>Finding the latest screenings for you...</p></div>
+  } @else if (error()) {
+    <div class="state-message error"><h3>Something went wrong</h3><p>{{ error() }}</p><button class="retry-btn" type="button" (click)="loadShows()">Try Again</button></div>
+  } @else if (shows().length === 0) {
+    <div class="state-message"><div class="empty-icon">🎬</div><h3>No Upcoming Shows</h3><p>There are currently no future screenings available.</p></div>
+  } @else {
     <div class="shows-grid">
       @for (show of shows(); track show.id) {
         <article class="show-card">
-          <div class="show-card-top"><span class="show-id">MOVIE SHOW</span><span class="seats" [class.low]="show.available_seats < 10">{{ show.available_seats }} seats left</span></div>
+          <div class="show-card-top"><span class="show-id">UPCOMING SHOW</span><span class="seats" [class.low]="show.available_seats < 10">{{ show.available_seats }} seats left</span></div>
           <div class="show-main">
             <span class="movie-kicker">NOW SHOWING</span>
             <h2>{{ show.movie_title || movieName(show.movie_id) }}</h2>
             <div class="show-info">
               <div class="info-row"><span class="label">Cinema</span><span class="value">{{ show.cinema_name || cinemaName(show.cinema_id) }}</span></div>
-              <div class="info-row"><span class="label">Date</span><span class="value">{{ show.show_date }}</span></div>
-              <div class="info-row"><span class="label">Time</span><span class="value time">{{ show.show_time }}</span></div>
+              <div class="info-row"><span class="label">Date</span><span class="value">{{ formatDate(show.show_date) }}</span></div>
+              <div class="info-row"><span class="label">Time</span><span class="value time">{{ formatTime(show.show_time) }}</span></div>
               <div class="info-row"><span class="label">Ticket</span><span class="value price">EGP {{ show.ticket_price | number:'1.0-2' }}</span></div>
             </div>
           </div>
