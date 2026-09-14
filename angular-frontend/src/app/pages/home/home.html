@@ -1,28 +1,63 @@
 <section class="hero">
-  <div class="hero-glow"></div>
+  <div class="hero-backdrop hero-backdrop-one"></div>
+  <div class="hero-backdrop hero-backdrop-two"></div>
   <div class="hero-content">
-    <span class="badge">CINEBOOK · YOUR MOVIE NIGHT STARTS HERE</span>
-    <h1>Movies worth<br><em>remembering.</em></h1>
-    <p>{{ subtitle() }}</p>
-    <div class="hero-buttons">
-      <a routerLink="/movies" class="primary-btn">Explore Movies <span>→</span></a>
-      <a routerLink="/shows" class="secondary-btn">Find a Show</a>
+    <div class="eyebrow"><span></span> CINEBOOK · MOVIE NIGHTS, ELEVATED</div>
+    <h1>Tonight deserves<br><em>a great movie.</em></h1>
+    <p>Discover the latest movies, find your perfect showtime, and reserve your seats in a few clicks.</p>
+    <div class="hero-actions">
+      <a routerLink="/movies" class="primary-btn">Explore Movies <strong>→</strong></a>
+      <a routerLink="/shows" class="ghost-btn">Browse Showtimes</a>
     </div>
-    <div class="hero-stats"><div><strong>4+</strong><span>Movies</span></div><i></i><div><strong>3</strong><span>Cinemas</span></div><i></i><div><strong>24/7</strong><span>Booking</span></div></div>
+    <div class="trust-row">
+      <div><strong>4+</strong><span>Movies</span></div><i></i>
+      <div><strong>3</strong><span>Cinemas</span></div><i></i>
+      <div><strong>24/7</strong><span>Online booking</span></div>
+    </div>
   </div>
-  <div class="hero-art" aria-hidden="true"><div class="ticket-shape"><span>🎬</span><b>CINEBOOK</b><small>ADMIT ONE</small></div><div class="floating-card card-one">★ <span>Premium Experience</span></div><div class="floating-card card-two">● <span>Book in seconds</span></div></div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="poster-stack">
+      <div class="poster-back poster-back-two"></div>
+      <div class="poster-back poster-back-one"></div>
+      <div class="poster-main">
+        <div class="poster-shine"></div><span class="poster-icon">✦</span>
+        <small>NOW SHOWING</small><strong>CINE<br>BOOK</strong><b>YOUR SEAT. YOUR NIGHT.</b>
+      </div>
+    </div>
+    <div class="floating-pill pill-top"><span>★</span> Premium experience</div>
+    <div class="floating-pill pill-bottom"><span>●</span> Book in seconds</div>
+  </div>
 </section>
+
 <section class="featured">
-  <div class="section-header"><div><span class="section-label">CURATED FOR YOU</span><h2>Popular Movies</h2></div><a routerLink="/movies">View all <span>→</span></a></div>
+  <div class="section-heading">
+    <div><span class="section-label">HANDPICKED FOR YOU</span><h2>What’s playing</h2></div>
+    <a routerLink="/movies" class="view-all">View all movies <span>→</span></a>
+  </div>
   <div class="movies-grid">
     @for (movie of featuredMovies(); track movie.id) {
       <article class="movie-card">
-        <div class="poster">
-          @if (movie.poster) { <img [src]="movie.poster" [alt]="movie.title"> } @else { <span>🎬</span> }
-          <div class="poster-overlay"></div>
+        <a [routerLink]="['/movies', movie.id]" class="poster" [attr.aria-label]="'View ' + movie.title">
+          @if (movie.poster) { <img [src]="movie.poster" [alt]="movie.title"> } @else { <span class="poster-fallback">✦</span> }
+          <div class="poster-vignette"></div><span class="poster-cta">View movie →</span>
+        </a>
+        <div class="movie-info">
+          <div class="movie-meta"><span>{{ movie.genre || 'Movie' }}</span><b>★ {{ movie.rating || '—' }}</b></div>
+          <h3>{{ movie.title }}</h3>
+          <a [routerLink]="['/movies', movie.id]" class="details-link">Details <span>→</span></a>
         </div>
-        <div class="movie-info"><div class="movie-top"><span class="genre">{{ movie.genre }}</span><span class="rating">★ {{ movie.rating }}</span></div><h3>{{ movie.title }}</h3><a [routerLink]="['/movies', movie.id]" class="details-btn">View Details <span>→</span></a></div>
       </article>
-    } @empty { <p class="empty">No movies available.</p> }
+    } @empty {
+      <div class="empty-state"><span>✦</span><h3>No movies yet</h3><p>Check back soon for the latest releases.</p></div>
+    }
+  </div>
+</section>
+
+<section class="experience-strip">
+  <div class="experience-copy"><span class="section-label">THE CINEBOOK EXPERIENCE</span><h2>From choosing a movie<br>to taking your seat.</h2></div>
+  <div class="experience-items">
+    <div><span>01</span><strong>Discover</strong><p>Explore movies worth watching.</p></div>
+    <div><span>02</span><strong>Choose</strong><p>Pick a cinema and showtime.</p></div>
+    <div><span>03</span><strong>Book</strong><p>Reserve your seats instantly.</p></div>
   </div>
 </section>
