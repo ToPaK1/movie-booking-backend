@@ -1,134 +1,157 @@
-# 🎬 Movie Booking System — Backend
+# 🎬 CineBook — Movie Booking System
 
-A RESTful backend API for a Movie Booking System built with **Node.js, Express.js, and SQLite**.
+A full-stack movie booking system built as a student project using **Node.js, Express.js, SQLite, JWT, and Angular**.
 
-The system allows users to register and log in securely, browse movies, cinemas, and shows, and create and manage movie bookings.
+CineBook lets customers discover movies, browse cinemas and showtimes, choose seats, complete a booking flow, receive booking confirmation, and manage their tickets. Admins can manage the movie catalog and cinema/show data through a dedicated dashboard.
 
-The project also includes **JWT Authentication** and **Role-Based Authorization** with two roles:
+## ✨ Main Features
 
-* `customer`
-* `admin`
+### 👤 Authentication
+- Customer registration and login
+- Email verification with a 6-digit code
+- Resend verification code
+- Password hashing with `bcryptjs`
+- JWT authentication
+- JWT expiration
+- Customer/admin roles
+- Passwords are never returned in API responses
+- Normal signup always creates a `customer`
 
----
+### 🎬 Movies
+- Browse all movies
+- Movie details page
+- Posters, genre, duration, release date and rating
+- Search/filter support
+- Upcoming showtimes per movie
+- Favorite movies for authenticated users
+- Admin create, update and delete
 
-## 🚀 Features
+### 🏢 Cinemas & Shows
+- Browse cinemas
+- Cinema details
+- Movie/cinema/show relationships
+- Show date and time
+- Ticket price
+- Available-seat tracking
+- Past shows are hidden from customer booking screens
 
-### 🔐 Authentication & Authorization
+### 🎟️ Booking & Tickets
+- Protected booking flow
+- Seat selection
+- Prevent double-booking of selected seats
+- Ticket price and total price calculation
+- Booking ownership checks
+- My Tickets page
+- Ticket confirmation page
+- Booking details and QR presentation
+- Cancel booking
+- Seats are restored after cancellation
+- Email booking confirmation
 
-* User Registration
-* User Login
-* Password Hashing using `bcryptjs`
-* JWT Authentication
-* Protected Routes
-* Role-Based Authorization
-* Customer and Admin roles
-* Authentication validation
-* Duplicate email prevention
-* Token expiration
-* Unauthorized request handling
+### 👑 Admin Dashboard
+- Movie management
+- Cinema management
+- Show management
+- Booking overview
+- Tickets sold
+- Revenue statistics
+- Revenue by movie
+- Responsive admin interface
 
-### 🎬 Movie Management
+### 🎨 Angular Frontend
+- Cinematic dark UI
+- Responsive layouts for desktop, tablet and mobile
+- Movie cards with posters and hover effects
+- Movie details experience
+- Seat-map booking interface
+- Checkout/payment flow
+- Booking confirmation ticket
+- Profile dashboard
+- Favorites
+- Admin dashboard
 
-* Get all movies
-* Get movie by ID
-* Create movie — Admin only
-* Update movie — Admin only
-* Delete movie — Admin only
+## 🛡️ Security
 
-### 🏢 Cinema Management
+- Passwords hashed with `bcryptjs`
+- JWT stored and verified server-side
+- Protected API routes require a Bearer token
+- Admin operations require the `admin` role
+- Normal signup cannot create an admin account
+- Authentication endpoints are rate-limited
+- General API requests are rate-limited
+- Request body size is limited
+- CORS is restricted to the local frontend origins used by the project
+- `X-Powered-By` is disabled
+- Basic security response headers are enabled
+- `.env` and database files are excluded from Git
+- Central error handling prevents raw application errors from being exposed
 
-* Cinema management
-* Cinema information
-* Location and seat capacity
+## 🛠️ Tech Stack
 
-### 🎞️ Show Management
+### Backend
+- Node.js
+- Express.js
+- SQLite
+- better-sqlite3
+- bcryptjs
+- jsonwebtoken
+- express-rate-limit
+- nodemailer
+- dotenv
+- CORS
 
-* Create and manage movie shows
-* Movie and cinema relationships
-* Show date and time
-* Available seats
+### Frontend
+- Angular
+- TypeScript
+- HTML
+- CSS
+- Angular Router
+- RxJS
 
-### 🎟️ Booking Management
-
-* Create bookings
-* View bookings
-* View personal bookings
-* Update bookings
-* Delete bookings
-* Booking ownership
-* Available seats validation
-* Restore available seats after cancellation
-
-### 🛡️ Security
-
-* Passwords are never stored as plain text
-* Passwords are hashed using `bcryptjs`
-* JWT tokens are used for authentication
-* Protected routes require a valid Bearer token
-* Admin-only operations require the `admin` role
-* `.env` is excluded from GitHub
-
----
-
-# 🛠️ Technologies
-
-* Node.js
-* Express.js
-* SQLite
-* better-sqlite3
-* bcryptjs
-* JSON Web Token (`jsonwebtoken`)
-* CORS
-* dotenv
-* Nodemon
-
----
-
-# 📁 Project Structure
+## 📁 Project Structure
 
 ```text
-BACKEND SERVER/
+movie-booking-backend/
 │
 ├── config/
 │   └── database.js
-│
 ├── controllers/
 │   ├── authController.js
 │   ├── bookingController.js
 │   ├── cinemaController.js
 │   ├── movieController.js
 │   └── showController.js
-│
 ├── middleware/
 │   ├── authMiddleware.js
 │   ├── roleMiddleware.js
 │   └── errorHandler.js
-│
 ├── models/
 │   ├── userModel.js
 │   ├── bookingModel.js
 │   ├── cinemaModel.js
 │   ├── movieModel.js
 │   └── showModel.js
-│
 ├── routes/
 │   ├── authRoutes.js
 │   ├── bookingRoutes.js
 │   ├── cinemaRoutes.js
+│   ├── favoriteRoutes.js
 │   ├── movieRoutes.js
 │   └── showRoutes.js
-│
 ├── database/
 │   └── initDatabase.js
-│
 ├── scripts/
 │   └── createAdmin.js
-│
-├── FRONTEND/
-│
+├── angular-frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/
+│   │   │   ├── pages/
+│   │   │   └── shared/
+│   │   └── styles.css
+│   ├── angular.json
+│   └── package.json
 ├── data/
-│   └── movie_booking.db
-│
 ├── .env
 ├── .gitignore
 ├── app.js
@@ -136,124 +159,96 @@ BACKEND SERVER/
 └── README.md
 ```
 
-> `.env`, `node_modules`, and database files should not be uploaded to GitHub.
+> `.env`, `node_modules`, and SQLite database files should not be committed to GitHub.
 
----
+## ⚙️ Backend Installation
 
-# ⚙️ Installation
-
-## 1. Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/ToPaK1/movie-booking-backend.git
-```
-
-Then enter the project folder:
-
-```bash
 cd movie-booking-backend
 ```
 
----
-
-## 2. Install dependencies
+### 2. Install backend dependencies
 
 ```bash
 npm install
 ```
 
----
+### 3. Configure environment variables
 
-# 🔑 Environment Variables
-
-Create a `.env` file in the project root:
+Create `.env` in the project root:
 
 ```env
 PORT=3000
-JWT_SECRET=your_super_secret_key
+JWT_SECRET=your_long_random_secret_key
+JWT_EXPIRES_IN=1d
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_email_app_password
 ```
 
-### Important
+Keep `.env` private.
 
-Do not upload `.env` to GitHub.
-
-The `.gitignore` file should contain:
-
-```gitignore
-node_modules/
-.env
-data/*.db
-*.db
-npm-debug.log
-```
-
----
-
-# 🗄️ Database Setup
-
-The project uses **SQLite** with `better-sqlite3`.
-
-Initialize the database using:
+### 4. Initialize the database
 
 ```bash
 node database/initDatabase.js
 ```
 
-This creates the required tables:
+The application also contains startup database migration logic so an existing SQLite database can receive newer booking, ticket-price, catalog and show fields without requiring the database file to be committed.
 
-* `users`
-* `movies`
-* `cinemas`
-* `shows`
-* `bookings`
-
-The initialization script also inserts sample movies, cinemas, shows, and bookings.
-
----
-
-# 👑 Create an Admin User
-
-The normal Signup endpoint creates users with the `customer` role.
-
-To create an Admin user, run:
+### 5. Create an admin
 
 ```bash
 node scripts/createAdmin.js
 ```
 
-The Admin account is created with a hashed password and the role:
+Normal signup remains `customer` only.
 
-```text
-admin
-```
-
----
-
-# ▶️ Run the Server
-
-### Development
-
-If Nodemon is configured:
+### 6. Start the backend
 
 ```bash
 npm run dev
 ```
 
-### Normal mode
+or:
 
 ```bash
-node app.js
+npm start
 ```
 
-The server runs by default on:
+Backend API:
 
 ```text
-http://localhost:3000
+http://localhost:3000/api
 ```
 
----
+## 🖥️ Angular Frontend
 
-# 🔐 Authentication API
+The Angular application lives inside the repository under `angular-frontend/`.
+
+```bash
+cd angular-frontend
+npm install
+ng serve
+```
+
+Development frontend:
+
+```text
+http://localhost:4200
+```
+
+The frontend communicates with the backend API at:
+
+```text
+http://localhost:3000/api
+```
+
+For the production-style setup used by the backend, the Angular build can be served from the backend's configured frontend directory.
+
+## 🔐 Authentication API
 
 Base URL:
 
@@ -261,330 +256,199 @@ Base URL:
 http://localhost:3000/api
 ```
 
----
-
-## 1. User Signup
-
-### Endpoint
+### Signup
 
 ```http
 POST /api/auth/signup
 ```
 
-### Request Body
-
 ```json
 {
-    "name": "Test User",
-    "email": "testuser@gmail.com",
-    "password": "123456",
-    "phone": "01012345678"
+  "name": "Test User",
+  "email": "testuser@gmail.com",
+  "password": "123456",
+  "phone": "01012345678"
 }
 ```
 
-### Successful Response
+### Verify Email
+
+```http
+POST /api/auth/verify-email
+```
 
 ```json
 {
-    "message": "Account created successfully",
-    "userId": 1
+  "email": "testuser@gmail.com",
+  "code": "123456"
 }
 ```
 
-### Validation
+### Resend Verification
 
-Required fields:
-
-* `name`
-* `email`
-* `password`
-
-Password must contain at least 6 characters.
-
-If the email already exists:
-
-```text
-409 Conflict
+```http
+POST /api/auth/resend-verification
 ```
 
----
-
-# 🔑 2. User Login
-
-### Endpoint
+### Login
 
 ```http
 POST /api/auth/login
 ```
 
-### Request Body
-
 ```json
 {
-    "email": "testuser@gmail.com",
-    "password": "123456"
+  "email": "testuser@gmail.com",
+  "password": "123456"
 }
 ```
 
-### Successful Response
+Successful login returns a JWT and safe user information. The password is never returned.
 
-```json
-{
-    "message": "Login successful",
-    "token": "JWT_TOKEN",
-    "user": {
-        "id": 1,
-        "name": "Test User",
-        "email": "testuser@gmail.com",
-        "role": "customer",
-        "phone": "01012345678"
-    }
-}
-```
+## 🔑 Protected Requests
 
-The returned JWT token must be used when accessing protected routes.
-
----
-
-# 🛡️ JWT Authentication
-
-Protected routes require the following HTTP header:
+Protected endpoints use:
 
 ```http
 Authorization: Bearer YOUR_JWT_TOKEN
 ```
 
-Example:
+The authentication middleware verifies the token and exposes only the authenticated user's `id`, `email`, and `role` to downstream controllers.
 
-```http
-Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
-```
+## 🎬 API Overview
 
-The authentication middleware:
+| Method | Endpoint | Access |
+|---|---|---|
+| GET | `/api/movies` | Public |
+| GET | `/api/movies/:id` | Public |
+| POST | `/api/movies` | Admin |
+| PUT | `/api/movies/:id` | Admin |
+| DELETE | `/api/movies/:id` | Admin |
+| GET | `/api/cinemas` | Public |
+| GET | `/api/cinemas/:id` | Public |
+| GET | `/api/shows` | Public |
+| GET | `/api/shows/:id` | Public |
+| GET | `/api/bookings` | Admin |
+| GET | `/api/bookings/my` | Authenticated |
+| GET | `/api/bookings/:id` | Owner/Admin |
+| POST | `/api/bookings` | Authenticated |
+| DELETE | `/api/bookings/:id` | Owner/Admin |
+| GET | `/api/favorites` | Authenticated |
+| POST/DELETE | `/api/favorites/:movieId` | Authenticated |
 
-1. Checks the Authorization header.
-2. Checks the Bearer format.
-3. Extracts the JWT.
-4. Verifies the token using `JWT_SECRET`.
-5. Stores the decoded user information in `req.user`.
-6. Allows the request to continue.
+## 🎟️ Booking Logic
 
----
-
-# 👥 Role-Based Authorization
-
-The system supports two roles:
+When a customer books seats:
 
 ```text
-customer
-admin
+Choose movie
+     ↓
+Choose cinema/show
+     ↓
+Choose seats
+     ↓
+Validate availability
+     ↓
+Calculate ticket total
+     ↓
+Create booking
+     ↓
+Decrease available seats
+     ↓
+Payment/checkout flow
+     ↓
+Booking confirmation
+     ↓
+Email confirmation
 ```
+
+When a booking is cancelled, its selected seats are restored to the show's available-seat count.
+
+## 👥 Roles
 
 ### Customer
 
-Regular users can:
-
-* Browse movies
-* Browse cinemas
-* Browse shows
-* Create bookings
-* Manage their bookings
+Customers can:
+- Browse movies, cinemas and shows
+- View movie details
+- Save favorites
+- Choose seats
+- Create bookings
+- View their tickets
+- Cancel their own bookings
+- View their profile
 
 ### Admin
 
 Admins can additionally:
+- Create/update/delete movies
+- Manage cinemas
+- Manage shows
+- View booking statistics
+- View ticket and revenue information
 
-* Create movies
-* Update movies
-* Delete movies
+## 📱 Responsive Design
 
-Admin movie routes are protected using:
+CineBook's frontend is designed for:
+- Desktop
+- Laptop/tablet widths
+- Mobile screens
 
-```text
-authMiddleware
-        ↓
-roleMiddleware("admin")
-        ↓
-movie controller
-```
+Key responsive areas include the navbar, home page, movie cards, movie details, show cards, booking seat map, checkout, tickets, profile and admin dashboard.
 
----
+## 🧪 Project Verification
 
-# 🎬 Movie API
+The project has been tested during development for:
 
-| Method | Endpoint          | Access |
-| ------ | ----------------- | ------ |
-| GET    | `/api/movies`     | Public |
-| GET    | `/api/movies/:id` | Public |
-| POST   | `/api/movies`     | Admin  |
-| PUT    | `/api/movies/:id` | Admin  |
-| DELETE | `/api/movies/:id` | Admin  |
+- Successful signup/login flow
+- JWT-protected routes
+- Customer access restrictions
+- Admin authorization
+- Movie creation by admin
+- Booking ownership
+- Seat availability and restoration
+- Ticket pricing and total calculation
+- Email verification and confirmation flow
+- Angular page routing and UI integration
 
----
+## 📌 Notes for Demonstration
 
-# 🎟️ Booking API
-
-| Method | Endpoint            | Access        |
-| ------ | ------------------- | ------------- |
-| GET    | `/api/bookings`     | Authenticated |
-| GET    | `/api/bookings/my`  | Authenticated |
-| GET    | `/api/bookings/:id` | Authenticated |
-| POST   | `/api/bookings`     | Authenticated |
-| PUT    | `/api/bookings/:id` | Authenticated |
-| DELETE | `/api/bookings/:id` | Authenticated |
-
-All booking routes require:
-
-```http
-Authorization: Bearer YOUR_JWT_TOKEN
-```
-
----
-
-# 🏢 Cinema API
-
-The Cinema API provides access to cinema information including:
-
-* Cinema name
-* Location
-* Total seats
-
-Base endpoint:
-
-```http
-/api/cinemas
-```
-
----
-
-# 🎞️ Shows API
-
-The Shows API manages movie show information including:
-
-* Movie
-* Cinema
-* Date
-* Time
-* Available seats
-
-Base endpoint:
-
-```http
-/api/shows
-```
-
----
-
-# 🧪 Authentication Testing
-
-The Authentication Module was tested successfully.
-
-## Signup Test
+For a student project presentation, the main flow is:
 
 ```text
-POST /api/auth/signup
+Home
+ ↓
+Movies
+ ↓
+Movie Details
+ ↓
+Choose Show
+ ↓
+Choose Seats
+ ↓
+Checkout
+ ↓
+Booking Confirmation
+ ↓
+My Tickets
 ```
 
-Result:
+Admin flow:
 
 ```text
-201 Created
-Account created successfully
+Login as Admin
+ ↓
+Admin Dashboard
+ ↓
+Manage Movies / Cinemas / Shows
+ ↓
+Review Bookings & Revenue
 ```
 
----
+## 👨‍💻 Project
 
-## Login Test
+**CineBook — Movie Booking System**
 
-```text
-POST /api/auth/login
-```
+Built with:
 
-Result:
-
-```text
-200 OK
-Login successful
-JWT token generated
-```
-
----
-
-## Protected Route Test
-
-A protected booking route was tested:
-
-```text
-GET /api/bookings/my
-```
-
-With a valid JWT:
-
-```text
-Request accepted
-```
-
-Without a JWT:
-
-```text
-401 Unauthorized
-Authentication required
-```
-
----
-
-## Role Authorization Test
-
-A customer attempted to create a movie:
-
-```text
-POST /api/movies
-```
-
-Result:
-
-```text
-403 Forbidden
-Access denied
-```
-
-An admin then attempted the same operation using a new Admin JWT.
-
-Result:
-
-```text
-Movie created successfully
-```
-
-This confirms that Role-Based Authorization is working correctly.
-
----
-
-# 🔒 Security Notes
-
-* Passwords are hashed using `bcryptjs`.
-* Passwords are never returned in API responses.
-* JWT tokens are signed using a secret stored in `.env`.
-* JWT tokens expire after 24 hours.
-* Admin privileges are not available through normal Signup.
-* Protected routes require authentication.
-* Admin routes require the `admin` role.
-* `.env` and database files are excluded from GitHub.
-
----
-
-# 📌 API Base URL
-
-```text
-http://localhost:3000/api
-```
-
----
-
-# 👨‍💻 Project
-
-**Movie Booking System**
-
-Built using:
-
-**Node.js + Express.js + SQLite + JWT Authentication + Role-Based Authorization**
+**Angular + TypeScript + Node.js + Express.js + SQLite + JWT Authentication + Role-Based Authorization**
