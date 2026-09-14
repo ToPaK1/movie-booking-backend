@@ -1,36 +1,23 @@
 <section class="movies-page">
   <div class="page-header">
     <span>MOVIE COLLECTION</span>
-    <h1>All Movies</h1>
-    <p>Find your next favorite movie and reserve your seats.</p>
+    <h1>Now Showing</h1>
+    <p>Choose a movie, see where it is playing, then pick your cinema and showtime.</p>
   </div>
 
   <div class="filters">
     <label class="search">
       ⌕
-      <input
-        [value]="query()"
-        (input)="query.set($any($event.target).value)"
-        placeholder="Search movies..."
-      >
+      <input [value]="query()" (input)="query.set($any($event.target).value)" placeholder="Search movies...">
     </label>
 
     <div class="genres">
-      @for (genreItem of genres(); track genreItem) {
-        <button
-          type="button"
-          [class.active]="genre() === genreItem"
-          (click)="genre.set(genreItem)"
-        >
-          {{ genreItem }}
-        </button>
+      @for (g of genres(); track g) {
+        <button type="button" [class.active]="genre() === g" (click)="genre.set(g)">{{ g }}</button>
       }
     </div>
 
-    <select
-      [value]="minRating()"
-      (change)="minRating.set(+$any($event.target).value)"
-    >
+    <select [value]="minRating()" (change)="minRating.set(+$any($event.target).value)">
       <option value="0">All ratings</option>
       <option value="8">8.0+</option>
       <option value="9">9.0+</option>
@@ -38,7 +25,7 @@
   </div>
 
   @if (loading()) {
-    <div class="state">Loading movies...</div>
+    <div class="state">Loading movies and cinema schedules...</div>
   } @else if (error()) {
     <div class="state error">{{ error() }}</div>
   } @else if (filteredMovies().length === 0) {
@@ -53,6 +40,7 @@
             } @else {
               <span>🎬</span>
             }
+            <div class="poster-badge">NOW SHOWING</div>
           </div>
 
           <div class="movie-info">
@@ -65,11 +53,17 @@
               <span>{{ movie.duration }} min</span>
             </div>
 
-            <a
-              [routerLink]="['/movies', movie.id]"
-              class="details-btn"
-            >
-              View Details
+            <div class="availability">
+              @if (showCount(movie.id) > 0) {
+                <span>🎟 {{ showCount(movie.id) }} showtimes</span>
+                <span>📍 {{ cinemaCount(movie.id) }} cinemas</span>
+              } @else {
+                <span class="sold-out">No upcoming showtimes</span>
+              }
+            </div>
+
+            <a [routerLink]="['/movies', movie.id]" class="details-btn">
+              View Cinemas & Showtimes
             </a>
           </div>
         </article>
