@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Movie, MovieService } from '../../core/services/movie';
 
 @Component({
   selector: 'app-home',
@@ -7,33 +8,17 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home {
+export class Home implements OnInit {
+  private movieService = inject(MovieService);
 
   title = signal('Welcome to CineBook');
+  subtitle = signal('Book your favorite movies, choose your cinema, and enjoy the show.');
+  featuredMovies = signal<Movie[]>([]);
 
-  subtitle = signal(
-    'Book your favorite movies, choose your cinema, and enjoy the show.'
-  );
-
-  featuredMovies = signal([
-    {
-      id: 1,
-      title: 'Inception',
-      genre: 'Sci-Fi',
-      rating: 8.8
-    },
-    {
-      id: 2,
-      title: 'The Dark Knight',
-      genre: 'Action',
-      rating: 9.0
-    },
-    {
-      id: 3,
-      title: 'Interstellar',
-      genre: 'Sci-Fi',
-      rating: 8.7
-    }
-  ]);
-
+  ngOnInit(): void {
+    this.movieService.getMovies().subscribe({
+      next: (movies) => this.featuredMovies.set(movies.slice(0, 3)),
+      error: () => this.featuredMovies.set([])
+    });
+  }
 }
