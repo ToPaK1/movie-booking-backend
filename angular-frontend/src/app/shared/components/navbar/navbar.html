@@ -1,18 +1,28 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/" class="logo"><span class="logo-mark">C</span><span>Cine<span>Book</span></span></a>
+    <a routerLink="/" class="logo" aria-label="CineBook home">
+      <span class="logo-mark">C</span>
+      <span>Cine<span>Book</span></span>
+    </a>
 
     <div class="nav-links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a routerLink="/movies" routerLinkActive="active">Movies</a>
       <a routerLink="/cinemas" routerLinkActive="active">Cinemas</a>
       <a routerLink="/shows" routerLinkActive="active">Shows</a>
-      <a routerLink="/bookings" routerLinkActive="active">My Tickets</a>
+      @if (auth.isLoggedIn()) {
+        <a routerLink="/bookings" routerLinkActive="active">My Tickets</a>
+      }
     </div>
 
     <div class="auth-links">
-      <a routerLink="/login" class="login-btn">Sign In</a>
-      <a routerLink="/signup" class="signup-btn">Get Started</a>
+      @if (auth.isLoggedIn()) {
+        <span class="user-chip">{{ auth.getUser()?.name || 'Account' }}</span>
+        <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+      } @else {
+        <a routerLink="/login" class="login-btn">Sign In</a>
+        <a routerLink="/signup" class="signup-btn">Get Started</a>
+      }
     </div>
   </div>
 </nav>
