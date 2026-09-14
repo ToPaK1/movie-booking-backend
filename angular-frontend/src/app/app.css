@@ -1,101 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap');
-
-:root {
-  --bg: #05060a;
-  --surface: #0d1017;
-  --surface-2: #151a24;
-  --surface-3: #1b2130;
-  --line: rgba(255, 255, 255, 0.13);
-  --text: #ffffff;
-  --text-soft: #e7e9ee;
-  --muted: #b7beca;
-  --muted-2: #929aa8;
-  --accent: #e50914;
-  --accent-2: #ff3340;
-  --gold: #ffd34d;
-  --success: #55e6a5;
-  --radius: 18px;
-}
-
-* { box-sizing: border-box; }
-
-html {
-  scroll-behavior: smooth;
-  background: var(--bg);
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', Arial, sans-serif;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 85% 5%, rgba(229, 9, 20, 0.09), transparent 28%),
-    radial-gradient(circle at 10% 45%, rgba(91, 33, 182, 0.06), transparent 24%);
-}
-
-button, input, select, textarea { font: inherit; }
-
-a { color: inherit; }
-
-p { color: var(--text-soft); }
-
 main { min-height: calc(100vh - 78px); }
 
-::selection {
-  background: rgba(229, 9, 20, 0.45);
-  color: #fff;
-}
-
 .site-footer {
-  border-top: 1px solid var(--line);
-  background: #08090d;
+  margin-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, #0a0b0f, #06070a);
 }
 
 .footer-inner {
   max-width: 1280px;
   margin: auto;
-  padding: 28px;
+  min-height: 96px;
+  padding: 24px 28px;
   display: flex;
   align-items: center;
-  gap: 22px;
-  color: var(--muted);
+  gap: 24px;
+  color: #858d9b;
   font-size: 12px;
 }
 
 .footer-logo {
-  font-family: 'Manrope';
-  font-size: 18px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 19px;
   font-weight: 800;
   text-decoration: none;
+  letter-spacing: -.6px;
   color: #fff;
 }
 
-.footer-logo span { color: var(--accent-2); }
-.footer-inner p { margin: 0; flex: 1; color: var(--muted); }
-.footer-inner > span { color: var(--muted-2); }
+.footer-logo span { color: #ff3b46; }
+.footer-inner p { flex: 1; margin: 0; color: #858d9b; }
+.footer-inner > span { color: #59616f; }
 
 @media (max-width: 600px) {
-  .footer-inner { flex-wrap: wrap; padding: 24px 20px; }
+  .footer-inner { flex-wrap: wrap; padding: 22px 20px; gap: 10px 18px; }
   .footer-inner p { flex-basis: 100%; order: 3; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
-    scroll-behavior: auto !important;
-  }
 }
