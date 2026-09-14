@@ -1,6 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { Movie, MovieService } from '../../core/services/movie';
+import { ShowsService, Show } from '../../core/services/shows';
+import { CinemasService, Cinema } from '../../core/services/cinemas';
 
 @Component({
   selector: 'app-movie-details',
@@ -9,11 +12,14 @@ import { Movie, MovieService } from '../../core/services/movie';
   styleUrl: './movie-details.css'
 })
 export class MovieDetails implements OnInit {
-
-  private route = inject(ActivatedRoute);
-  private movieService = inject(MovieService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly movieService = inject(MovieService);
+  private readonly showsService = inject(ShowsService);
+  private readonly cinemasService = inject(CinemasService);
 
   movie = signal<Movie | null>(null);
+  shows = signal<Show[]>([]);
+  cinemas = signal<Cinema[]>([]);
   loading = signal(true);
   error = signal('');
 
@@ -26,16 +32,53 @@ export class MovieDetails implements OnInit {
       return;
     }
 
-    this.movieService.getMovieById(id).subscribe({
-      next: (data) => {
-        this.movie.set(data);
+    forkJoin({
+      movie: this.movieService.getMovieById(id),
+      shows: this.showsService.getShows(),
+      cinemas: this.cinemasService.getCinemas()
+    }).subscribe({
+      next: ({ movie, shows, cinemas }) => {
+        this.movie.set(movie);
+        this.shows.set(
+          shows
+            .filter(show => show.movie_id === id)
+            .filter(show => new Date(`${show.show_date}T${show.show_time}`).getTime() >= Date.now())
+        );
+        this.cinemas.set(cinemas);
         this.loading.set(false);
       },
       error: (err) => {
         console.error(err);
-        this.error.set('Movie not found.');
+        this.error.set('Movie details or showtimes could not be loaded.');
         this.loading.set(false);
       }
+    });
+  }
+
+  cinemaName(id: number): string {
+    return this.cinemas().find(cinema => cinema.id === id)?.name ?? 'Cinema';
+  }
+
+  cinemaLocation(id: number): string {
+    return this.cinemas().find(cinema => cinema.id === id)?.location ?? '';
+  }
+
+  movieShows(): Show[] {
+    return this.shows();
+  }
+
+  formatDate(value: string): string {
+    return new Date(`${value}T12:00:00`).toLocaleDateString('en-EG', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  formatTime(value: string): string {
+    return new Date(`2026-01-01T${value}`).toLocaleTimeString('en-EG', {
+      hour: 'numeric',
+      minute: '2-digit'
     });
   }
 }
