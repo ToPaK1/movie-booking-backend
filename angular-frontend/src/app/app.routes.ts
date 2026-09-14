@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { Home } from './pages/home/home';
 import { Movies } from './pages/movies/movies';
 import { MovieDetails } from './pages/movie-details/movie-details';
@@ -7,10 +6,14 @@ import { Cinemas } from './pages/cinemas/cinemas';
 import { Shows } from './pages/shows/shows';
 import { Booking } from './pages/booking/booking';
 import { Bookings } from './pages/bookings/bookings';
+import { BookingConfirmation } from './pages/booking-confirmation/booking-confirmation';
+import { Profile } from './pages/profile/profile';
+import { Admin } from './pages/admin/admin';
 import { Login } from './pages/login/login';
 import { Signup } from './pages/signup/signup';
 import { VerifyEmail } from './pages/verify-email/verify-email';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -19,7 +22,10 @@ export const routes: Routes = [
   { path: 'cinemas', component: Cinemas },
   { path: 'shows', component: Shows },
   { path: 'booking', component: Booking, canActivate: [authGuard] },
+  { path: 'booking-confirmation/:id', component: BookingConfirmation, canActivate: [authGuard] },
   { path: 'bookings', component: Bookings, canActivate: [authGuard] },
+  { path: 'profile', component: Profile, canActivate: [authGuard] },
+  { path: 'admin', component: Admin, canActivate: [adminGuard] },
   { path: 'login', component: Login },
   { path: 'signup', component: Signup },
   { path: 'verify-email', component: VerifyEmail },
