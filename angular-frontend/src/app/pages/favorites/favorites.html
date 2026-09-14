@@ -1,0 +1,40 @@
+<section class="favorites-page">
+  <div class="page-head">
+    <span class="eyebrow">YOUR COLLECTION</span>
+    <h1>My Favorites</h1>
+    <p>Keep the movies you never want to miss in one place.</p>
+  </div>
+
+  @if (loading()) {
+    <div class="state">Loading your favorites...</div>
+  } @else if (error()) {
+    <div class="state error">{{ error() }}</div>
+  } @else if (movies().length === 0) {
+    <div class="empty">
+      <div class="empty-icon">♡</div>
+      <h2>Your watchlist is empty</h2>
+      <p>Explore the latest movies and save the ones you love.</p>
+      <a routerLink="/movies" class="primary">Explore Movies</a>
+    </div>
+  } @else {
+    <div class="movie-grid">
+      @for (movie of movies(); track movie.id) {
+        <article class="movie-card">
+          <a [routerLink]="['/movies', movie.id]" class="poster-wrap">
+            <img [src]="poster(movie)" [alt]="movie.title" />
+            <span class="rating">★ {{ movie.rating }}</span>
+          </a>
+          <div class="card-body">
+            <span class="genre">{{ movie.genre }}</span>
+            <h2>{{ movie.title }}</h2>
+            <p>{{ movie.duration }} min</p>
+            <div class="actions">
+              <a [routerLink]="['/movies', movie.id]" class="view">View Movie</a>
+              <button type="button" class="remove" (click)="remove(movie)" aria-label="Remove from favorites">♥</button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
