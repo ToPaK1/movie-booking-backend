@@ -10,8 +10,8 @@ import { BookingService, Booking } from '../../core/services/booking';
   styleUrl: './booking-confirmation.css'
 })
 export class BookingConfirmation implements OnInit {
-  private route = inject(ActivatedRoute);
-  private bookingService = inject(BookingService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly bookingService = inject(BookingService);
   booking = signal<Booking | null>(null);
   loading = signal(true);
   error = signal('');
@@ -29,6 +29,13 @@ export class BookingConfirmation implements OnInit {
     const raw = this.booking()?.selected_seats;
     if (Array.isArray(raw)) return raw;
     try { return JSON.parse(raw || '[]'); } catch { return []; }
+  }
+
+  qrUrl(): string {
+    const ticket = this.booking();
+    if (!ticket) return '';
+    const payload = encodeURIComponent(`CINEBOOK|BOOKING:${ticket.id}|SHOW:${ticket.show_id}|SEATS:${this.seats().join(',')}`);
+    return `https://quickchart.io/qr?size=220&margin=2&text=${payload}`;
   }
 
   print(): void { window.print(); }
