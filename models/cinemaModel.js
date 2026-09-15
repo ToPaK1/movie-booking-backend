@@ -1,25 +1,24 @@
 const db = require("../config/database");
 
 const getAllCinemas = () => {
-    return db.prepare("SELECT * FROM cinemas").all();
+    return db.prepare("SELECT * FROM cinemas ORDER BY id").all();
 };
 
 const getCinemaById = (id) => {
-    return db.prepare(
-        "SELECT * FROM cinemas WHERE id = ?"
-    ).get(id);
+    return db.prepare("SELECT * FROM cinemas WHERE id = ?").get(id);
 };
 
 const createCinema = (cinema) => {
     const sql = `
         INSERT INTO cinemas
-        (name, location, total_seats)
-        VALUES (?, ?, ?)
+        (name, location, address, total_seats)
+        VALUES (?, ?, ?, ?)
     `;
 
     return db.prepare(sql).run(
         cinema.name,
         cinema.location,
+        cinema.address || cinema.location,
         cinema.total_seats
     );
 };
@@ -29,6 +28,7 @@ const updateCinema = (id, cinema) => {
         UPDATE cinemas
         SET name = ?,
             location = ?,
+            address = ?,
             total_seats = ?
         WHERE id = ?
     `;
@@ -36,15 +36,14 @@ const updateCinema = (id, cinema) => {
     return db.prepare(sql).run(
         cinema.name,
         cinema.location,
+        cinema.address || cinema.location,
         cinema.total_seats,
         id
     );
 };
 
 const deleteCinema = (id) => {
-    return db.prepare(
-        "DELETE FROM cinemas WHERE id = ?"
-    ).run(id);
+    return db.prepare("DELETE FROM cinemas WHERE id = ?").run(id);
 };
 
 module.exports = {
