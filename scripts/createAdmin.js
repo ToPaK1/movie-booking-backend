@@ -11,51 +11,36 @@ const createAdmin = async () => {
         const existingUser =
             userModel.getUserByEmail(email);
 
-
         if (existingUser) {
 
             console.log("Admin already exists");
 
-            return;
+            if (existingUser.role === "admin" && !existingUser.email_verified) {
+                userModel.verifyEmail(existingUser.id);
+                console.log("Existing admin email marked as verified");
+            }
 
+            return;
         }
 
-
         const hashedPassword =
-            await bcrypt.hash(
-                password,
-                10
-            );
+            await bcrypt.hash(password, 10);
 
-
-        userModel.createUser({
-
+        const result = userModel.createUser({
             name: "Cinema Admin",
-
-            email: email,
-
+            email,
             password: hashedPassword,
-
             role: "admin",
-
             phone: null
-
         });
 
+        // Admin accounts created by this script are trusted accounts,
+        // so they are verified immediately.
+        userModel.verifyEmail(result.lastInsertRowid);
 
-        console.log(
-            "Admin created successfully"
-        );
-
-        console.log(
-            "Email:",
-            email
-        );
-
-        console.log(
-            "Use the configured admin password to log in."
-        );
-
+        console.log("Admin created successfully");
+        console.log("Email:", email);
+        console.log("Password:", password);
 
     } catch (error) {
 
@@ -67,6 +52,5 @@ const createAdmin = async () => {
     }
 
 };
-
 
 createAdmin();
