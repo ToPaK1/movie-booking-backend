@@ -11,15 +11,16 @@ const getCinemaById = (id) => {
 const createCinema = (cinema) => {
     const sql = `
         INSERT INTO cinemas
-        (name, location, address, total_seats)
-        VALUES (?, ?, ?, ?)
+        (name, location, address, total_seats, status)
+        VALUES (?, ?, ?, ?, ?)
     `;
 
     return db.prepare(sql).run(
         cinema.name,
         cinema.location,
         cinema.address || cinema.location,
-        cinema.total_seats
+        cinema.total_seats,
+        cinema.status || "active"
     );
 };
 
@@ -29,7 +30,8 @@ const updateCinema = (id, cinema) => {
         SET name = ?,
             location = ?,
             address = ?,
-            total_seats = ?
+            total_seats = ?,
+            status = ?
         WHERE id = ?
     `;
 
@@ -38,6 +40,7 @@ const updateCinema = (id, cinema) => {
         cinema.location,
         cinema.address || cinema.location,
         cinema.total_seats,
+        cinema.status || "active",
         id
     );
 };
