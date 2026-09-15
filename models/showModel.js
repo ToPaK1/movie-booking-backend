@@ -10,7 +10,9 @@ const showSelect = `
         s.available_seats,
         s.ticket_price,
         m.title AS movie_title,
-        c.name AS cinema_name
+        c.name AS cinema_name,
+        c.location AS cinema_location,
+        c.address AS cinema_address
     FROM shows s
     JOIN movies m ON m.id = s.movie_id
     JOIN cinemas c ON c.id = s.cinema_id
