@@ -43,9 +43,14 @@ export class MovieService {
       'Inception': 'https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg',
       'The Dark Knight': 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
       'Interstellar': 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-      'The Godfather': 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg'
+      'The Godfather': 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg',
+      'الفيل الأزرق 2': 'https://assets.voxcinemas.com/posters/P_HO00007121.jpg',
+      'كيرة والجن': 'https://www.vetogate.com/Upload/libfiles/77/2/841.jpg'
     };
     const poster = movie.poster?.trim();
-    return { ...movie, poster: poster && !poster.startsWith('/images/') ? poster : fallback[movie.title] || '' };
+    return {
+      ...movie,
+      poster: fallback[movie.title] || (poster && !poster.startsWith('/images/') ? poster : '')
+    };
   }
 }
