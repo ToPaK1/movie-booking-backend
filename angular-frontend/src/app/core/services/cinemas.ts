@@ -8,6 +8,7 @@ export interface Cinema {
   location: string;
   address?: string;
   total_seats?: number;
+  status?: 'active' | 'locked';
 }
 
 @Injectable({ providedIn: 'root' })
