@@ -120,7 +120,7 @@ try {
             ["Dune: Part Two", "Paul Atreides joins Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.", "Sci-Fi", 166, "2024-03-01", 8.6, "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"],
             ["Oppenheimer", "The story of J. Robert Oppenheimer and the creation of the first atomic bomb.", "Drama", 180, "2023-07-21", 8.6, "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"],
             ["Spider-Man: No Way Home", "Peter Parker asks for help after his identity is revealed, opening the door to unexpected villains and heroes.", "Action", 148, "2021-12-17", 8.2, "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg"],
-            ["Top Gun: Maverick", "After decades of service, Maverick trains a new generation of elite pilots for a dangerous mission.", "Action", 131, "2022-05-27", 8.3, "https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17lj.jpg"],
+            ["Top Gun: Maverick", "After decades of service, Maverick trains a new generation of elite pilots for a dangerous mission.", "Action", 131, "2022-05-27", 8.3, "https://www.impawards.com/2022/posters/top_gun_maverick_ver3_xxlg.jpg"],
             ["John Wick: Chapter 4", "John Wick uncovers a path to defeating the High Table, but powerful enemies stand in his way.", "Action", 169, "2023-03-24", 7.6, "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg"],
             ["Inside Out 2", "Riley enters her teenage years as new emotions take over headquarters.", "Animation", 97, "2024-06-14", 7.6, "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"],
             ["Avatar: The Way of Water", "The Sully family searches for safety among the ocean clans of Pandora.", "Adventure", 192, "2022-12-16", 7.6, "https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg"],
@@ -133,11 +133,12 @@ try {
             if (!db.prepare("SELECT id FROM movies WHERE title = ?").get(movie[0])) insertMovie.run(...movie);
         }
 
-        // Fix the two Egyptian movie posters for existing database rows too.
         db.prepare("UPDATE movies SET poster = ? WHERE title = ?")
             .run("https://assets.voxcinemas.com/posters/P_HO00007121.jpg", "الفيل الأزرق 2");
         db.prepare("UPDATE movies SET poster = ? WHERE title = ?")
             .run("https://www.vetogate.com/Upload/libfiles/77/2/841.jpg", "كيرة والجن");
+        db.prepare("UPDATE movies SET poster = ? WHERE title = ?")
+            .run("https://www.impawards.com/2022/posters/top_gun_maverick_ver3_xxlg.jpg", "Top Gun: Maverick");
     }
 
     if (tableExists("shows") && tableExists("movies") && tableExists("cinemas")) {
