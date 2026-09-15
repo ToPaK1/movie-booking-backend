@@ -17,6 +17,7 @@ export class Login {
 
   email = '';
   password = '';
+  showPassword = false;
   loading = signal(false);
   errorMessage = signal('');
 
@@ -48,9 +49,13 @@ export class Login {
         } else if (error.status === 429) {
           this.errorMessage.set('Too many login attempts. Please try again later.');
         } else {
-          this.errorMessage.set('Something went wrong. Please try again.');
+          this.errorMessage.set(error.error?.message || 'Something went wrong. Please try again.');
         }
       }
     });
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }
