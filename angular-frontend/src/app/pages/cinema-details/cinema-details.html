@@ -4,21 +4,20 @@
   } @else if (error()) {
     <div class="state error">{{ error() }}</div>
   } @else if (cinema(); as c) {
-    <header>
-      <span class="eyebrow">CINEBOOK VENUE</span>
+    <header [class.locked-header]="c.status === 'locked'">
+      <span class="eyebrow">{{ c.status === 'locked' ? 'TEMPORARILY LOCKED' : 'CINEBOOK VENUE' }}</span>
       <h1>{{ c.name }}</h1>
       <p>📍 {{ c.location }}</p>
       <p class="precise-address">🗺️ {{ c.address || c.location }}</p>
-      <a
-        class="maps-btn"
-        [href]="'https://www.google.com/maps/search/?api=1&query=' + (c.address || c.location || c.name)"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Open cinema location in Google Maps"
-      >
-        <span>📍</span>
-        Open in Google Maps
-      </a>
+
+      @if (c.status === 'locked') {
+        <div class="locked-notice">🔒 This cinema is temporarily unavailable. Bookings and showtimes are currently disabled.</div>
+      } @else {
+        <a class="maps-btn" [href]="'https://www.google.com/maps/search/?api=1&query=' + (c.address || c.location || c.name)" target="_blank" rel="noopener noreferrer" aria-label="Open cinema location in Google Maps">
+          <span>📍</span> Open in Google Maps
+        </a>
+      }
+
       <div class="stats">
         <span><b>{{ c.total_seats || 150 }}</b> seats</span>
         <span><b>{{ shows().length }}</b> upcoming shows</span>
@@ -27,12 +26,12 @@
 
     <section>
       <div class="section-head">
-        <h2>Now Playing</h2>
-        <p>Choose a movie and showtime at this cinema.</p>
+        <h2>{{ c.status === 'locked' ? 'Cinema Temporarily Locked' : 'Now Playing' }}</h2>
+        <p>{{ c.status === 'locked' ? 'Please check back later when this cinema is available again.' : 'Choose a movie and showtime at this cinema.' }}</p>
       </div>
 
       @if (!shows().length) {
-        <div class="empty">No upcoming shows at this cinema right now.</div>
+        <div class="empty">{{ c.status === 'locked' ? 'No bookings are available while this cinema is temporarily locked.' : 'No upcoming shows at this cinema right now.' }}</div>
       } @else {
         <div class="show-grid">
           @for (show of shows(); track show.id) {
