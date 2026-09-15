@@ -9,6 +9,16 @@
       <h1>{{ c.name }}</h1>
       <p>📍 {{ c.location }}</p>
       <p class="precise-address">🗺️ {{ c.address || c.location }}</p>
+      <a
+        class="maps-btn"
+        [href]="'https://www.google.com/maps/search/?api=1&query=' + (c.address || c.location || c.name)"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open cinema location in Google Maps"
+      >
+        <span>📍</span>
+        Open in Google Maps
+      </a>
       <div class="stats">
         <span><b>{{ c.total_seats || 150 }}</b> seats</span>
         <span><b>{{ shows().length }}</b> upcoming shows</span>
