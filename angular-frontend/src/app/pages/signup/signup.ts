@@ -18,6 +18,8 @@ export class Signup {
   phone = '';
   password = '';
   confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
   loading = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
@@ -49,7 +51,10 @@ export class Signup {
 
     this.loading.set(true);
     this.http.post<any>(`${this.apiUrl}/signup`, {
-      name: this.name.trim(), email, password: this.password, phone: this.phone.trim()
+      name: this.name.trim(),
+      email,
+      password: this.password,
+      phone: this.phone.trim()
     }).subscribe({
       next: (response) => {
         this.loading.set(false);
@@ -65,5 +70,13 @@ export class Signup {
         }
       }
     });
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }
