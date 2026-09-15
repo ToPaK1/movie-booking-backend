@@ -45,6 +45,16 @@
               <div class="cinema-location-box">
                 <small>CINEMA LOCATION</small>
                 <strong>📍 {{ booking.cinema_address || booking.cinema_location || 'Location unavailable' }}</strong>
+                <a
+                  class="maps-btn"
+                  [href]="'https://www.google.com/maps/search/?api=1&query=' + (booking.cinema_address || booking.cinema_location || booking.cinema_name)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open cinema location in Google Maps"
+                >
+                  <span>📍</span>
+                  Open in Google Maps
+                </a>
               </div>
 
               <div class="ticket-details">
