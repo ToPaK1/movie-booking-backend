@@ -1,204 +1,95 @@
-
 <section class="signup-page">
-
   <div class="signup-background"></div>
 
   <div class="signup-container">
-
     <div class="signup-card">
-
-      <!-- Header -->
-
       <div class="signup-header">
-
-        <span class="eyebrow">
-          CINEBOOK
-        </span>
-
+        <span class="eyebrow">CINEBOOK</span>
         <h1>Create Account</h1>
-
-        <p>
-          Join CineBook and start booking your favorite movies.
-        </p>
-
+        <p>Join CineBook and start booking your favorite movies.</p>
       </div>
-
-
-      <!-- Error -->
 
       @if (errorMessage()) {
-
-        <div class="message error-message">
-          {{ errorMessage() }}
-        </div>
-
+        <div class="message error-message" role="alert">{{ errorMessage() }}</div>
       }
-
-
-      <!-- Success -->
 
       @if (successMessage()) {
-
-        <div class="message success-message">
-          {{ successMessage() }}
-        </div>
-
+        <div class="message success-message" role="status">{{ successMessage() }}</div>
       }
 
-
-      <!-- Signup Form -->
-
       <form (ngSubmit)="signup()">
-
-        <!-- Name -->
-
         <div class="form-group">
-
-          <label for="name">
-            Full Name
-          </label>
-
-          <input
-            id="name"
-            type="text"
-            name="name"
-            [(ngModel)]="name"
-            placeholder="Enter your full name"
-            autocomplete="name"
-          />
-
+          <label for="name">Full Name</label>
+          <input id="name" type="text" name="name" [(ngModel)]="name" placeholder="Enter your full name" autocomplete="name" />
         </div>
 
-
-        <!-- Email -->
-
         <div class="form-group">
-
-          <label for="email">
-            Email
-          </label>
-
-          <input
-            id="email"
-            type="email"
-            name="email"
-            [(ngModel)]="email"
-            placeholder="Enter your email"
-            autocomplete="email"
-          />
-
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="Enter your email" autocomplete="email" />
         </div>
 
-
-        <!-- Phone -->
-
         <div class="form-group">
-
-          <label for="phone">
-            Phone
-            <span>(Optional)</span>
-          </label>
-
-          <input
-            id="phone"
-            type="tel"
-            name="phone"
-            [(ngModel)]="phone"
-            placeholder="Enter your phone number"
-            autocomplete="tel"
-          />
-
+          <label for="phone">Phone <span>(Optional)</span></label>
+          <input id="phone" type="tel" name="phone" [(ngModel)]="phone" placeholder="Enter your phone number" autocomplete="tel" />
         </div>
 
-
-        <!-- Password -->
-
         <div class="form-group">
-
-          <label for="password">
-            Password
-          </label>
-
-          <input
-            id="password"
-            type="password"
-            name="password"
-            [(ngModel)]="password"
-            placeholder="Create a password"
-            autocomplete="new-password"
-          />
-
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Create a password"
+              autocomplete="new-password"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              [attr.title]="showPassword ? 'Hide password' : 'Show password'"
+              (click)="togglePassword()"
+            >
+              <span aria-hidden="true">{{ showPassword ? '🙈' : '👁' }}</span>
+            </button>
+          </div>
         </div>
 
-
-        <!-- Confirm Password -->
-
         <div class="form-group">
-
-          <label for="confirmPassword">
-            Confirm Password
-          </label>
-
-          <input
-            id="confirmPassword"
-            type="password"
-            name="confirmPassword"
-            [(ngModel)]="confirmPassword"
-            placeholder="Confirm your password"
-            autocomplete="new-password"
-          />
-
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="password-field">
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              placeholder="Confirm your password"
+              autocomplete="new-password"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+              [attr.title]="showConfirmPassword ? 'Hide password' : 'Show password'"
+              (click)="toggleConfirmPassword()"
+            >
+              <span aria-hidden="true">{{ showConfirmPassword ? '🙈' : '👁' }}</span>
+            </button>
+          </div>
         </div>
 
-
-        <!-- Submit -->
-
-        <button
-          class="signup-btn"
-          type="submit"
-          [disabled]="loading()"
-        >
-
+        <button class="signup-btn" type="submit" [disabled]="loading()">
           @if (loading()) {
-
-            <span class="spinner"></span>
-
-            Creating Account...
-
+            <span class="spinner"></span> Creating Account...
           } @else {
-
-            Create Account
-
-            <span>→</span>
-
+            Create Account <span>→</span>
           }
-
         </button>
-
       </form>
 
-
-      <!-- Login -->
-
-      <div class="divider">
-        <span>OR</span>
-      </div>
-
-
-      <p class="login-text">
-
-        Already have an account?
-
-        <a routerLink="/login">
-          Sign In
-        </a>
-
-      </p>
-
+      <div class="divider"><span>OR</span></div>
+      <p class="login-text">Already have an account? <a routerLink="/login">Sign In</a></p>
     </div>
-
   </div>
-
 </section>
-
-
