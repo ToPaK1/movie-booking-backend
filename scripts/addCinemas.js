@@ -16,32 +16,39 @@ const addCinemas = () => {
         db.prepare("UPDATE cinemas SET address = location WHERE address IS NULL OR address = ''").run();
         db.prepare("UPDATE cinemas SET status = 'active' WHERE status IS NULL OR status = ''").run();
 
+        const targetCinemas = [
+            ["Cinema 4", "New Cairo", "New Cairo, Cairo", 220, "active"],
+            ["Cinema 5", "6th of October", "6th of October City, Giza", 200, "active"],
+            ["Cinema 6", "Sheikh Zayed", "Sheikh Zayed City, Giza", 200, "locked"]
+        ];
+
         const insert = db.prepare(`
             INSERT INTO cinemas (name, location, address, total_seats, status)
             VALUES (?, ?, ?, ?, ?)
         `);
 
-        const cinemas = [
-            ["Grand Cinema", "New Cairo", "New Cairo, Cairo", 220, "active"],
-            ["Royal Cinema", "6th of October", "6th of October City, Giza", 200, "active"],
-            ["Nile Cinema", "Downtown Cairo", "Downtown Cairo, Cairo", 180, "active"],
-            ["Elite Cinema", "Maadi", "Maadi, Cairo", 210, "active"],
-            ["Vista Cinema", "Dokki", "Dokki, Giza", 190, "active"],
-            ["Coming Soon Cinema", "Sheikh Zayed", "Sheikh Zayed City, Giza", 200, "locked"]
-        ];
+        let count = db.prepare("SELECT COUNT(*) AS count FROM cinemas").get().count;
 
-        const count = db.prepare("SELECT COUNT(*) AS count FROM cinemas").get().count;
+        for (const cinema of targetCinemas) {
+            if (count >= 6) break;
 
-        for (const cinema of cinemas) {
             const exists = db.prepare("SELECT id FROM cinemas WHERE name = ?").get(cinema[0]);
-            if (!exists) insert.run(...cinema);
+            if (!exists) {
+                insert.run(...cinema);
+                count++;
+            }
+        }
+
+        // The sixth cinema is always the temporary locked venue.
+        if (count >= 6) {
+            db.prepare("UPDATE cinemas SET status = 'active' WHERE id < (SELECT MAX(id) FROM cinemas)").run();
+            db.prepare("UPDATE cinemas SET status = 'locked' WHERE id = (SELECT MAX(id) FROM cinemas)").run();
         }
 
         const all = db.prepare("SELECT id, name, status FROM cinemas ORDER BY id").all();
         console.log("Cinemas are ready:");
         console.table(all);
-        console.log(`Previous cinemas: ${count}`);
-        console.log("Target: 5 active cinemas + 1 temporarily locked cinema");
+        console.log("Target: 5 active cinemas + Cinema 6 temporarily locked");
     } catch (error) {
         console.error("Error adding cinemas:", error.message);
     }
