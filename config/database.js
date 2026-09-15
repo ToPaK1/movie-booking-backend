@@ -67,7 +67,6 @@ try {
         `).run();
     }
 
-    // Persistent favorites / watchlist.
     db.prepare(`
         CREATE TABLE IF NOT EXISTS favorites (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,7 +79,26 @@ try {
         )
     `).run();
 
-    // Keep the movie catalog populated without duplicating existing records.
+    // Add two extra cinemas without duplicating them on every server restart.
+    if (tableExists("cinemas")) {
+        const insertCinema = db.prepare(`
+            INSERT INTO cinemas (name, location, total_seats)
+            VALUES (?, ?, ?)
+        `);
+
+        const extraCinemas = [
+            ["CineBook Downtown", "Downtown Cairo", 180],
+            ["CineBook Mall", "6th of October City", 220]
+        ];
+
+        for (const cinema of extraCinemas) {
+            if (!db.prepare("SELECT id FROM cinemas WHERE name = ?").get(cinema[0])) {
+                insertCinema.run(...cinema);
+                console.log(`Added cinema: ${cinema[0]}`);
+            }
+        }
+    }
+
     if (tableExists("movies")) {
         const insertMovie = db.prepare(`
             INSERT INTO movies (title, description, genre, duration, release_date, rating, poster)
@@ -103,7 +121,6 @@ try {
         }
     }
 
-    // Guarantee current/future shows for every movie while preserving bookings.
     if (tableExists("shows") && tableExists("movies") && tableExists("cinemas")) {
         const movies = db.prepare("SELECT id FROM movies ORDER BY id").all();
         const cinemas = db.prepare("SELECT id FROM cinemas ORDER BY id").all();
@@ -113,6 +130,7 @@ try {
         `);
         const slots = ["14:00", "17:00", "20:00", "22:30"];
         const prices = [150, 170, 160, 180, 140];
+
         for (const [index, movie] of movies.entries()) {
             const future = db.prepare(`SELECT id FROM shows WHERE movie_id = ? AND show_date >= ? LIMIT 1`).get(movie.id, datePlus(0));
             if (future) continue;
@@ -121,6 +139,32 @@ try {
             const price = prices[index % prices.length];
             insertShow.run(movie.id, firstCinema, datePlus(index % 3), slots[index % slots.length], 150, price);
             insertShow.run(movie.id, secondCinema, datePlus((index + 1) % 5), slots[(index + 1) % slots.length], 150, price + 20);
+        }
+
+        // Give the two new cinemas visible upcoming screenings.
+        const newCinemaNames = ["CineBook Downtown", "CineBook Mall"];
+        const featuredMovies = movies.slice(0, 2);
+        for (const [index, name] of newCinemaNames.entries()) {
+            const cinema = db.prepare("SELECT id FROM cinemas WHERE name = ?").get(name);
+            const movie = featuredMovies[index];
+            if (!cinema || !movie) continue;
+
+            const exists = db.prepare(`
+                SELECT id FROM shows
+                WHERE cinema_id = ? AND movie_id = ? AND show_date >= ?
+                LIMIT 1
+            `).get(cinema.id, movie.id, datePlus(0));
+
+            if (!exists) {
+                insertShow.run(
+                    movie.id,
+                    cinema.id,
+                    datePlus(index + 1),
+                    index === 0 ? "19:30" : "21:00",
+                    150,
+                    index === 0 ? 175 : 185
+                );
+            }
         }
     }
 } catch (error) {
