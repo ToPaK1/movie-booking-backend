@@ -1,12 +1,19 @@
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/userModel");
+require("dotenv").config();
 
 const createAdmin = async () => {
 
     try {
 
-        const email = "admin@cinebook.com";
-        const password = "admin123";
+        const email = process.env.ADMIN_EMAIL;
+        const password = process.env.ADMIN_PASSWORD;
+
+        if (!email || !password) {
+            throw new Error(
+                "ADMIN_EMAIL and ADMIN_PASSWORD must be configured in .env"
+            );
+        }
 
         const existingUser =
             userModel.getUserByEmail(email);
@@ -40,7 +47,7 @@ const createAdmin = async () => {
 
         console.log("Admin created successfully");
         console.log("Email:", email);
-        console.log("Password:", password);
+        console.log("Admin password is loaded securely from .env");
 
     } catch (error) {
 
