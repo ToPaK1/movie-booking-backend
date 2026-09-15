@@ -73,10 +73,22 @@
             </div>
           </div>
 
-          <button class="book-btn" type="button" [disabled]="show.available_seats <= 0" (click)="bookNow(show.id)">
-            <span>{{ show.available_seats > 0 ? 'Choose Seats' : 'Sold Out' }}</span>
-            @if (show.available_seats > 0) { <span>→</span> }
-          </button>
+          <div class="show-actions">
+            <a
+              class="maps-btn"
+              [href]="'https://www.google.com/maps/search/?api=1&query=' + (show.cinema_address || show.cinema_location || show.cinema_name)"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open cinema location in Google Maps"
+            >
+              <span>📍</span>
+              Open in Google Maps
+            </a>
+            <button class="book-btn" type="button" [disabled]="show.available_seats <= 0" (click)="bookNow(show.id)">
+              <span>{{ show.available_seats > 0 ? 'Choose Seats' : 'Sold Out' }}</span>
+              @if (show.available_seats > 0) { <span>→</span> }
+            </button>
+          </div>
         </article>
       }
     </div>
