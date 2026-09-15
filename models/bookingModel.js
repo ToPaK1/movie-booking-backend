@@ -13,6 +13,8 @@ const bookingSelect = `
         b.total_price,
         m.title AS movie_title,
         c.name AS cinema_name,
+        c.location AS cinema_location,
+        c.address AS cinema_address,
         s.show_date,
         s.show_time
     FROM bookings b
