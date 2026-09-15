@@ -1,1 +1,49 @@
-<main class="cinema-details-page">@if(loading()){<div class="state">Loading cinema...</div>}@else if(error()){<div class="state error">{{error()}}</div>}@else if(cinema();as c){<header><span class="eyebrow">CINEBOOK VENUE</span><h1>{{c.name}}</h1><p>📍 {{c.location}}</p><div class="stats"><span><b>{{c.total_seats||150}}</b> seats</span><span><b>{{shows().length}}</b> upcoming shows</span></div></header><section><div class="section-head"><h2>Now Playing</h2><p>Choose a movie and showtime at this cinema.</p></div>@if(!shows().length){<div class="empty">No upcoming shows at this cinema right now.</div>}@else{<div class="show-grid">@for(show of shows();track show.id){@if(movie(show);as m){<article><img [src]="m.poster" [alt]="m.title"><div class="body"><span>{{m.genre}}</span><h3>{{m.title}}</h3><p>{{formatDate(show.show_date)}} · {{formatTime(show.show_time)}}</p><strong>EGP {{show.ticket_price}}</strong><small>{{show.available_seats}} seats left</small><a [routerLink]="['/booking']" [queryParams]="{show_id:show.id}">Choose Seats</a></div></article>}}</div>}</section><a routerLink="/cinemas" class="back">← All Cinemas</a>}</main>
+<main class="cinema-details-page">
+  @if (loading()) {
+    <div class="state">Loading cinema...</div>
+  } @else if (error()) {
+    <div class="state error">{{ error() }}</div>
+  } @else if (cinema(); as c) {
+    <header>
+      <span class="eyebrow">CINEBOOK VENUE</span>
+      <h1>{{ c.name }}</h1>
+      <p>📍 {{ c.location }}</p>
+      <p class="precise-address">🗺️ {{ c.address || c.location }}</p>
+      <div class="stats">
+        <span><b>{{ c.total_seats || 150 }}</b> seats</span>
+        <span><b>{{ shows().length }}</b> upcoming shows</span>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <h2>Now Playing</h2>
+        <p>Choose a movie and showtime at this cinema.</p>
+      </div>
+
+      @if (!shows().length) {
+        <div class="empty">No upcoming shows at this cinema right now.</div>
+      } @else {
+        <div class="show-grid">
+          @for (show of shows(); track show.id) {
+            @if (movie(show); as m) {
+              <article>
+                <img [src]="m.poster" [alt]="m.title">
+                <div class="body">
+                  <span>{{ m.genre }}</span>
+                  <h3>{{ m.title }}</h3>
+                  <p>{{ formatDate(show.show_date) }} · {{ formatTime(show.show_time) }}</p>
+                  <strong>EGP {{ show.ticket_price }}</strong>
+                  <small>{{ show.available_seats }} seats left</small>
+                  <a [routerLink]="['/booking']" [queryParams]="{show_id:show.id}">Choose Seats</a>
+                </div>
+              </article>
+            }
+          }
+        </div>
+      }
+    </section>
+
+    <a routerLink="/cinemas" class="back">← All Cinemas</a>
+  }
+</main>
