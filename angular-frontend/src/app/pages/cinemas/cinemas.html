@@ -14,30 +14,37 @@
   } @else {
     <div class="cinemas-grid">
       @for (cinema of cinemas(); track cinema.id) {
-        <article class="cinema-card">
-          <div class="cinema-icon">🎬</div>
-          <div class="cinema-info">
-            <span class="cinema-label">CINEMA</span>
-            <h2>{{ cinema.name }}</h2>
-            <p>📍 {{ cinema.location }}</p>
-            <p class="cinema-address">🗺️ {{ cinema.address || cinema.location }}</p>
-            <strong>{{ cinema.total_seats || 150 }} seats</strong>
-
-            <div class="cinema-actions">
-              <a [routerLink]="['/cinemas', cinema.id]" class="view-link">View Movies & Showtimes →</a>
-              <a
-                class="maps-btn"
-                [href]="'https://www.google.com/maps/search/?api=1&query=' + (cinema.address || cinema.location)"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open cinema location in Google Maps"
-              >
-                <span>📍</span>
-                Open in Google Maps
-              </a>
+        @if (cinema.status === 'locked') {
+          <article class="cinema-card locked-card">
+            <div class="cinema-icon locked-icon">🔒</div>
+            <div class="cinema-info">
+              <span class="cinema-label locked-label">TEMPORARILY LOCKED</span>
+              <h2>{{ cinema.name }}</h2>
+              <p>📍 {{ cinema.location }}</p>
+              <p class="cinema-address">🗺️ {{ cinema.address || cinema.location }}</p>
+              <strong>{{ cinema.total_seats || 150 }} seats</strong>
+              <div class="locked-message">This cinema is temporarily unavailable. Please check back soon.</div>
             </div>
-          </div>
-        </article>
+          </article>
+        } @else {
+          <article class="cinema-card">
+            <div class="cinema-icon">🎬</div>
+            <div class="cinema-info">
+              <span class="cinema-label">CINEMA</span>
+              <h2>{{ cinema.name }}</h2>
+              <p>📍 {{ cinema.location }}</p>
+              <p class="cinema-address">🗺️ {{ cinema.address || cinema.location }}</p>
+              <strong>{{ cinema.total_seats || 150 }} seats</strong>
+
+              <div class="cinema-actions">
+                <a [routerLink]="['/cinemas', cinema.id]" class="view-link">View Movies & Showtimes →</a>
+                <a class="maps-btn" [href]="'https://www.google.com/maps/search/?api=1&query=' + (cinema.address || cinema.location)" target="_blank" rel="noopener noreferrer" aria-label="Open cinema location in Google Maps">
+                  <span>📍</span> Open in Google Maps
+                </a>
+              </div>
+            </div>
+          </article>
+        }
       }
     </div>
   }
