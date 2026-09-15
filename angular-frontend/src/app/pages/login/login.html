@@ -1,5 +1,6 @@
 <section class="login-page">
   <div class="login-background"></div>
+
   <div class="login-container">
     <div class="login-card">
       <div class="login-header">
@@ -8,19 +9,45 @@
         <p>Sign in to continue booking your favorite movies.</p>
       </div>
 
-      @if (errorMessage()) { <div class="error-message">{{ errorMessage() }}</div> }
+      @if (errorMessage()) {
+        <div class="error-message" role="alert">{{ errorMessage() }}</div>
+      }
 
       <form (ngSubmit)="login()">
         <div class="form-group">
           <label for="email">Email</label>
           <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="Enter your email" autocomplete="email" />
         </div>
+
         <div class="form-group">
           <label for="password">Password</label>
-          <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Enter your password" autocomplete="current-password" />
+          <div class="password-field">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+              [attr.title]="showPassword ? 'Hide password' : 'Show password'"
+              (click)="togglePassword()"
+            >
+              <span aria-hidden="true">{{ showPassword ? '🙈' : '👁' }}</span>
+            </button>
+          </div>
         </div>
+
         <button class="login-btn" type="submit" [disabled]="loading()">
-          @if (loading()) { <span class="spinner"></span> Signing in... } @else { Sign In <span>→</span> }
+          @if (loading()) {
+            <span class="spinner"></span> Signing in...
+          } @else {
+            Sign In <span>→</span>
+          }
         </button>
       </form>
 
