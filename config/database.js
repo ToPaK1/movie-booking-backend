@@ -44,6 +44,7 @@ try {
     addColumnIfMissing("users", "email_verified", "INTEGER NOT NULL DEFAULT 0");
     addColumnIfMissing("users", "verification_code", "TEXT");
     addColumnIfMissing("users", "verification_code_expires", "TEXT");
+    addColumnIfMissing("cinemas", "address", "TEXT NOT NULL DEFAULT ''");
     addColumnIfMissing("shows", "ticket_price", "REAL NOT NULL DEFAULT 120");
     addColumnIfMissing("bookings", "selected_seats", "TEXT NOT NULL DEFAULT '[]'");
     addColumnIfMissing("bookings", "ticket_price", "REAL NOT NULL DEFAULT 120");
@@ -79,16 +80,15 @@ try {
         )
     `).run();
 
-    // Add two extra cinemas without duplicating them on every server restart.
     if (tableExists("cinemas")) {
         const insertCinema = db.prepare(`
-            INSERT INTO cinemas (name, location, total_seats)
-            VALUES (?, ?, ?)
+            INSERT INTO cinemas (name, location, address, total_seats)
+            VALUES (?, ?, ?, ?)
         `);
 
         const extraCinemas = [
-            ["CineBook Downtown", "Downtown Cairo", 180],
-            ["CineBook Mall", "6th of October City", 220]
+            ["CineBook Downtown", "Downtown Cairo", "15 Talaat Harb Street, Downtown Cairo, Cairo, Egypt", 180],
+            ["CineBook Mall", "6th of October City", "26th of July Corridor, Mall of Egypt area, 6th of October City, Giza, Egypt", 220]
         ];
 
         for (const cinema of extraCinemas) {
@@ -97,6 +97,17 @@ try {
                 console.log(`Added cinema: ${cinema[0]}`);
             }
         }
+
+        const addresses = [
+            ["Galaxy Cinema", "Mall of Arabia, Juhayna Square, 6th of October City, Giza, Egypt"],
+            ["City Stars Cinema", "Citystars Heliopolis, Omar Ibn El Khattab Street, Nasr City, Cairo, Egypt"],
+            ["Plaza Cinema", "Plaza Mall, El Sheikh Zayed, Giza, Egypt"],
+            ["CineBook Downtown", "15 Talaat Harb Street, Downtown Cairo, Cairo, Egypt"],
+            ["CineBook Mall", "26th of July Corridor, Mall of Egypt area, 6th of October City, Giza, Egypt"]
+        ];
+
+        const updateAddress = db.prepare("UPDATE cinemas SET address = ? WHERE name = ?");
+        for (const [name, address] of addresses) updateAddress.run(address, name);
     }
 
     if (tableExists("movies")) {
@@ -113,7 +124,9 @@ try {
             ["John Wick: Chapter 4", "John Wick uncovers a path to defeating the High Table, but powerful enemies stand in his way.", "Action", 169, "2023-03-24", 7.6, "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg"],
             ["Inside Out 2", "Riley enters her teenage years as new emotions take over headquarters.", "Animation", 97, "2024-06-14", 7.6, "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"],
             ["Avatar: The Way of Water", "The Sully family searches for safety among the ocean clans of Pandora.", "Adventure", 192, "2022-12-16", 7.6, "https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg"],
-            ["The Batman", "Batman investigates a series of murders that exposes corruption in Gotham City.", "Crime", 176, "2022-03-04", 7.8, "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg"]
+            ["The Batman", "Batman investigates a series of murders that exposes corruption in Gotham City.", "Crime", 176, "2022-03-04", 7.8, "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg"],
+            ["الفيل الأزرق 2", "طبيب نفسي يواجه أسراراً غامضة عندما يعود أحد مرضاه بقصة مرعبة تقوده إلى عالم غير متوقع.", "Thriller", 130, "2019-07-25", 8.0, "https://image.tmdb.org/t/p/w500/9u8z0Jq3dQ5YwKqv6xQhX7W6r2G.jpg"],
+            ["كيرة والجن", "قصة مقاومة مصرية تدور أحداثها خلال ثورة 1919، حيث يتقاطع مصير كيرة والجن في مواجهة الاحتلال.", "Drama", 175, "2022-06-30", 7.8, "https://image.tmdb.org/t/p/w500/5xF9YVv5mQ8g7hY2N8j6m5s0K9L.jpg"]
         ];
 
         for (const movie of catalog) {
@@ -141,20 +154,17 @@ try {
             insertShow.run(movie.id, secondCinema, datePlus((index + 1) % 5), slots[(index + 1) % slots.length], 150, price + 20);
         }
 
-        // Give the two new cinemas visible upcoming screenings.
         const newCinemaNames = ["CineBook Downtown", "CineBook Mall"];
-        const featuredMovies = movies.slice(0, 2);
+        const featuredMovies = movies.slice(-2);
         for (const [index, name] of newCinemaNames.entries()) {
             const cinema = db.prepare("SELECT id FROM cinemas WHERE name = ?").get(name);
             const movie = featuredMovies[index];
             if (!cinema || !movie) continue;
-
             const exists = db.prepare(`
                 SELECT id FROM shows
                 WHERE cinema_id = ? AND movie_id = ? AND show_date >= ?
                 LIMIT 1
             `).get(cinema.id, movie.id, datePlus(0));
-
             if (!exists) {
                 insertShow.run(
                     movie.id,
