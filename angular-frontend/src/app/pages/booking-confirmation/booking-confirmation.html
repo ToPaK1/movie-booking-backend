@@ -32,6 +32,16 @@
         <div class="cinema-address">
           <span>LOCATION</span>
           <strong>📍 {{ ticket.cinema_address || ticket.cinema_location || 'Location unavailable' }}</strong>
+          <a
+            class="maps-btn"
+            [href]="'https://www.google.com/maps/search/?api=1&query=' + (ticket.cinema_address || ticket.cinema_location || ticket.cinema_name)"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open cinema location in Google Maps"
+          >
+            <span>📍</span>
+            Open in Google Maps
+          </a>
         </div>
 
         <div class="seats"><span>SEATS</span><strong>{{ seats().join(', ') }}</strong></div>
