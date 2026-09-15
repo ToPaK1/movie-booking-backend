@@ -44,7 +44,7 @@ export class MovieService {
       'The Dark Knight': 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
       'Interstellar': 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
       'The Godfather': 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg',
-      'Top Gun: Maverick': 'https://www.impawards.com/2022/posters/top_gun_maverick_ver3_xxlg.jpg',
+      'Top Gun: Maverick': 'https://theestablishingshot.org/wp-content/uploads/2022/05/top_gun_maverick_poster.jpg',
       'الفيل الأزرق 2': 'https://assets.voxcinemas.com/posters/P_HO00007121.jpg',
       'كيرة والجن': 'https://www.vetogate.com/Upload/libfiles/77/2/841.jpg'
     };
