@@ -1,6 +1,10 @@
 <div class="bookings-page">
   <section class="page-header">
-    <div><span class="eyebrow">YOUR TICKETS</span><h1>My Bookings</h1><p>Your confirmed movie nights, all in one place.</p></div>
+    <div>
+      <span class="eyebrow">YOUR TICKETS</span>
+      <h1>My Bookings</h1>
+      <p>Your confirmed movie nights, all in one place.</p>
+    </div>
     <button class="refresh-btn" type="button" (click)="refreshBookings()" [disabled]="loading()">↻ Refresh</button>
   </section>
 
@@ -9,7 +13,12 @@
   @if (loading()) { <div class="loading-container"><div class="spinner"></div><p>Loading your tickets...</p></div> }
 
   @if (!loading() && bookings().length === 0) {
-    <section class="empty-state"><div class="empty-icon">🎟️</div><h2>No Bookings Yet</h2><p>Choose a show and reserve your seats.</p><a routerLink="/shows" class="browse-btn">Browse Shows</a></section>
+    <section class="empty-state">
+      <div class="empty-icon">🎟️</div>
+      <h2>No Bookings Yet</h2>
+      <p>Choose a show and reserve your seats.</p>
+      <a routerLink="/shows" class="browse-btn">Browse Shows</a>
+    </section>
   }
 
   @if (!loading() && bookings().length > 0) {
@@ -18,11 +27,26 @@
       <div class="bookings-grid">
         @for (booking of bookings(); track booking.id) {
           <article class="booking-card">
-            <div class="ticket-header"><div class="ticket-brand">CINEBOOK</div><div class="ticket-number"><span>BOOKING</span><strong>#{{ booking.id }}</strong></div></div>
+            <div class="ticket-header">
+              <div class="ticket-brand">CINEBOOK</div>
+              <div class="ticket-number"><span>BOOKING</span><strong>#{{ booking.id }}</strong></div>
+            </div>
+
             <div class="ticket-body">
               <span class="small-label">MOVIE TICKET</span>
               <h2>{{ booking.movie_title }}</h2>
-              <div class="ticket-meta"><span>📍 {{ booking.cinema_name }}</span><span>📅 {{ booking.show_date }}</span><span>🕐 {{ booking.show_time }}</span></div>
+
+              <div class="ticket-meta">
+                <span>📍 {{ booking.cinema_name }}</span>
+                <span>📅 {{ booking.show_date }}</span>
+                <span>🕐 {{ booking.show_time }}</span>
+              </div>
+
+              <div class="cinema-location-box">
+                <small>CINEMA LOCATION</small>
+                <strong>📍 {{ booking.cinema_address || booking.cinema_location || 'Location unavailable' }}</strong>
+              </div>
+
               <div class="ticket-details">
                 <div><small>Seats</small><strong>{{ booking.selected_seats }}</strong></div>
                 <div><small>Tickets</small><strong>{{ booking.seats_booked }}</strong></div>
@@ -30,6 +54,7 @@
                 <div class="price"><small>Total</small><strong>EGP {{ booking.total_price | number:'1.0-2' }}</strong></div>
               </div>
             </div>
+
             <div class="ticket-footer">
               <div class="ticket-status"><span class="status-dot"></span> Confirmed</div>
               <div class="ticket-actions">
