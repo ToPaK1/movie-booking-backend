@@ -125,13 +125,19 @@ try {
             ["Inside Out 2", "Riley enters her teenage years as new emotions take over headquarters.", "Animation", 97, "2024-06-14", 7.6, "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"],
             ["Avatar: The Way of Water", "The Sully family searches for safety among the ocean clans of Pandora.", "Adventure", 192, "2022-12-16", 7.6, "https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg"],
             ["The Batman", "Batman investigates a series of murders that exposes corruption in Gotham City.", "Crime", 176, "2022-03-04", 7.8, "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg"],
-            ["الفيل الأزرق 2", "طبيب نفسي يواجه أسراراً غامضة عندما يعود أحد مرضاه بقصة مرعبة تقوده إلى عالم غير متوقع.", "Thriller", 130, "2019-07-25", 8.0, "https://image.tmdb.org/t/p/w500/9u8z0Jq3dQ5YwKqv6xQhX7W6r2G.jpg"],
-            ["كيرة والجن", "قصة مقاومة مصرية تدور أحداثها خلال ثورة 1919، حيث يتقاطع مصير كيرة والجن في مواجهة الاحتلال.", "Drama", 175, "2022-06-30", 7.8, "https://image.tmdb.org/t/p/w500/5xF9YVv5mQ8g7hY2N8j6m5s0K9L.jpg"]
+            ["الفيل الأزرق 2", "طبيب نفسي يواجه أسراراً غامضة عندما يعود أحد مرضاه بقصة مرعبة تقوده إلى عالم غير متوقع.", "Thriller", 130, "2019-07-25", 8.0, "https://assets.voxcinemas.com/posters/P_HO00007121.jpg"],
+            ["كيرة والجن", "قصة مقاومة مصرية تدور أحداثها خلال ثورة 1919، حيث يتقاطع مصير كيرة والجن في مواجهة الاحتلال.", "Drama", 175, "2022-06-30", 7.8, "https://www.vetogate.com/Upload/libfiles/77/2/841.jpg"]
         ];
 
         for (const movie of catalog) {
             if (!db.prepare("SELECT id FROM movies WHERE title = ?").get(movie[0])) insertMovie.run(...movie);
         }
+
+        // Fix the two Egyptian movie posters for existing database rows too.
+        db.prepare("UPDATE movies SET poster = ? WHERE title = ?")
+            .run("https://assets.voxcinemas.com/posters/P_HO00007121.jpg", "الفيل الأزرق 2");
+        db.prepare("UPDATE movies SET poster = ? WHERE title = ?")
+            .run("https://www.vetogate.com/Upload/libfiles/77/2/841.jpg", "كيرة والجن");
     }
 
     if (tableExists("shows") && tableExists("movies") && tableExists("cinemas")) {
