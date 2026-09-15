@@ -54,6 +54,10 @@
                 <span class="label">Cinema</span>
                 <span class="value">{{ show.cinema_name || cinemaName(show.cinema_id) }}</span>
               </div>
+              <div class="cinema-address-row">
+                <span class="label">Location</span>
+                <span class="address-value">{{ show.cinema_address || show.cinema_location || 'Location unavailable' }}</span>
+              </div>
               <div class="info-row">
                 <span class="label">Date</span>
                 <span class="value">{{ formatDate(show.show_date) }}</span>
