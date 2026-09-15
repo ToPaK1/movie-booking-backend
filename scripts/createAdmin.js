@@ -1,32 +1,41 @@
-const bcrypt = require("bcryptjs");
-const userModel = require("../models/userModel");
 require("dotenv").config();
+const bcrypt = require("bcryptjs");
+const readline = require("readline");
+const userModel = require("../models/userModel");
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const question = (text) =>
+    new Promise((resolve) => rl.question(text, resolve));
 
 const createAdmin = async () => {
 
     try {
 
-        const email = process.env.ADMIN_EMAIL;
-        const password = process.env.ADMIN_PASSWORD;
+        console.log("\n=== CineBook Admin Creator ===\n");
 
-        if (!email || !password) {
-            throw new Error(
-                "ADMIN_EMAIL and ADMIN_PASSWORD must be configured in .env"
-            );
+        const name = (await question("Admin name: ")).trim();
+        const email = (await question("Admin email: ")).trim().toLowerCase();
+        const password = await question("Admin password: ");
+
+        if (!name || !email || !password) {
+            console.log("\nName, email, and password are required.");
+            return;
         }
 
-        const existingUser =
-            userModel.getUserByEmail(email);
+        if (password.length < 6) {
+            console.log("\nPassword must be at least 6 characters.");
+            return;
+        }
+
+        const existingUser = userModel.getUserByEmail(email);
 
         if (existingUser) {
-
-            console.log("Admin already exists");
-
-            if (existingUser.role === "admin" && !existingUser.email_verified) {
-                userModel.verifyEmail(existingUser.id);
-                console.log("Existing admin email marked as verified");
-            }
-
+            console.log("\nA user with this email already exists.");
+            console.log("Role:", existingUser.role);
             return;
         }
 
@@ -34,7 +43,7 @@ const createAdmin = async () => {
             await bcrypt.hash(password, 10);
 
         const result = userModel.createUser({
-            name: "Cinema Admin",
+            name,
             email,
             password: hashedPassword,
             role: "admin",
@@ -45,16 +54,19 @@ const createAdmin = async () => {
         // so they are verified immediately.
         userModel.verifyEmail(result.lastInsertRowid);
 
-        console.log("Admin created successfully");
+        console.log("\nAdmin created successfully!");
+        console.log("Name:", name);
         console.log("Email:", email);
-        console.log("Admin password is loaded securely from .env");
+        console.log("Role: admin");
+        console.log("Email verified: yes");
 
     } catch (error) {
 
-        console.error(
-            "Error creating admin:",
-            error.message
-        );
+        console.error("\nError creating admin:", error.message);
+
+    } finally {
+
+        rl.close();
 
     }
 
