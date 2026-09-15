@@ -1,6 +1,7 @@
 const bookingModel = require("../models/bookingModel");
 const showModel = require("../models/showModel");
 const userModel = require("../models/userModel");
+const cinemaModel = require("../models/cinemaModel");
 const nodemailer = require("nodemailer");
 
 const transporter = process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD
@@ -52,6 +53,12 @@ const createBooking = async (req, res, next) => {
 
         if (!user) return res.status(401).json({ message: "User account not found" });
         if (!show) return res.status(404).json({ message: "Show not found" });
+
+        const cinema = cinemaModel.getCinemaById(show.cinema_id);
+        if (cinema?.status === "locked") {
+            return res.status(403).json({ message: "This cinema is temporarily locked and cannot accept bookings" });
+        }
+
         if (!seats.length) return res.status(400).json({ message: "Please select at least one seat" });
         if (new Set(seats).size !== seats.length) return res.status(400).json({ message: "Duplicate seats are not allowed" });
         if (seats.length > show.available_seats) return res.status(400).json({ message: "Not enough seats are available" });
