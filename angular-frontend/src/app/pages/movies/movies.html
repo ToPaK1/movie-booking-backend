@@ -7,8 +7,8 @@
 
   <div class="filters">
     <label class="search">
-      ⌕
-      <input [value]="query()" (input)="query.set($any($event.target).value)" placeholder="Search movies...">
+      <span class="search-icon">⌕</span>
+      <input [value]="query()" (input)="query.set($any($event.target).value)" placeholder="Search movies..." aria-label="Search movies">
     </label>
 
     <div class="genres">
@@ -17,7 +17,7 @@
       }
     </div>
 
-    <select [value]="minRating()" (change)="minRating.set(+$any($event.target).value)">
+    <select [value]="minRating()" (change)="minRating.set(+$any($event.target).value)" aria-label="Minimum rating">
       <option value="0">All ratings</option>
       <option value="8">8.0+</option>
       <option value="9">9.0+</option>
@@ -25,18 +25,38 @@
   </div>
 
   @if (loading()) {
-    <div class="state">Loading movies and cinema schedules...</div>
+    <div class="movies-grid skeleton-grid" aria-label="Loading movies">
+      @for (item of [1,2,3,4,5,6,7,8]; track item) {
+        <article class="movie-card skeleton-card">
+          <div class="skeleton-poster shimmer"></div>
+          <div class="movie-info">
+            <div class="skeleton-line title shimmer"></div>
+            <div class="skeleton-line text shimmer"></div>
+            <div class="skeleton-line text short shimmer"></div>
+            <div class="skeleton-meta">
+              <span class="shimmer"></span><span class="shimmer"></span><span class="shimmer"></span>
+            </div>
+            <div class="skeleton-box shimmer"></div>
+            <div class="skeleton-button shimmer"></div>
+          </div>
+        </article>
+      }
+    </div>
   } @else if (error()) {
-    <div class="state error">{{ error() }}</div>
+    <div class="state error" role="alert">{{ error() }}</div>
   } @else if (filteredMovies().length === 0) {
-    <div class="state">No movies match your filters.</div>
+    <div class="state empty-state">
+      <span>🎬</span>
+      <h2>No movies found</h2>
+      <p>No movies match your current filters. Try a different search or rating.</p>
+    </div>
   } @else {
     <div class="movies-grid">
       @for (movie of filteredMovies(); track movie.id) {
         <article class="movie-card">
           <div class="poster">
             @if (movie.poster) {
-              <img [src]="movie.poster" [alt]="movie.title">
+              <img [src]="movie.poster" [alt]="movie.title" loading="lazy">
             } @else {
               <span>🎬</span>
             }
@@ -63,7 +83,7 @@
             </div>
 
             <a [routerLink]="['/movies', movie.id]" class="details-btn">
-              View Cinemas & Showtimes
+              View Cinemas & Showtimes <span>→</span>
             </a>
           </div>
         </article>
